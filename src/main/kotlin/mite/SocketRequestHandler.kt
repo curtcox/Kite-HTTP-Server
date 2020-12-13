@@ -24,8 +24,8 @@ class SocketRequestHandler private constructor(handler: HTTPRequestHandler) {
         socket.close()
     }
 
-    fun handles(request: String?): Boolean {
-        return handler.handles(HTTPRequest.parse(request!!))
+    fun handles(request: String): Boolean {
+        return handler.handles(HTTPRequest.parse(request))
     }
 
     companion object {
