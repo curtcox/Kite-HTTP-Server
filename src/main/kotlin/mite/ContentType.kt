@@ -28,11 +28,6 @@ enum class ContentType(val streamName: String) {
 
     @Throws(IOException::class)
     private fun writeln(string: String, out: Writer) {
-        out.write(
-            """
-                $string
-                
-                """.trimIndent()
-        )
+        out.write(string + "\r\n")
     }
 }
