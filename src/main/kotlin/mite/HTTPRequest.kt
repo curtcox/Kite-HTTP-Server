@@ -3,14 +3,13 @@ package mite
 import java.lang.Exception
 import java.util.*
 
-class HTTPRequest private constructor(// The entire unparsed request string we were sent
+data class HTTPRequest private constructor(// The entire unparsed request string we were sent
     val string: String, // GET, POST, etc...
-    val method: String?, // http://server/filename
-    val filename: String?, httpVersion: HTTPVersion
-) {
-    // valid characters are ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~:/?#[]@!$&'()*+,;=
+    val method: String, // http://server/filename
+    val filename: String,
     val httpVersion: HTTPVersion
-
+    // valid characters are ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~:/?#[]@!$&'()*+,;=
+) {
     companion object {
         fun parse(string: String): HTTPRequest {
             return try {
@@ -19,12 +18,9 @@ class HTTPRequest private constructor(// The entire unparsed request string we w
                 val filename = tokenizer.nextToken()
                 HTTPRequest(string, method, filename, HTTPVersion.fromRequest(string))
             } catch (e: Exception) {
-                HTTPRequest(string, null, null, HTTPVersion.Unknown)
+                HTTPRequest(string, "", "", HTTPVersion.Unknown)
             }
         }
     }
 
-    init {
-        this.httpVersion = httpVersion
-    }
 }

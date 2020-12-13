@@ -5,7 +5,7 @@ import java.util.*
 /**
  * HTTP version.
  */
-class HTTPVersion private constructor(val version: String, val mimeAware: Boolean) {
+data class HTTPVersion private constructor(val version: String, val mimeAware: Boolean) {
     override fun toString(): String {
         return version
     }

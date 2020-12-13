@@ -1,8 +1,6 @@
 package mite.handlers
 
-import mite.HTTPRequest
-import mite.HTTPRequestHandler
-import mite.HTTPResponse
+import mite.*
 import java.io.IOException
 
 /**
@@ -10,6 +8,7 @@ import java.io.IOException
  * It uses the first handler that says it can handle the given request.
  */
 class CompositeRequestHandler private constructor(vararg handlers: HTTPRequestHandler) : HTTPRequestHandler {
+
     private val handlers: Array<HTTPRequestHandler>
 
     @Throws(IOException::class)

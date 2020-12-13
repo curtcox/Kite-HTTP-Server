@@ -15,13 +15,13 @@ import java.util.stream.Stream
 object ProcessRequestHandler {
     @JvmOverloads
     fun of(
-        f: ParameterMap = ParameterMap { httpRequest: HTTPRequest ->
-            Arrays.asList<String>(
-                *httpRequest.filename!!.substring(1).split("\\+").toTypedArray()
+        f: Function<HTTPRequest, List<String>> = Function { (_, _, filename) ->
+            Arrays.asList(
+                *filename.substring(1).split("\\+").toTypedArray()
             )
         }
     ): HTTPRequestHandler {
-        return FunctionRequestHandler.of({ httpRequest:HTTPRequest -> run(f.apply(httpRequest)) })
+        return FunctionRequestHandler.of { httpRequest -> run(f.apply(httpRequest)) }
     }
 
     private fun run(params: List<String>): String {
@@ -52,6 +52,4 @@ object ProcessRequestHandler {
         process.destroy()
         return stringJoiner.toString()
     }
-
-    interface ParameterMap : Function<HTTPRequest, List<String>>
 }

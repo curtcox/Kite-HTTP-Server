@@ -9,6 +9,7 @@ import mite.StatusCode
  * To report to the client that the request is unsupported.
  */
 class UnsupportedRequestHandler private constructor() : HTTPRequestHandler {
+
     override fun handle(request: HTTPRequest): HTTPResponse {
         return HTTPResponse.of(NOT_IMPLEMENTED_PAGE, StatusCode.NOT_IMPLEMENTED)
     }

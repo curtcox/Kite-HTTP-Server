@@ -8,16 +8,15 @@ import java.util.function.Function
 /**
  * A handler that uses a function to produce its responses.
  */
-class FunctionRequestHandler private constructor(val f: RequestToString) :
+data class FunctionRequestHandler private constructor(val f: (HTTPRequest) -> String) :
     AbstractRequestHandler() {
-    interface RequestToString : Function<HTTPRequest, String>
 
     override fun handle(request: HTTPRequest): HTTPResponse {
-        return HTTPResponse.of(f.apply(request), StatusCode.OK)
+        return HTTPResponse.of(f.invoke(request), StatusCode.OK)
     }
 
     companion object {
-        fun of(f: RequestToString): FunctionRequestHandler {
+        fun of(f: (HTTPRequest) -> String): FunctionRequestHandler {
             return FunctionRequestHandler(f)
         }
     }

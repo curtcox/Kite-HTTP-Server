@@ -1,10 +1,6 @@
 package mite
 
-import mite.handlers.CompositeRequestHandler
-import mite.handlers.EchoRequestHandler
-import mite.handlers.ProcessRequestHandler
-import mite.handlers.ProcessRequestHandler.of
-import mite.handlers.UnsupportedRequestHandler
+import mite.handlers.*
 import java.io.IOException
 
 object Start {
@@ -14,7 +10,7 @@ object Start {
         MiteHTTPServer.startListeningOnPort(
             8000,
             CompositeRequestHandler.of(
-                of(),
+                ProcessRequestHandler.of(),
                 EchoRequestHandler.of(),
                 UnsupportedRequestHandler.of()
             )

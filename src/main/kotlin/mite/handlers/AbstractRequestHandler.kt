@@ -1,7 +1,6 @@
 package mite.handlers
 
-import mite.HTTPRequest
-import mite.HTTPRequestHandler
+import mite.*
 
 /**
  * Skeletal implementation of HTTPRequestHandler.
@@ -9,6 +8,7 @@ import mite.HTTPRequestHandler
  * if the handler handles the request.
  */
 abstract class AbstractRequestHandler : HTTPRequestHandler {
+
     override fun handles(request: HTTPRequest): Boolean {
         return try {
             handle(request) != null
