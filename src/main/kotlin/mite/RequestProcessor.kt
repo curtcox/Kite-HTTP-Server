@@ -8,14 +8,12 @@ import java.net.Socket
  * This class contains just enough logic to determine who to hand the request to.
  */
 internal class RequestProcessor(
-    private val connection: Socket,
-    /**
-     * This will really handle the request.
-     */
-    private val handler: SocketRequestHandler
+    private val connection: Socket, private val handler: SocketRequestHandler //This will really handle the request
 ) : Runnable {
-    private val input: InputStream
-    private val out: OutputStream
+
+    private val input: InputStream = connection.getInputStream()
+    private val out = connection.getOutputStream()
+
     override fun run() {
         connection.use {
             try {
@@ -42,7 +40,7 @@ internal class RequestProcessor(
         val requestLine = StringBuilder()
         val max_bytes_in_request = 1024
         for (i in 0 until max_bytes_in_request) {
-            val c = `input`.read()
+            val c = input.read()
             if (c == '\r'.toInt() || c == '\n'.toInt()) break
             requestLine.append(c.toChar())
         }
@@ -51,16 +49,12 @@ internal class RequestProcessor(
 
     companion object {
         private fun log(t: Throwable) {
-            t.printStackTrace()
+            Log.log(t)
         }
 
         private fun log(message: String) {
-            println("RequestProcessor : $message")
+            Log.log("RequestProcessor : $message")
         }
     }
 
-    init {
-        out = connection.getOutputStream()
-        input = connection.getInputStream()
-    }
 }

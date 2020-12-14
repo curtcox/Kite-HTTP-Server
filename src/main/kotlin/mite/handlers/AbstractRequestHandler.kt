@@ -13,12 +13,9 @@ abstract class AbstractRequestHandler : HTTPRequestHandler {
         return try {
             handle(request) != null
         } catch (t: Throwable) {
-            debug(t)
+            Log.debug(t)
             false
         }
     }
 
-    private fun debug(t: Throwable) {
-        t.printStackTrace()
-    }
 }

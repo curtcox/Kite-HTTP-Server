@@ -31,11 +31,11 @@ class MiteHTTPServer(port: Int, handler: SocketRequestHandler) : Thread() {
         }
 
         private fun log(t: Throwable) {
-            t.printStackTrace()
+            Log.log(t)
         }
 
         private fun log(message: String) {
-            println("MiteHTTPServer : $message")
+            Log.log(message)
         }
     }
 
