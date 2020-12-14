@@ -1,8 +1,6 @@
 package mite
 
-import java.io.IOException
-import java.io.InputStream
-import java.io.OutputStream
+import java.io.*
 import java.net.Socket
 
 /**
@@ -16,16 +14,12 @@ internal class RequestProcessor(
      */
     private val handler: SocketRequestHandler
 ) : Runnable {
-    private val `in`: InputStream
+    private val input: InputStream
     private val out: OutputStream
     override fun run() {
-        try {
-            handleRequest()
-        } catch (e: IOException) {
-            log(e)
-        } finally {
+        connection.use {
             try {
-                connection.close()
+                handleRequest()
             } catch (e: IOException) {
                 log(e)
             }
@@ -48,7 +42,7 @@ internal class RequestProcessor(
         val requestLine = StringBuilder()
         val max_bytes_in_request = 1024
         for (i in 0 until max_bytes_in_request) {
-            val c = `in`.read()
+            val c = `input`.read()
             if (c == '\r'.toInt() || c == '\n'.toInt()) break
             requestLine.append(c.toChar())
         }
@@ -67,6 +61,6 @@ internal class RequestProcessor(
 
     init {
         out = connection.getOutputStream()
-        `in` = connection.getInputStream()
+        input = connection.getInputStream()
     }
 }
