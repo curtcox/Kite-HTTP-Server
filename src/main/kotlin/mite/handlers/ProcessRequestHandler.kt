@@ -1,27 +1,26 @@
 package mite.handlers
 
-import mite.HTTPRequest
-import mite.HTTPRequestHandler
-import java.io.BufferedReader
-import java.io.IOException
-import java.io.InputStreamReader
+import mite.*
+import java.io.*
 import java.util.*
-import java.util.function.Function
 import java.util.stream.Stream
 
 /**
- * Handlers that
+ * Handlers that execute processes and return the results.
  */
 object ProcessRequestHandler {
+
     @JvmOverloads
     fun of(
-        f: Function<HTTPRequest, List<String>> = Function { (_, _, filename) ->
-            Arrays.asList(
-                *filename.substring(1).split("\\+").toTypedArray()
-            )
-        }
+        f: (HTTPRequest) -> List<String> = { request -> command(request) }
     ): HTTPRequestHandler {
-        return FunctionRequestHandler.of { httpRequest -> run(f.apply(httpRequest)) }
+        return FunctionRequestHandler.of { httpRequest -> run(f.invoke(httpRequest)) }
+    }
+
+    private fun command(request: HTTPRequest): List<String> {
+        val filename = request.filename
+        val strings = filename.substring(1).split("\\+").toTypedArray()
+        return Arrays.asList(*strings)
     }
 
     private fun run(params: List<String>): String {

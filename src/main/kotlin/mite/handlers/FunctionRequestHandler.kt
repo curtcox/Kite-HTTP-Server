@@ -1,9 +1,6 @@
 package mite.handlers
 
-import mite.HTTPRequest
-import mite.HTTPResponse
-import mite.StatusCode
-import java.util.function.Function
+import mite.*
 
 /**
  * A handler that uses a function to produce its responses.
