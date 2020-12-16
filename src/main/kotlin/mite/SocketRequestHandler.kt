@@ -13,7 +13,7 @@ class SocketRequestHandler private constructor(handler: HTTPRequestHandler) {
         val writer: Writer = OutputStreamWriter(out)
         socket.use {
             writer.use {
-                val response: HTTPResponse = handler.handle(httpRequest)
+                val response: HTTPResponse = handler.handle(httpRequest)!!
                 val page: String = response.page
                 if (httpRequest.httpVersion.mimeAware) {
                     ContentType.HTML.writeMIMEHeader(writer, response.status, page.length)

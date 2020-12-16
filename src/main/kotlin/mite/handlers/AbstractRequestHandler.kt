@@ -4,12 +4,16 @@ import mite.*
 
 /**
  * Skeletal implementation of HTTPRequestHandler.
+ *
  * Implementors need to supply an implementation of handle that returns a String
  * if the handler handles the request.
  */
 abstract class AbstractRequestHandler : HTTPRequestHandler {
 
-    override fun handles(request: HTTPRequest): Boolean {
+    /**
+     * Call handle, to see if we actually DO handle this request.
+     */
+    final override fun handles(request: HTTPRequest): Boolean {
         return try {
             handle(request) != null
         } catch (t: Throwable) {

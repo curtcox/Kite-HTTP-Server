@@ -12,7 +12,7 @@ class CompositeRequestHandler private constructor(vararg handlers: HTTPRequestHa
     private val handlers: Array<HTTPRequestHandler>
 
     @Throws(IOException::class)
-    override fun handle(request: HTTPRequest): HTTPResponse {
+    override fun handle(request: HTTPRequest): HTTPResponse? {
         for (handler in handlers) {
             if (handler.handles(request)) {
                 return handler.handle(request)
