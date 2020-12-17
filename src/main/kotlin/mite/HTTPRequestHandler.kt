@@ -3,7 +3,7 @@ package mite
 import java.io.IOException
 
 /**
- * This interface is used to define what a HTTP Server does.
+ * This interface is used to define what an HTTP Server does.
  *
  * The intent is to allow groups of handlers to be composed and treated as a single handler.
  * See CompositeRequestHandler for a simple example of this concept.

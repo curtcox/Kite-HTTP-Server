@@ -11,9 +11,15 @@ import mite.*
 class CachedRequestHandler private constructor(handler: HTTPRequestHandler) : AbstractRequestHandler() {
 
     private val handler: HTTPRequestHandler = handler
+    private val cache: MutableMap<HTTPRequest,HTTPResponse?> = mutableMapOf()
 
     override fun handle(request: HTTPRequest): HTTPResponse? {
-        return handler.handle(request)
+        return if (cache.containsKey(request)) cache.get(request)
+        else {
+            val response = handler.handle(request)
+            cache.put(request,response)
+            response
+        }
     }
 
     companion object {
