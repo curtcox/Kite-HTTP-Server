@@ -1,5 +1,7 @@
-package mite
+package mite.headers
 
+import mite.MiteHTTPServer
+import mite.StatusCode
 import java.io.*
 import java.util.*
 

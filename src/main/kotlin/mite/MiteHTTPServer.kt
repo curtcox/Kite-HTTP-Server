@@ -8,9 +8,10 @@ import java.util.concurrent.*
  * Opens a server socket and hands off any requests to another thread.
  */
 class MiteHTTPServer(port: Int, handler: SocketRequestHandler) : Thread() {
-    private val server: ServerSocket
-    private val handler: SocketRequestHandler
+    private val server: ServerSocket = ServerSocket(port)
+    private val handler: SocketRequestHandler = handler
     private val executor: Executor = Executors.newFixedThreadPool(3)
+
     override fun run() {
         while (true) {
             try {
@@ -24,9 +25,9 @@ class MiteHTTPServer(port: Int, handler: SocketRequestHandler) : Thread() {
     companion object {
         const val NAME = "MiteHTTPServer 0.1"
         @Throws(IOException::class)
-        fun startListeningOnPort(port: Int, http: HTTPRequestHandler) {
+        fun startListeningOnPort(port: Int, handler: HTTPRequestHandler, headers: HTTPHeaderWriter) {
             log("Accepting connections on port $port")
-            val server = MiteHTTPServer(port, SocketRequestHandler.of(http))
+            val server = MiteHTTPServer(port, SocketRequestHandler.of(handler,headers))
             server.start()
         }
 
@@ -39,8 +40,4 @@ class MiteHTTPServer(port: Int, handler: SocketRequestHandler) : Thread() {
         }
     }
 
-    init {
-        server = ServerSocket(port)
-        this.handler = handler
-    }
 }

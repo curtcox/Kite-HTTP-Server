@@ -3,9 +3,10 @@ package mite
 import java.io.*
 import java.net.Socket
 
-class SocketRequestHandler private constructor(handler: HTTPRequestHandler) {
+class SocketRequestHandler private constructor(handler: HTTPRequestHandler, headerWriter: HTTPHeaderWriter) {
 
-    val handler: HTTPRequestHandler
+    val handler: HTTPRequestHandler = handler
+    val headerWriter: HTTPHeaderWriter = headerWriter
 
     @Throws(IOException::class)
     fun handle(request: String, socket: Socket, out: OutputStream) {
@@ -14,11 +15,8 @@ class SocketRequestHandler private constructor(handler: HTTPRequestHandler) {
         socket.use {
             writer.use {
                 val response: HTTPResponse = handler.handle(httpRequest)!!
-                val page: String = response.page
-                if (httpRequest.httpVersion.mimeAware) {
-                    ContentType.HTML.writeMIMEHeader(writer, response.status, page.length)
-                }
-                writer.write(page)
+                headerWriter.writeHeaders(httpRequest,response,writer)
+                writer.write(response.page)
             }
         }
     }
@@ -28,12 +26,9 @@ class SocketRequestHandler private constructor(handler: HTTPRequestHandler) {
     }
 
     companion object {
-        fun of(handler: HTTPRequestHandler): SocketRequestHandler {
-            return SocketRequestHandler(handler)
+        fun of(handler: HTTPRequestHandler,headerWriter: HTTPHeaderWriter): SocketRequestHandler {
+            return SocketRequestHandler(handler,headerWriter)
         }
     }
 
-    init {
-        this.handler = handler
-    }
 }

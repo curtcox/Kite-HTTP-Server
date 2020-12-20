@@ -1,6 +1,7 @@
 package mite
 
 import mite.handlers.*
+import mite.headers.ContentTypeHeaderWriter
 import java.io.IOException
 
 object Start {
@@ -13,7 +14,8 @@ object Start {
                 ProcessRequestHandler.of(),
                 EchoRequestHandler.of(),
                 UnsupportedRequestHandler.of()
-            )
+            ),
+            ContentTypeHeaderWriter()
         )
     }
 }
