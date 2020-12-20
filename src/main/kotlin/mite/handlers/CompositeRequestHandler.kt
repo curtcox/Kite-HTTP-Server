@@ -9,7 +9,7 @@ import java.io.IOException
  */
 class CompositeRequestHandler private constructor(vararg handlers: HTTPRequestHandler) : HTTPRequestHandler {
 
-    private val handlers: Array<HTTPRequestHandler>
+    private val handlers = handlers as Array<HTTPRequestHandler>
 
     @Throws(IOException::class)
     override fun handle(request: HTTPRequest): HTTPResponse? {
@@ -36,7 +36,4 @@ class CompositeRequestHandler private constructor(vararg handlers: HTTPRequestHa
         }
     }
 
-    init {
-        this.handlers = handlers as Array<HTTPRequestHandler>
-    }
 }

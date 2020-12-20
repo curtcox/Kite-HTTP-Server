@@ -9,9 +9,10 @@ enum class StatusCode(
      */
     private val message: String
 ) {
-    OK("200 OK"), NOT_IMPLEMENTED("501 Not Implemented");
 
-    override fun toString(): String {
-        return message
-    }
+    OK("200 OK"),
+    UNAUTHORIZED("401 Unauthorized"),
+    NOT_IMPLEMENTED("501 Not Implemented");
+
+    override fun toString() = message
 }
