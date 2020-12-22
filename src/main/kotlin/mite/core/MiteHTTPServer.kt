@@ -1,4 +1,4 @@
-package mite
+package mite.core
 
 import java.io.IOException
 import java.net.ServerSocket
@@ -25,7 +25,7 @@ class MiteHTTPServer(port: Int, handler: SocketRequestHandler) : Thread() {
     companion object {
         const val NAME = "MiteHTTPServer 0.1"
         @Throws(IOException::class)
-        fun startListeningOnPort(port: Int, handler: HTTPRequestHandler, headers: HTTPHeaderWriter) {
+        fun startListeningOnPort(port: Int, handler: HTTPBodyHandler, headers: HTTPHeaderWriter) {
             log("Accepting connections on port $port")
             val server = MiteHTTPServer(port, SocketRequestHandler.of(handler,headers))
             server.start()

@@ -1,13 +1,13 @@
-package mite.handlers
+package mite.bodies
 
-import mite.HTTPRequest
+import mite.core.HTTPRequest
 
 /**
  * Simple handler mostly for demonstration and debugging.
  */
 object EchoRequestHandler {
-    fun of(): FunctionRequestHandler {
-        return FunctionRequestHandler.of { request:HTTPRequest ->
+    fun of(): FunctionBodyHandler {
+        return FunctionBodyHandler.of { request: HTTPRequest ->
             """
 <html>
   <body>

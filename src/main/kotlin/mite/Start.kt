@@ -1,6 +1,7 @@
 package mite
 
-import mite.handlers.*
+import mite.bodies.*
+import mite.core.*
 import mite.headers.*
 import java.io.IOException
 
@@ -11,11 +12,11 @@ object Start {
         val auth : (HTTPRequest) -> Boolean = { request -> true }
         MiteHTTPServer.startListeningOnPort(
             8000,
-            AuthorizationRequestHandler(
-                CompositeRequestHandler.of(
+            AuthorizationBodyHandler(
+                CompositeBodyHandler.of(
                     ProcessRequestHandler.of(),
                     EchoRequestHandler.of(),
-                    UnsupportedRequestHandler.of()
+                    UnsupportedBodyHandler.of()
                 ),
                 auth
             )

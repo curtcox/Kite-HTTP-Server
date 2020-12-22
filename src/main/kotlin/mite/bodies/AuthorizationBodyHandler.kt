@@ -1,17 +1,17 @@
-package mite.handlers
+package mite.bodies
 
-import mite.*
+import mite.core.*
 
 /**
  * Allows access to another handler only when authorized.
  */
-class AuthorizationRequestHandler
-    constructor(handler: HTTPRequestHandler, authorized: (HTTPRequest)->Boolean): HTTPRequestHandler
+class AuthorizationBodyHandler
+    constructor(handler: HTTPBodyHandler, authorized: (HTTPRequest)->Boolean): HTTPBodyHandler
 {
 
     private val handler = handler
     private val authorized = authorized
-    private val unauthorized = UnauthorizedRequestHandler.of()
+    private val unauthorized = UnauthorizedBodyHandler.of()
 
     override fun handles(request: HTTPRequest) =
         if (unauthorized(request)) true else handler.handles(request)

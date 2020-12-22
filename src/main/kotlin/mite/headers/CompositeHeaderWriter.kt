@@ -1,6 +1,6 @@
 package mite.headers
 
-import mite.*
+import mite.core.*
 import java.io.Writer
 
 class CompositeHeaderWriter private constructor(vararg headers: HTTPHeaderWriter) : HTTPHeaderWriter {

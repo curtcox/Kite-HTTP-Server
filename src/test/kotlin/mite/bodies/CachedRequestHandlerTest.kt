@@ -1,21 +1,21 @@
-package mite.handlers
+package mite.bodies
 
-import mite.*
+import mite.core.*
 import org.junit.Test
 import kotlin.test.*
 
 class CachedRequestHandlerTest {
 
-    fun page() = object: AbstractRequestHandler() {
+    fun page() = object: AbstractBodyHandler() {
         var count = 0
         override fun handle(request: HTTPRequest) = HTTPResponse.of((++count).toString(), StatusCode.OK)
     }
 
-    fun empty() = object: AbstractRequestHandler() {
+    fun empty() = object: AbstractBodyHandler() {
         override fun handle(request: HTTPRequest) = null
     }
 
-    fun boom() = object: AbstractRequestHandler() {
+    fun boom() = object: AbstractBodyHandler() {
         override fun handle(request: HTTPRequest): HTTPResponse? {
             throw IllegalAccessError()
         }
@@ -29,7 +29,7 @@ class CachedRequestHandlerTest {
         assertTrue(cached.handles(request("foo")))
     }
 
-    fun cached(handler: HTTPRequestHandler) = CachedRequestHandler.of(handler)
+    fun cached(handler: HTTPBodyHandler) = CachedBodyHandler.of(handler)
 
     @Test
     fun handle_returns_string_from_cached_handler() {

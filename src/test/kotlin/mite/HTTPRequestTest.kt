@@ -1,5 +1,6 @@
 package mite
 
+import mite.core.HTTPRequest
 import org.junit.Assert
 import org.junit.Test
 import kotlin.test.assertEquals

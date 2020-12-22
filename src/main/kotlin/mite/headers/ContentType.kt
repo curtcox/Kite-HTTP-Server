@@ -1,7 +1,7 @@
 package mite.headers
 
-import mite.MiteHTTPServer
-import mite.StatusCode
+import mite.core.MiteHTTPServer
+import mite.core.StatusCode
 import java.io.*
 import java.util.*
 

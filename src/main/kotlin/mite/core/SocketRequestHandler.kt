@@ -1,12 +1,14 @@
-package mite
+package mite.core
 
 import java.io.*
 import java.net.Socket
 
-class SocketRequestHandler private constructor(handler: HTTPRequestHandler, headerWriter: HTTPHeaderWriter) {
+/**
+ * A bridge between sockets and HTTP handlers.
+ */
+class SocketRequestHandler private constructor(handler: HTTPHandler) {
 
-    val handler: HTTPRequestHandler = handler
-    val headerWriter: HTTPHeaderWriter = headerWriter
+    val handler = handler
 
     @Throws(IOException::class)
     fun handle(request: String, socket: Socket, out: OutputStream) {
@@ -15,7 +17,7 @@ class SocketRequestHandler private constructor(handler: HTTPRequestHandler, head
         socket.use {
             writer.use {
                 val response: HTTPResponse = handler.handle(httpRequest)!!
-                headerWriter.writeHeaders(httpRequest,response,writer)
+                handler.writeHeaders(httpRequest,response,writer)
                 writer.write(response.page)
             }
         }
@@ -26,8 +28,8 @@ class SocketRequestHandler private constructor(handler: HTTPRequestHandler, head
     }
 
     companion object {
-        fun of(handler: HTTPRequestHandler,headerWriter: HTTPHeaderWriter): SocketRequestHandler {
-            return SocketRequestHandler(handler,headerWriter)
+        fun of(handler: HTTPHandler): SocketRequestHandler {
+            return SocketRequestHandler(handler)
         }
     }
 

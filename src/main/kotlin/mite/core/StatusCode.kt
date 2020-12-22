@@ -1,4 +1,4 @@
-package mite
+package mite.core
 
 /**
  * HTTP status codes we support.

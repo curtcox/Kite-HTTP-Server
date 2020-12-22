@@ -1,20 +1,20 @@
-package mite.handlers
+package mite.bodies
 
-import mite.*
+import mite.core.*
 
 /**
  * To report to the client that the request is unauthorized.
  * Although the HTTP standard specifies "unauthorized", semantically this response means "unauthenticated".
  * That is, the client must authenticate itself to get the requested response.
  */
-class UnauthorizedRequestHandler private constructor() : HTTPRequestHandler {
+class UnauthorizedBodyHandler private constructor() : HTTPBodyHandler {
 
     override fun handle(request: HTTPRequest) = HTTPResponse.of(UNAUTHORIZED_PAGE, StatusCode.UNAUTHORIZED)
 
     override fun handles(request: HTTPRequest) = true
 
     companion object {
-        fun of(): UnauthorizedRequestHandler = UnauthorizedRequestHandler()
+        fun of(): UnauthorizedBodyHandler = UnauthorizedBodyHandler()
 
         private const val UNAUTHORIZED_PAGE =
 """

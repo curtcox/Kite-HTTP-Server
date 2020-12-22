@@ -1,6 +1,6 @@
-package mite.handlers
+package mite.bodies
 
-import mite.*
+import mite.core.*
 
 /**
  * Skeletal implementation of HTTPRequestHandler.
@@ -8,7 +8,7 @@ import mite.*
  * Implementors need to supply an implementation of handle that returns a String
  * if the handler handles the request.
  */
-abstract class AbstractRequestHandler : HTTPRequestHandler {
+abstract class AbstractBodyHandler : HTTPBodyHandler {
 
     /**
      * Call handle, to see if we actually DO handle this request.

@@ -1,15 +1,15 @@
-package mite.handlers
+package mite.bodies
 
-import mite.*
+import mite.core.*
 import java.io.IOException
 
 /**
  * Handler that defers to other handlers.
  * It uses the first handler that says it can handle the given request.
  */
-class CompositeRequestHandler private constructor(vararg handlers: HTTPRequestHandler) : HTTPRequestHandler {
+class CompositeBodyHandler private constructor(vararg handlers: HTTPBodyHandler) : HTTPBodyHandler {
 
-    private val handlers = handlers as Array<HTTPRequestHandler>
+    private val handlers = handlers as Array<HTTPBodyHandler>
 
     @Throws(IOException::class)
     override fun handle(request: HTTPRequest): HTTPResponse? {
@@ -31,8 +31,8 @@ class CompositeRequestHandler private constructor(vararg handlers: HTTPRequestHa
     }
 
     companion object {
-        fun of(vararg handlers: HTTPRequestHandler): CompositeRequestHandler {
-            return CompositeRequestHandler(*handlers)
+        fun of(vararg handlers: HTTPBodyHandler): CompositeBodyHandler {
+            return CompositeBodyHandler(*handlers)
         }
     }
 

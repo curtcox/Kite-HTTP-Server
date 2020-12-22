@@ -1,4 +1,4 @@
-package mite
+package mite.core
 
 import java.io.*
 import java.net.Socket

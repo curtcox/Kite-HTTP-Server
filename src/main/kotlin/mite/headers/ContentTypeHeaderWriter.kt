@@ -1,6 +1,6 @@
 package mite.headers
 
-import mite.*
+import mite.core.*
 import java.io.*
 
 class ContentTypeHeaderWriter : HTTPHeaderWriter {

@@ -1,6 +1,6 @@
-package mite.handlers
+package mite.bodies
 
-import mite.*
+import mite.core.*
 import java.io.*
 import java.util.*
 import java.util.stream.Stream
@@ -13,8 +13,8 @@ object ProcessRequestHandler {
     @JvmOverloads
     fun of(
         f: (HTTPRequest) -> List<String> = { request -> command(request) }
-    ): HTTPRequestHandler {
-        return FunctionRequestHandler.of { httpRequest -> run(f.invoke(httpRequest)) }
+    ): HTTPBodyHandler {
+        return FunctionBodyHandler.of { httpRequest -> run(f.invoke(httpRequest)) }
     }
 
     private fun command(request: HTTPRequest): List<String> {

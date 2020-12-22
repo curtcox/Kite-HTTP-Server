@@ -1,4 +1,4 @@
-package mite
+package mite.core
 
 import java.io.IOException
 
@@ -12,7 +12,7 @@ import java.io.IOException
  *
  * Implementors may want to use AbstractRequestHandler, so that they only need implement handle.
  */
-interface HTTPRequestHandler {
+interface HTTPBodyHandler {
 
     /**
      * Return true if this handler handles this request.
