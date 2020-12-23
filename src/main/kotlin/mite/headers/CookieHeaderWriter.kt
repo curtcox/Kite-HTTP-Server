@@ -1,8 +1,6 @@
 package mite.headers
 
-import mite.core.HTTPHeaderWriter
-import mite.core.HTTPRequest
-import mite.core.HTTPResponse
+import mite.core.*
 import java.io.Writer
 
 class CookieHeaderWriter : HTTPHeaderWriter {

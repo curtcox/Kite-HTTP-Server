@@ -23,11 +23,11 @@ class MiteHTTPServer(port: Int, handler: SocketRequestHandler) : Thread() {
     }
 
     companion object {
-        const val NAME = "MiteHTTPServer 0.1"
+        const val NAME = "KiteHTTPServer 0.1"
         @Throws(IOException::class)
-        fun startListeningOnPort(port: Int, handler: HTTPBodyHandler, headers: HTTPHeaderWriter) {
+        fun startListeningOnPort(port: Int, handler: HTTPHandler) {
             log("Accepting connections on port $port")
-            val server = MiteHTTPServer(port, SocketRequestHandler.of(handler,headers))
+            val server = MiteHTTPServer(port, SocketRequestHandler.of(handler))
             server.start()
         }
 
