@@ -6,14 +6,18 @@ import mite.handlers.*
 import mite.headers.*
 import java.io.IOException
 
+/**
+ * Configure and start the server.
+ */
 object Start {
     @Throws(IOException::class)
     @JvmStatic
     fun main(args: Array<String>) {
-        val auth : (HTTPRequest) -> Boolean = { request -> true }
+        val headers = CompositeHeaderWriter.of(
+            ContentTypeHeaderWriter())
+        val login = LoginHandler()
         val loggedIn = HandlerFromHeaderAndBody(
-                CompositeHeaderWriter.of(
-                    ContentTypeHeaderWriter()),
+                headers,
                 CompositeBodyHandler.of(
                     ProcessRequestHandler.of(),
                     EchoRequestHandler.of(),
@@ -21,7 +25,7 @@ object Start {
                 )
             )
         MiteHTTPServer.startListeningOnPort(
-            8000, SwitchHandler(loggedIn,loggedIn,auth)
+            8000, SwitchHandler(loggedIn,login,login.isLoggedIn())
         )
     }
 }
