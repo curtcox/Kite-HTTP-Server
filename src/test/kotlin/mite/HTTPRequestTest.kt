@@ -1,9 +1,8 @@
 package mite
 
 import mite.core.HTTPRequest
-import org.junit.Assert
 import org.junit.Test
-import kotlin.test.assertEquals
+import kotlin.test.*
 
 class HTTPRequestTest {
     @Test
@@ -11,14 +10,14 @@ class HTTPRequestTest {
         val string = toString()
         val request: HTTPRequest = parse(string)
         assertEquals("Unknown", request.httpVersion.version)
-        Assert.assertFalse(request.httpVersion.mimeAware)
+        assertFalse(request.httpVersion.mimeAware)
     }
 
     @Test
     fun string_is_set_when_parsing_fails() {
         val string = toString()
         val request: HTTPRequest = parse(string)
-        Assert.assertSame(string, request.string)
+        assertSame(string, request.string)
     }
 
     @Test

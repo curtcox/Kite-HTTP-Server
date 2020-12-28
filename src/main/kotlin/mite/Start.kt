@@ -19,6 +19,7 @@ object Start {
         val loggedIn = HandlerFromHeaderAndBody(
                 headers,
                 CompositeBodyHandler.of(
+                    PreferencesRequestHandler.of(),
                     ProcessRequestHandler.of(),
                     EchoRequestHandler.of(),
                     UnsupportedBodyHandler.of()
