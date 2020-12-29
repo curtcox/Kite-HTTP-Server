@@ -9,7 +9,7 @@ import mite.util.PersistentStorage
 object PreferencesRequestHandler {
 
     fun of(): FunctionBodyHandler {
-        return FunctionBodyHandler.of { request: HTTPRequest ->
+        return FunctionBodyHandler.of("/prefs", { request: HTTPRequest ->
             val prefs = PersistentStorage.toString()
                 .replace("<","&lt;")
                 .replace(">","&gt;")
@@ -22,7 +22,7 @@ object PreferencesRequestHandler {
   </body>
 </html>
             """.trimIndent()
-        }
+        })
     }
 
 

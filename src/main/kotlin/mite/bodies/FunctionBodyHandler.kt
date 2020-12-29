@@ -5,8 +5,8 @@ import mite.core.*
 /**
  * A handler that uses a function to produce its responses.
  */
-data class FunctionBodyHandler private constructor(val f: (HTTPRequest) -> String) :
-    AbstractBodyHandler()
+data class FunctionBodyHandler
+    private constructor(override val prefix:String, val f: (HTTPRequest) -> String) : AbstractBodyHandler(prefix)
 {
 
     override fun handle(request: HTTPRequest): HTTPResponse {
@@ -14,8 +14,8 @@ data class FunctionBodyHandler private constructor(val f: (HTTPRequest) -> Strin
     }
 
     companion object {
-        fun of(f: (HTTPRequest) -> String): FunctionBodyHandler {
-            return FunctionBodyHandler(f)
+        fun of(prefix:String = "", f: (HTTPRequest) -> String): FunctionBodyHandler {
+            return FunctionBodyHandler(prefix,f)
         }
     }
 }

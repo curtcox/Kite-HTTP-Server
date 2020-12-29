@@ -8,14 +8,14 @@ import mite.core.*
  * Implementors need to supply an implementation of handle that returns a String
  * if the handler handles the request.
  */
-abstract class AbstractBodyHandler : HTTPBodyHandler {
+abstract class AbstractBodyHandler constructor(open val prefix:String = "") : HTTPBodyHandler {
 
     /**
      * Call handle, to see if we actually DO handle this request.
      */
     final override fun handles(request: HTTPRequest): Boolean {
         return try {
-            handle(request) != null
+            request.filename.startsWith(prefix) && handle(request) != null
         } catch (t: Throwable) {
             Log.debug(t)
             false

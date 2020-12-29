@@ -4,7 +4,7 @@ import mite.core.*
 import java.io.Writer
 
 /**
- * Uses either one handler or the other depending on a switch.
+ * Uses either one handler or the other depending on a on/off switch.
  */
 class SwitchHandler
     constructor(
