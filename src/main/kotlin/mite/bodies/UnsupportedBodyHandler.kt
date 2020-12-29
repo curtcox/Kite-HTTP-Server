@@ -1,6 +1,7 @@
 package mite.bodies
 
 import mite.core.*
+import mite.util.HTML
 
 /**
  * To report to the client that the request is unsupported.
@@ -11,15 +12,15 @@ class UnsupportedBodyHandler private constructor() : HTTPBodyHandler {
 
     override fun handles(request: HTTPRequest) = true
 
-    companion object {
+    companion object : HTML {
         fun of(): UnsupportedBodyHandler = UnsupportedBodyHandler()
 
-        private const val NOT_IMPLEMENTED_PAGE =
+        private val NOT_IMPLEMENTED_PAGE =
+html(
 """
-<HTML>
-  <HEAD> <TITLE>Not Implemented</TITLE> </HEAD>
-  <BODY> <H1>HTTP Error 501: Not Implemented</H1> </BODY>
-</HTML>
+${head(title("Not Implemented"))}
+${body(h1("HTTP Error 501: Not Implemented"))}
 """
+)
     }
 }

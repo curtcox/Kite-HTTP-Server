@@ -1,6 +1,7 @@
 package mite.bodies
 
 import mite.core.*
+import mite.util.HTML
 
 /**
  * To report to the client that the request is unauthorized.
@@ -13,15 +14,15 @@ class UnauthorizedBodyHandler private constructor() : HTTPBodyHandler {
 
     override fun handles(request: HTTPRequest) = true
 
-    companion object {
+    companion object : HTML {
         fun of(): UnauthorizedBodyHandler = UnauthorizedBodyHandler()
 
-        private const val UNAUTHORIZED_PAGE =
+        private val UNAUTHORIZED_PAGE =
+            html(
+                """
+${head(title("Unauthorized"))}
+${body(h1("HTTP Error 401: Unauthorized"))}
 """
-<HTML>
-  <HEAD> <TITLE>Not Implemented</TITLE> </HEAD>
-  <BODY> <H1>HTTP Error 401: Unauthorized</H1> </BODY>
-</HTML>
-"""
+            )
     }
 }

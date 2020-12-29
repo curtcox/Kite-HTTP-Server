@@ -1,29 +1,21 @@
 package mite.bodies
 
 import mite.core.*
-import mite.util.PersistentStorage
+import mite.util.*
 
 /**
  * Displays preferences.
  */
-object PreferencesRequestHandler {
+object PreferencesRequestHandler : HTML {
+
+    private fun htmlPrefs() = PersistentStorage.toString()
+        .replace("<", "&lt;")
+        .replace(">", "&gt;")
 
     fun of(): FunctionBodyHandler {
-        return FunctionBodyHandler.of("/prefs", { request: HTTPRequest ->
-            val prefs = PersistentStorage.toString()
-                .replace("<","&lt;")
-                .replace(">","&gt;")
-            """
-<html>
-  <body>
-    <pre>
-       $prefs
-    </pre>
-  </body>
-</html>
-            """.trimIndent()
-        })
+        return FunctionBodyHandler.of("/prefs") { request: HTTPRequest ->
+            html(body(pre(htmlPrefs())))
+        }
     }
-
 
 }
