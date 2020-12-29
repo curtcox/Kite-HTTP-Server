@@ -1,7 +1,6 @@
 package mite.util
 
 import org.junit.Test
-import java.io.ByteArrayOutputStream
 import kotlin.test.*
 
 class PersistentStorageTest {
@@ -36,8 +35,19 @@ class PersistentStorageTest {
         val key = "foo"
         val value = "bar"
         storage.put(key,value)
-        val map = storage.get(key)
-        assertTrue(map.contains(value))
+        val list = storage.get(key)
+        assertTrue(list.contains(value),list.toString())
+    }
+
+    @Test
+    fun `adding a value doesn't change if key already contains it`() {
+        val key = "foo"
+        val value = "bar"
+        storage.put(key,value)
+        val before = storage.get(key)
+        storage.put(key,value)
+        val after = storage.get(key)
+        assertEquals(before,after)
     }
 
 }

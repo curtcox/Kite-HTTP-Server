@@ -2,33 +2,24 @@ package mite.util
 
 import java.io.*
 import java.util.prefs.Preferences
-import java.util.*
-import kotlin.collections.HashMap
+import kotlin.collections.*
 
 object PersistentStorage {
 
     val prefs = Preferences.userNodeForPackage(PersistentStorage::class.java)
 
+    private val N = "\n"
     private fun importPrefs() = Preferences.importPreferences(System.`in`)
     private fun exportPrefs(out:OutputStream = System.out) = prefs.exportNode(out)
-    fun get(key:String) = prefs.get(key,"")
+    fun get(key:String):Set<String> = setOf(prefs.get(key,""))
     fun put(key:String,value:String) {
-        val map = mapOf(prefs.get(key,""))
-        map.put(key,value)
-        prefs.put(key,stringOf(map))
+        val set = setOf(prefs.get(key,""))
+        set.add(value)
+        prefs.put(key,stringOf(set))
     }
 
-    private fun stringOf(m:HashMap<String,String>) = m.toString()
-
-    private fun mapOf(s:String): HashMap<String, String> {
-        val map = HashMap<String,String>()
-        for (line in s.split("\n")) {
-            val parts = line.split("=")
-            if (parts.size==2)
-                map.put(parts[0],parts[1])
-        }
-        return map
-    }
+    private fun setOf(string:String) = HashSet(string.split(N))
+    private fun stringOf(set:Set<String>) = set.joinToString(separator = N)
 
     @JvmStatic
     fun main(args: Array<String>) {

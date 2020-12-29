@@ -11,6 +11,8 @@ object PreferencesRequestHandler {
     fun of(): FunctionBodyHandler {
         return FunctionBodyHandler.of { request: HTTPRequest ->
             val prefs = PersistentStorage.toString()
+                .replace("<","&lt;")
+                .replace(">","&gt;")
             """
 <html>
   <body>
