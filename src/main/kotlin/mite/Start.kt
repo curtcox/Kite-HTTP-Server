@@ -21,6 +21,7 @@ object Start {
                 CompositeBodyHandler.of(
                     PreferencesRequestHandler.of(),
                     Log,
+                    Objects,
                     ProcessRequestHandler.of(),
                     EchoRequestHandler.of(),
                     UnsupportedBodyHandler.of()

@@ -13,18 +13,24 @@ object Log : AbstractBodyHandler("/log"), HTML {
     private val entries = ConcurrentLinkedQueue<Entry>()
     data class Entry constructor(val time: Instant, val message:String, val stack:Throwable)
 
+    private fun record(entry:Entry) {
+        entries.add(entry)
+        Objects.record(entry.message)
+        Objects.record(entry.stack)
+    }
+
     fun log(t: Throwable) {
-        entries.add(Entry(Instant.now(),t.message!!,t))
+        record(Entry(Instant.now(),t.message!!,t))
         t.printStackTrace()
     }
 
     fun debug(t: Throwable) {
-        entries.add(Entry(Instant.now(),t.message!!,t))
+        record(Entry(Instant.now(),t.message!!,t))
         t.printStackTrace()
     }
 
     fun log(message: String) {
-        entries.add(Entry(Instant.now(),message!!,Throwable()))
+        record(Entry(Instant.now(),message, Throwable()))
         println(message)
     }
 
@@ -33,17 +39,12 @@ object Log : AbstractBodyHandler("/log"), HTML {
     }
 
     private fun table(): String {
-        val rows = StringBuilder()
-        for (entry in entries) {
-            rows.append("<TR><TD>${entry.time}</TD><TD>${entry.message}</TD><TD>${entry.stack}</TD></TR>")
-        }
-        val table = """
+        return """
             <TABLE>
             <TR><TH>Time</TH><TH>Message</TH><TH>Stack</TH></TR>
             ${rows()}
             </TABLE>
         """.trimIndent()
-        return table
     }
 
     private fun rows(): String {
