@@ -20,6 +20,7 @@ object Start {
                 headers,
                 CompositeBodyHandler.of(
                     PreferencesRequestHandler.of(),
+                    Log,
                     ProcessRequestHandler.of(),
                     EchoRequestHandler.of(),
                     UnsupportedBodyHandler.of()
