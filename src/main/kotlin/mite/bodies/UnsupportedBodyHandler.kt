@@ -8,7 +8,7 @@ import mite.util.HTML
  */
 class UnsupportedBodyHandler private constructor() : HTTPBodyHandler {
 
-    override fun handle(request: HTTPRequest) = HTTPResponse.of(NOT_IMPLEMENTED_PAGE, StatusCode.NOT_IMPLEMENTED)
+    override fun handle(request: HTTPRequest) = HTTPResponse.of(NOT_IMPLEMENTED_PAGE, ContentType.HTML, StatusCode.NOT_IMPLEMENTED)
 
     override fun handles(request: HTTPRequest) = true
 

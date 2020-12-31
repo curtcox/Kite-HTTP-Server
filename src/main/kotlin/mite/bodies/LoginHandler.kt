@@ -13,11 +13,11 @@ class LoginHandler : HTTPHandler, HTML {
 
     override fun handles(request: HTTPRequest): Boolean = true
 
-    override fun handle(request: HTTPRequest): HTTPResponse = HTTPResponse.of(
+    override fun handle(request: HTTPRequest): HTTPResponse = HTTPResponse.OK(
 html(body(
 """
 Login Required
-""")), StatusCode.OK)
+""")))
 
     fun isLoggedIn() : (HTTPRequest) -> Boolean = { it: HTTPRequest -> LoginCookie.isLoggedIn(it) }
 

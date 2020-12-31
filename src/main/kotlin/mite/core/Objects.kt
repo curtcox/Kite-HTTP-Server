@@ -37,8 +37,8 @@ object Objects : AbstractBodyHandler("/object"), HTML {
         return null
     }
 
-    private fun allObjects() = HTTPResponse.of(html(body(table())),StatusCode.OK)
-    private fun singleObject(o:Any?) = HTTPResponse.of(html(body(objectPage(o))),StatusCode.OK)
+    private fun allObjects() = HTTPResponse.OK(html(body(table())))
+    private fun singleObject(o:Any?) = HTTPResponse.OK(html(body(objectPage(o))))
 
     private fun objectPage(o : Any?): String {
         if (o==null)

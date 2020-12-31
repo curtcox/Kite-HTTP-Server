@@ -1,7 +1,5 @@
-package mite.headers
+package mite.core
 
-import mite.core.MiteHTTPServer
-import mite.core.StatusCode
 import java.io.*
 import java.util.*
 
@@ -30,5 +28,12 @@ enum class ContentType(val streamName: String) {
     @Throws(IOException::class)
     private fun writeln(string: String, out: Writer) {
         out.write(string + "\r\n")
+    }
+
+    companion object {
+        fun auto(content:String) = if (seemsLikeHTML(content)) HTML else TEXT
+        fun seemsLikeHTML(content:String) =
+            content.length > 10 &&
+            content.substring(0,10).toLowerCase().contains("<html>")
     }
 }

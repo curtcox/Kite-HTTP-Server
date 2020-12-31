@@ -35,7 +35,7 @@ object Log : AbstractBodyHandler("/log"), HTML {
     }
 
     override fun handle(request: HTTPRequest): HTTPResponse {
-        return HTTPResponse.of(html(body(table())),StatusCode.OK)
+        return HTTPResponse.OK(html(body(table())))
     }
 
     private fun table(): String {

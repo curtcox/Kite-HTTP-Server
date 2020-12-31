@@ -10,7 +10,8 @@ data class FunctionBodyHandler
 {
 
     override fun handle(request: HTTPRequest): HTTPResponse {
-        return HTTPResponse.of(f.invoke(request), StatusCode.OK)
+        val content = f.invoke(request)
+        return HTTPResponse.OK(content, ContentType.auto(content))
     }
 
     companion object {

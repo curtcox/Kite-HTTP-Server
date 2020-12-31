@@ -10,7 +10,7 @@ import mite.util.HTML
  */
 class UnauthorizedBodyHandler private constructor() : HTTPBodyHandler {
 
-    override fun handle(request: HTTPRequest) = HTTPResponse.of(UNAUTHORIZED_PAGE, StatusCode.UNAUTHORIZED)
+    override fun handle(request: HTTPRequest) = HTTPResponse.of(UNAUTHORIZED_PAGE, ContentType.HTML, StatusCode.UNAUTHORIZED)
 
     override fun handles(request: HTTPRequest) = true
 
