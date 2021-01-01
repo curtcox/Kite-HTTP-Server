@@ -1,10 +1,10 @@
-package mite
+package mite.core
 
-import mite.core.HTTPRequest
 import org.junit.Test
 import kotlin.test.*
 
 class HTTPRequestTest {
+
     @Test
     fun httpVersion_is_set_when_parsing_fails() {
         val string = toString()

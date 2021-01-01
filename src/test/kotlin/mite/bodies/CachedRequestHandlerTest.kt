@@ -8,7 +8,7 @@ class CachedRequestHandlerTest {
 
     fun page() = object: AbstractBodyHandler() {
         var count = 0
-        override fun handle(request: HTTPRequest) = HTTPResponse.OK((++count).toString(), StatusCode.OK)
+        override fun handle(request: HTTPRequest) = HTTPResponse.OK((++count).toString())
     }
 
     fun empty() = object: AbstractBodyHandler() {

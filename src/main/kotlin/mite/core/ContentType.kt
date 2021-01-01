@@ -4,12 +4,13 @@ import java.io.*
 import java.util.*
 
 /**
- * MIME types
+ * Content AKA MIME types
  */
-enum class ContentType(val streamName: String) {
+enum class ContentType(val streamName: String, val binary:Boolean = true) {
 
-    HTML("text/html"),
-    TEXT("text/plain"),
+    HTML("text/html",false),
+    TEXT("text/plain",false),
+    ICON("image/vnd.microsoft.icon"),
     GIF("image/gif"),
     CLASS("application/octet-stream"),
     JPEG("image/jpeg");

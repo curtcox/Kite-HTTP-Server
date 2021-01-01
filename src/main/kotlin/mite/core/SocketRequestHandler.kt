@@ -18,7 +18,10 @@ class SocketRequestHandler private constructor(handler: HTTPHandler) {
             writer.use {
                 val response: HTTPResponse = handler.handle(httpRequest)!!
                 handler.writeHeaders(httpRequest,response,writer)
-                writer.write(response.page)
+                if (response.contentType.binary)
+                    out.write(response.bytes)
+                else
+                    writer.write(response.page)
             }
         }
     }

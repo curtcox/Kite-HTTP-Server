@@ -7,7 +7,7 @@ import java.util.*
  * The HTTP request sent to the server.
  * valid characters are ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~:/?#[]@!$&'()*+,;=
  */
-data class HTTPRequest private constructor(
+data class HTTPRequest constructor(
     val      string: String, // The entire unparsed request string we were sent
     val      method: String, // GET, POST, etc...
     val    filename: String, // http://server/filename
