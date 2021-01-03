@@ -9,7 +9,7 @@ import mite.core.ContentType.*
 data class HTTPResponse private constructor(
     val bytes: ByteArray, val contentType: ContentType, val status: StatusCode)
 {
-    val page: String = bytes.toString()
+    val page: String = String(bytes)
 
     companion object {
         val empty = HTTPResponse("".toByteArray(), TEXT, OK)

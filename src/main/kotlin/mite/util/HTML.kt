@@ -10,10 +10,10 @@ interface HTML {
     fun html(text:String) = tag(text,"<HTML>","</HTML>")
 
     fun tag(text:String,open:String,close:String) =
-        """
+"""
 $open
 $text
 $close
-"""
+""".trim()
 
 }
