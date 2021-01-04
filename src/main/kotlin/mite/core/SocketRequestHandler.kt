@@ -6,17 +6,17 @@ import java.net.Socket
 /**
  * A bridge between sockets and HTTP handlers.
  */
-class SocketRequestHandler private constructor(handler: HTTPHandler) {
+class SocketRequestHandler constructor(handler: HTTPHandler) {
 
     val handler = handler
 
     @Throws(IOException::class)
     fun handle(request: String, socket: Socket, out: OutputStream) {
-        val httpRequest = HTTPRequest.parse(request)
-        val writer: Writer = OutputStreamWriter(out)
         socket.use {
+            val httpRequest = HTTPRequest.parse(request)
+            val response: HTTPResponse = handler.handle(httpRequest)!!
+            val writer: Writer = OutputStreamWriter(out)
             writer.use {
-                val response: HTTPResponse = handler.handle(httpRequest)!!
                 handler.writeHeaders(httpRequest,response,writer)
                 if (response.contentType.binary)
                     out.write(response.bytes)
@@ -28,12 +28,6 @@ class SocketRequestHandler private constructor(handler: HTTPHandler) {
 
     fun handles(request: String): Boolean {
         return handler.handles(HTTPRequest.parse(request))
-    }
-
-    companion object {
-        fun of(handler: HTTPHandler): SocketRequestHandler {
-            return SocketRequestHandler(handler)
-        }
     }
 
 }

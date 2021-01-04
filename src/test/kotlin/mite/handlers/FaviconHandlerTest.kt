@@ -15,5 +15,6 @@ class FaviconHandlerTest {
         assertEquals(StatusCode.OK,response.status)
         assertEquals(ContentType.ICON,response.contentType)
         assertEquals(15406,response.bytes.size)
+        assertTrue(response.contentType.binary)
     }
 }

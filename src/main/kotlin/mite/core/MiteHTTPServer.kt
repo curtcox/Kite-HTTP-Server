@@ -26,7 +26,7 @@ class MiteHTTPServer(private val server:ServerSocket, val handler: SocketRequest
         @Throws(IOException::class)
         fun startListeningOnPort(port: Int, handler: HTTPHandler) {
             log("Accepting connections on port $port")
-            val server = MiteHTTPServer(ServerSocketSupplier.port(port), SocketRequestHandler.of(handler))
+            val server = MiteHTTPServer(ServerSocketSupplier.port(port), SocketRequestHandler(handler))
             server.start()
         }
 
