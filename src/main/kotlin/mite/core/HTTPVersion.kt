@@ -9,21 +9,13 @@ import java.util.*
 data class HTTPVersion private constructor(val version: String, val mimeAware: Boolean) {
 
     @Throws(IOException::class)
-    fun writeHeaders(writer: Writer, status: StatusCode, length: Int, contentType: ContentType) {
+    fun writeHeaders(headers: Array<HTTPHeader>, writer: Writer) {
         if (mimeAware) {
-            writeMIMEHeader(writer,status,length,contentType)
+            for (header in headers) {
+                writeln("${header.key} ${header.value}", writer)
+            }
+            writeln("",writer)
         }
-    }
-
-    @Throws(IOException::class)
-    private fun writeMIMEHeader(writer: Writer, status: StatusCode, length: Int, contentType: ContentType) {
-        writeln("HTTP 1.0 $status", writer)
-        val now = Date()
-        writeln("Date: $now", writer)
-        writeln("Server: " + MiteHTTPServer.NAME, writer)
-        writeln("Content-length: $length", writer)
-        writeln("Content-type: ${contentType.streamName}", writer)
-        writeln("", writer)
     }
 
     @Throws(IOException::class)

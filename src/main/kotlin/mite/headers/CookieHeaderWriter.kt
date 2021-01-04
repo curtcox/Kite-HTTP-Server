@@ -1,11 +1,10 @@
 package mite.headers
 
 import mite.core.*
-import java.io.Writer
 
-class CookieHeaderWriter : HTTPHeaderWriter {
+class CookieHeaderWriter : HTTPHeaderHandler {
 
-    override fun writeHeaders(httpRequest: HTTPRequest, response: HTTPResponse, writer: Writer) {
+    override fun handleHeaders(httpRequest: HTTPRequest, response: HTTPResponse) : Array<HTTPHeader> {
         TODO("Not yet implemented")
     }
 }

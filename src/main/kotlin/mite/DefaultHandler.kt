@@ -4,14 +4,13 @@ import mite.bodies.*
 import mite.core.*
 import mite.handlers.*
 import mite.headers.*
-import java.io.*
 
 /**
  * Configure and start the server.
  */
 object DefaultHandler : HTTPHandler {
 
-    private val headers = CompositeHeaderWriter.of(ContentTypeHeaderWriter())
+    private val headers = ContentTypeHeaderHandler
 
     private val login = LoginHandler()
 
@@ -34,8 +33,8 @@ object DefaultHandler : HTTPHandler {
 
     private val switchHandler = SwitchHandler(loggedIn,needsToLogin,login.isLoggedIn())
 
-    override fun writeHeaders(httpRequest: HTTPRequest, response: HTTPResponse, writer: Writer) =
-        headers.writeHeaders(httpRequest,response,writer)
+    override fun handleHeaders(httpRequest: HTTPRequest, response: HTTPResponse) =
+        headers.handleHeaders(httpRequest,response)
 
     override fun handles(request: HTTPRequest): Boolean = switchHandler.handles(request)
 

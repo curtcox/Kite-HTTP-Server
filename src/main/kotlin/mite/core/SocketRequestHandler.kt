@@ -9,21 +9,21 @@ import java.net.Socket
 class SocketRequestHandler constructor(handler: HTTPHandler) {
 
     val handler = handler
+    val writer = HTTPResponseWriter
 
     @Throws(IOException::class)
     fun handle(request: String, socket: Socket, out: OutputStream) {
         socket.use {
-            val httpRequest = HTTPRequest.parse(request)
-            val response: HTTPResponse = handler.handle(httpRequest)!!
-            val writer: Writer = OutputStreamWriter(out)
-            writer.use {
-                handler.writeHeaders(httpRequest,response,writer)
-                if (response.contentType.binary)
-                    out.write(response.bytes)
-                else
-                    writer.write(response.page)
-            }
+            write(request,out)
         }
+    }
+
+    @Throws(IOException::class)
+    private fun write(request: String, out: OutputStream) {
+        val httpRequest = HTTPRequest.parse(request)
+        val    response = handler.handle(httpRequest)!!
+        val     headers = handler.handleHeaders(httpRequest,response)
+        writer.write(httpRequest.httpVersion,response,headers,out)
     }
 
     fun handles(request: String): Boolean {

@@ -8,4 +8,4 @@ package mite.core
  * will either provide a header or a body. There are, however, occasionally
  * things like authorization that will need to do both.
  */
-interface HTTPHandler : HTTPHeaderWriter, HTTPBodyHandler
+interface HTTPHandler : HTTPHeaderHandler, HTTPBodyHandler

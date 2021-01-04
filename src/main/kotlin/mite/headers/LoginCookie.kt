@@ -1,12 +1,11 @@
 package mite.headers
 
 import mite.core.*
-import java.io.Writer
 
 object LoginCookie {
 
-    fun writeHeaders(httpRequest: HTTPRequest, response: HTTPResponse, writer: Writer) {
-
+    fun handleHeaders(httpRequest: HTTPRequest, response: HTTPResponse): Array<HTTPHeader> {
+        return emptyArray()
     }
 
     fun isLoggedIn(httpRequest: HTTPRequest) : Boolean {

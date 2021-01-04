@@ -1,8 +1,5 @@
 package mite.core
 
-import java.io.*
-import java.util.*
-
 /**
  * Content AKA MIME types
  */

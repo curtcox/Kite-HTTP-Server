@@ -1,13 +1,11 @@
 package mite.handlers
 
 import mite.core.*
-import java.io.Writer
 
-class HandlerFromHeaderAndBody(val header: HTTPHeaderWriter, val body: HTTPBodyHandler) : HTTPHandler {
+class HandlerFromHeaderAndBody(val header: HTTPHeaderHandler, val body: HTTPBodyHandler) : HTTPHandler {
 
-    override fun writeHeaders(httpRequest: HTTPRequest, response: HTTPResponse, writer: Writer) {
-        header.writeHeaders(httpRequest,response,writer)
-    }
+    override fun handleHeaders(httpRequest: HTTPRequest, response: HTTPResponse) =
+        header.handleHeaders(httpRequest,response)
 
     override fun handles(request: HTTPRequest) = body.handles(request)
 
