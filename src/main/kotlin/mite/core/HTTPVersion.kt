@@ -15,6 +15,7 @@ data class HTTPVersion private constructor(val version: String, val mimeAware: B
                 writeln("${header.key} ${header.value}", writer)
             }
             writeln("",writer)
+            writer.flush()
         }
     }
 

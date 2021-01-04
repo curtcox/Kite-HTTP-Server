@@ -7,7 +7,7 @@ enum class ContentType(val streamName: String, val binary:Boolean = true) {
 
     HTML("text/html",false),
     TEXT("text/plain",false),
-    ICON("image/vnd.microsoft.icon"),
+    ICON("image/x-icon"),
     GIF("image/gif"),
     CLASS("application/octet-stream"),
     JPEG("image/jpeg");
