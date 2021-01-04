@@ -30,6 +30,7 @@ data class HTTPVersion private constructor(val version: String, val mimeAware: B
     companion object {
         private const val UNKNOWN = "Unknown"
         val Unknown = HTTPVersion(UNKNOWN, false)
+        val _1_1 = HTTPVersion("HTTP/1.1", true)
         fun fromRequest(request: String): HTTPVersion {
             val versionString = versionString(request)
             return HTTPVersion(versionString, versionString.startsWith("HTTP"))
