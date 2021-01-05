@@ -13,7 +13,7 @@ object PreferencesRequestHandler : HTML {
         .replace(">", "&gt;")
 
     fun of(): FunctionBodyHandler {
-        return FunctionBodyHandler.of("/prefs") { request: HTTPRequest ->
+        return FunctionBodyHandler("/prefs") { request: HTTPRequest ->
             html(body(pre(htmlPrefs())))
         }
     }

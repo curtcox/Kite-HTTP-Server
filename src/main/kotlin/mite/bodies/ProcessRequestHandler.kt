@@ -14,7 +14,7 @@ object ProcessRequestHandler {
     fun of(
         f: (HTTPRequest) -> List<String> = { request -> command(request) }
     ): HTTPBodyHandler {
-        return FunctionBodyHandler.of { httpRequest -> run(f.invoke(httpRequest)) }
+        return FunctionBodyHandler { httpRequest -> run(f.invoke(httpRequest)) }
     }
 
     private fun command(request: HTTPRequest): List<String> {

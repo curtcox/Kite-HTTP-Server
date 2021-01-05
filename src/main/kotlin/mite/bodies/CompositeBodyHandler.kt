@@ -7,7 +7,7 @@ import java.io.IOException
  * Handler that defers to other handlers.
  * It uses the first handler that says it can handle the given request.
  */
-class CompositeBodyHandler private constructor(vararg handlers: HTTPBodyHandler) : HTTPBodyHandler {
+class CompositeBodyHandler constructor(vararg handlers: HTTPBodyHandler) : HTTPBodyHandler {
 
     private val handlers = handlers as Array<HTTPBodyHandler>
 
@@ -28,12 +28,6 @@ class CompositeBodyHandler private constructor(vararg handlers: HTTPBodyHandler)
             }
         }
         return false
-    }
-
-    companion object {
-        fun of(vararg handlers: HTTPBodyHandler): CompositeBodyHandler {
-            return CompositeBodyHandler(*handlers)
-        }
     }
 
 }

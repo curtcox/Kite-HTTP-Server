@@ -8,7 +8,7 @@ import mite.util.HTML
  */
 object EchoRequestHandler : HTML {
     fun of(): FunctionBodyHandler {
-        return FunctionBodyHandler.of { request: HTTPRequest ->
+        return FunctionBodyHandler { request: HTTPRequest ->
             html(body(pre(
 """
 request = $request

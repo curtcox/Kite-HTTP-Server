@@ -17,7 +17,7 @@ object DefaultHandler : HTTPHandler {
     private val favicon = FaviconHandler
 
     private fun handler(vararg handlers: HTTPBodyHandler) =
-        HandlerFromHeaderAndBody(headers, CompositeBodyHandler.of(*handlers))
+        HandlerFromHeaderAndBody(headers, CompositeBodyHandler(*handlers))
 
     private val needsToLogin = handler(favicon,login)
 
@@ -28,7 +28,7 @@ object DefaultHandler : HTTPHandler {
         Objects,
         ProcessRequestHandler.of(),
         EchoRequestHandler.of(),
-        UnsupportedBodyHandler.of()
+        UnsupportedBodyHandler
     )
 
     private val switchHandler = SwitchHandler(loggedIn,needsToLogin,login.isLoggedIn())
