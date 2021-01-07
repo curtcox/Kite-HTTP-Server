@@ -8,20 +8,22 @@ import java.util.*
  * valid characters are ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~:/?#[]@!$&'()*+,;=
  */
 data class HTTPRequest constructor(
-    val      string: String, // The entire unparsed request string we were sent
+    val         raw: String, // The entire unparsed request string we were sent
     val      method: String, // GET, POST, etc...
     val    filename: String, // http://server/filename
     val httpVersion: HTTPVersion
 ) {
     companion object {
-        fun parse(string: String): HTTPRequest {
+        val GET = "GET"
+        val POST = "POST"
+        fun parse(raw: String): HTTPRequest {
             return try {
-                val tokenizer = StringTokenizer(string)
+                val tokenizer = StringTokenizer(raw)
                 val method = tokenizer.nextToken()
                 val filename = tokenizer.nextToken()
-                HTTPRequest(string, method, filename, HTTPVersion.fromRequest(string))
+                HTTPRequest(raw, method, filename, HTTPVersion.fromRequest(raw))
             } catch (e: Exception) {
-                HTTPRequest(string, "", "", HTTPVersion.Unknown)
+                HTTPRequest(raw, "", "", HTTPVersion.Unknown)
             }
         }
     }

@@ -12,10 +12,8 @@ object PreferencesRequestHandler : HTML {
         .replace("<", "&lt;")
         .replace(">", "&gt;")
 
-    fun of(): FunctionBodyHandler {
-        return FunctionBodyHandler("/prefs") { request: HTTPRequest ->
-            html(body(pre(htmlPrefs())))
-        }
+    fun of() = FunctionBodyHandler("/prefs") { request: HTTPRequest ->
+        html(body(pre(htmlPrefs())))
     }
 
 }

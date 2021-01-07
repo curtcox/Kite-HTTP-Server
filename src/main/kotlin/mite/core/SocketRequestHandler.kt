@@ -9,7 +9,7 @@ import java.net.Socket
 class SocketRequestHandler constructor(handler: HTTPHandler) {
 
     val handler = handler
-    val writer = HTTPResponseWriter
+    private val writer = HTTPResponseWriter
 
     @Throws(IOException::class)
     fun handle(request: String, socket: Socket, out: OutputStream) {

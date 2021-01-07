@@ -17,7 +17,7 @@ class HTTPRequestTest {
     fun string_is_set_when_parsing_fails() {
         val string = toString()
         val request: HTTPRequest = parse(string)
-        assertSame(string, request.string)
+        assertSame(string, request.raw)
     }
 
     @Test

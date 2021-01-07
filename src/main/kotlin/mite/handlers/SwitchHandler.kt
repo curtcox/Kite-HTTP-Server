@@ -3,7 +3,7 @@ package mite.handlers
 import mite.core.*
 
 /**
- * Uses either one handler or the other depending on a on/off switch.
+ * Uses either one handler or the other depending on an on/off switch.
  */
 class SwitchHandler
     constructor(
