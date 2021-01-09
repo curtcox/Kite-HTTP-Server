@@ -12,21 +12,21 @@ class SocketRequestHandler constructor(handler: HTTPHandler) {
     private val writer = HTTPResponseWriter
 
     @Throws(IOException::class)
-    fun handle(request: String, socket: Socket, out: OutputStream) {
+    fun handle(request: Array<String>, socket: Socket, out: OutputStream) {
         socket.use {
             write(request,out)
         }
     }
 
     @Throws(IOException::class)
-    private fun write(request: String, out: OutputStream) {
+    private fun write(request: Array<String>, out: OutputStream) {
         val httpRequest = HTTPRequest.parse(request)
         val    response = handler.handle(httpRequest)!!
         val     headers = handler.handleHeaders(httpRequest,response)
         writer.write(httpRequest.httpVersion,response,headers,out)
     }
 
-    fun handles(request: String): Boolean {
+    fun handles(request: Array<String>): Boolean {
         return handler.handles(HTTPRequest.parse(request))
     }
 

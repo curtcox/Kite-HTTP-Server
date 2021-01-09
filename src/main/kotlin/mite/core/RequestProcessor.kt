@@ -13,6 +13,7 @@ internal class RequestProcessor(
 
     private val input: InputStream = connection.getInputStream()
     private val out = connection.getOutputStream()
+    private val reader = RequestReader
 
     override fun run() {
         connection.use {
@@ -26,25 +27,13 @@ internal class RequestProcessor(
 
     @Throws(IOException::class)
     private fun handleRequest() {
-        val request = readRequest()
+        val request = reader.readRequest(input)
         log(request)
         if (handler.handles(request)) {
             handler.handle(request, connection, out)
             return
         }
-        throw UnsupportedOperationException(request)
-    }
-
-    @Throws(IOException::class)
-    private fun readRequest(): String {
-        val requestLine = StringBuilder()
-        val max_bytes_in_request = 1024
-        for (i in 0 until max_bytes_in_request) {
-            val c = input.read()
-            if (c == '\r'.toInt() || c == '\n'.toInt()) break
-            requestLine.append(c.toChar())
-        }
-        return requestLine.toString()
+        throw UnsupportedOperationException(request.toString())
     }
 
     companion object {
@@ -52,7 +41,7 @@ internal class RequestProcessor(
             Log.log(t)
         }
 
-        private fun log(message: String) {
+        private fun log(message: Array<String>) {
             Log.log("RequestProcessor : $message")
         }
     }

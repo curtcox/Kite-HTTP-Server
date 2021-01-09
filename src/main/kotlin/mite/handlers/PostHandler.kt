@@ -10,7 +10,7 @@ import mite.core.*
 class PostHandler constructor(val handler: HTTPHandler) : HTTPHandler
 {
     private val POST = "/POST/"
-    
+
     override fun handleHeaders(request: HTTPRequest, response: HTTPResponse) =
         handler.handleHeaders(request,response)
 
