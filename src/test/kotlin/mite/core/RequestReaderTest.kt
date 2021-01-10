@@ -2,13 +2,57 @@ package mite.core
 
 import org.junit.Test
 import java.io.ByteArrayInputStream
-import java.util.*
 import kotlin.test.*
 
 class RequestReaderTest {
 
     @Test
-    fun `A URL encoded form`() {
+    fun `HTTP 1_0 GET request`() {
+        test("""
+            GET /4848 HTTP/1.0
+            Connection: Keep-Alive
+            User-Agent: Mozilla/3.01 (X11; I; SunOS 5.4 sun4m)
+            Pragma: no-cache
+            Host: tecfa.unige.ch:7778
+            Accept: image/gif, image/x-xbitmap, image/jpeg, image/pjpeg, */*
+            """.trimIndent())
+    }
+
+    @Test
+    fun `HTTP 1_1 GET request`() {
+        test("""
+            GET / HTTP/1.1
+            Host: www.example.com
+        """.trimIndent())
+    }
+
+    @Test
+    fun `HTTP 2 GET request`() {
+        test("""
+            GET /search?q=test HTTP/2
+            Host: www.bing.com
+            User-Agent: curl/7.54.0
+            Accept: */*
+        """.trimIndent())
+    }
+
+    @Test
+    fun `HTTP 1_0 URL encoded form`() {
+        test("""
+            POST /cgi/4848 HTTP/1.0
+            Referer: http://tecfa.unige.ch:7778/4848
+            Connection: Keep-Alive
+            User-Agent: Mozilla/3.01 (X11; I; SunOS 5.4 sun4m)
+            Host: tecfa.unige.ch:7778
+            Accept: image/gif, image/x-xbitmap, image/jpeg, image/pjpeg, */*
+            Content-type: application/x-www-form-urlencoded
+            Content-length: 42
+
+            name=Daniel&age=old&string=Hello+there+%21
+        """.trimIndent())
+    }
+    @Test
+    fun `HTTP 1_1 URL encoded form`() {
         test("""
     POST /test HTTP/1.1
     Host: foo.example
@@ -20,7 +64,7 @@ class RequestReaderTest {
     }
 
     @Test
-    fun `A multipart form-data encoded form`() {
+    fun `HTTP 1_1 multipart form-data encoded form`() {
         test("""
     POST /test HTTP/1.1
     Host: foo.example
@@ -37,6 +81,7 @@ class RequestReaderTest {
     --boundary--
         """.trimIndent())
     }
+
 
     fun test(raw:String) {
         val lines = raw.split("\n")

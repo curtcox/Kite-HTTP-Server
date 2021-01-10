@@ -17,7 +17,7 @@ class HTTPRequestTest {
     fun `raw string is set when parsing fails`() {
         val string = toString()
         val request: HTTPRequest = parse(string)
-        assertSame(string, request.raw)
+        assertSame(string, request.raw[0])
     }
 
     @Test
