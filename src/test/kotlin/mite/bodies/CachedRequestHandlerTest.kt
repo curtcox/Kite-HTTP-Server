@@ -21,7 +21,7 @@ class CachedRequestHandlerTest {
         }
     }
 
-    fun request(string:String) = HTTPRequest.parse(string)
+    fun request(string:String) = HTTPRequest.parse(arrayOf(string))
 
     @Test
     fun handles_is_true_when_cached_handler_returns_string() {

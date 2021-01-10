@@ -113,7 +113,7 @@ value2
 
     companion object {
         fun parse(request: String): HTTPRequest {
-            return HTTPRequest.parse(request)
+            return HTTPRequest.parse(arrayOf(request))
         }
     }
 }

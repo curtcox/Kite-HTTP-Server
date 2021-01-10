@@ -23,7 +23,7 @@ class PostHandlerTest {
 
     val postHandler = PostHandler(inner)
 
-    fun filename(filename:String) = HTTPRequest("","", filename,HTTPVersion.Unknown)
+    fun filename(filename:String) = HTTPRequest(arrayOf(""),"", filename,HTTPVersion.Unknown)
 
     @Test
     fun `Only handles POST requests`() {

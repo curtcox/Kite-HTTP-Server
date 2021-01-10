@@ -5,7 +5,7 @@ import kotlin.test.*
 
 class LogTest {
 
-    fun request(filename:String) = HTTPRequest("","",filename,HTTPVersion.Unknown)
+    fun request(filename:String) = HTTPRequest(arrayOf(""),"",filename,HTTPVersion.Unknown)
 
     @Test
     fun handles_expected_requests() {

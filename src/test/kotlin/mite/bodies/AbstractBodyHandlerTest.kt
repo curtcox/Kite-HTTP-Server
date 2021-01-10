@@ -6,7 +6,7 @@ import kotlin.test.*
 
 class AbstractBodyHandlerTest {
 
-    fun request(filename:String) = HTTPRequest("","",filename, HTTPVersion.Unknown)
+    fun request(filename:String) = HTTPRequest(arrayOf(),"",filename, HTTPVersion.Unknown)
     val handler = object : AbstractBodyHandler("prefix") {
         override fun handle(request: HTTPRequest): HTTPResponse {
             return HTTPResponse.OK(request.filename)
