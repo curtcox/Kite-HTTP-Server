@@ -27,6 +27,7 @@ internal class RequestProcessor(
 
     @Throws(IOException::class)
     private fun handleRequest() {
+        //System.out.println("Handling $connection with $handler")
         val request = reader.readRequest(input)
         log(request)
         if (handler.handles(request)) {
@@ -42,7 +43,7 @@ internal class RequestProcessor(
         }
 
         private fun log(message: Array<String>) {
-            Log.log("RequestProcessor : $message")
+            Log.log("RequestProcessor : ${message.toList()}")
         }
     }
 

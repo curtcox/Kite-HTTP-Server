@@ -20,7 +20,10 @@ class DefaultHandlerTest {
         val request = HTTPRequest(arrayOf(),"","/log",HTTPVersion.Unknown)
         val response = handler.handle(request)!!
         assertEquals(ContentType.HTML,response.contentType)
-        assertEquals("foo",response.page)
+        val page = response.page
+        assertTrue(page.contains("<HTML>"),page)
+        assertTrue(page.contains("<TABLE>"),page)
+        assertTrue(page.contains("<TH>Time</TH>"),page)
     }
 
     @Test
@@ -28,7 +31,9 @@ class DefaultHandlerTest {
         val request = HTTPRequest(arrayOf(),"","/pwd",HTTPVersion.Unknown)
         val response = handler.handle(request)!!
         assertEquals(ContentType.TEXT,response.contentType)
-        assertEquals("foo",response.page)
+        val page = response.page
+        assertTrue(page.contains("/Users"),page)
+        assertTrue(page.contains("/Kite-HTTP-Server"),page)
     }
 
 }

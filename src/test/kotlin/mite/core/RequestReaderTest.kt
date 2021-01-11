@@ -7,6 +7,11 @@ import kotlin.test.*
 class RequestReaderTest {
 
     @Test
+    fun `1 line HTTP 1_0 GET request`() {
+        test("""GET /4848 HTTP/1.0""")
+    }
+
+    @Test
     fun `HTTP 1_0 GET request`() {
         test("""
             GET /4848 HTTP/1.0

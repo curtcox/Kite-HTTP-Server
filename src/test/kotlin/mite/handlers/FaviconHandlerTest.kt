@@ -14,7 +14,7 @@ class FaviconHandlerTest {
         val response = favicon.handle(request("/favicon.ico"))
         assertEquals(StatusCode.OK,response.status)
         assertEquals(ContentType.ICON,response.contentType)
-        assertEquals(15406,response.bytes.size)
+        assertEquals(1406,response.bytes.size)
         assertTrue(response.contentType.binary)
     }
 }
