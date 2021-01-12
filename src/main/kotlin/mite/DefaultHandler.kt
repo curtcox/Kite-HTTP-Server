@@ -2,13 +2,14 @@ package mite
 
 import mite.bodies.*
 import mite.core.*
+import mite.core.HTTP.*
 import mite.handlers.*
 import mite.headers.*
 
 /**
  * Configure and start the server.
  */
-object DefaultHandler : HTTPHandler {
+object DefaultHandler : Handler {
 
     private val headers = ContentTypeHeaderHandler
 
@@ -16,7 +17,7 @@ object DefaultHandler : HTTPHandler {
 
     private val favicon = FaviconHandler
 
-    private fun handler(vararg handlers: HTTPBodyHandler) =
+    private fun handler(vararg handlers: BodyHandler) =
         HandlerFromHeaderAndBody(headers, CompositeBodyHandler(*handlers))
 
     private val needsToLogin = handler(favicon,login)
@@ -33,11 +34,11 @@ object DefaultHandler : HTTPHandler {
 
     private val switchHandler = SwitchHandler(loggedIn,needsToLogin,login.isLoggedIn())
 
-    override fun handleHeaders(httpRequest: HTTPRequest, response: HTTPResponse) =
+    override fun handleHeaders(httpRequest: Request, response: Response) =
         headers.handleHeaders(httpRequest,response)
 
-    override fun handles(request: HTTPRequest): Boolean = switchHandler.handles(request)
+    override fun handles(request: Request): Boolean = switchHandler.handles(request)
 
-    override fun handle(request: HTTPRequest): HTTPResponse? = switchHandler.handle(request)
+    override fun handle(request: Request): Response? = switchHandler.handle(request)
 
 }

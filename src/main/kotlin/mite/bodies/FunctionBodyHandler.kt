@@ -1,17 +1,17 @@
 package mite.bodies
 
-import mite.core.*
+import mite.core.HTTP.*
 
 /**
  * A handler that uses a function to produce its responses.
  */
 data class FunctionBodyHandler
-    constructor(override val prefix:String = "", val f: (HTTPRequest) -> String) : AbstractBodyHandler(prefix)
+    constructor(override val prefix:String = "", val f: (Request) -> String) : AbstractBodyHandler(prefix)
 {
 
-    override fun handle(request: HTTPRequest): HTTPResponse {
+    override fun handle(request: Request): Response {
         val content = f.invoke(request)
-        return HTTPResponse.OK(content, ContentType.auto(content))
+        return Response.OK(content, ContentType.auto(content))
     }
 
 }

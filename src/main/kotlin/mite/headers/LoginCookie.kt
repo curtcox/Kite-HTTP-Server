@@ -1,14 +1,14 @@
 package mite.headers
 
-import mite.core.*
+import mite.core.HTTP.*
 
 object LoginCookie {
 
-    fun handleHeaders(httpRequest: HTTPRequest, response: HTTPResponse): Array<HTTPHeader> {
+    fun handleHeaders(httpRequest: Request, response: Response): Array<Header> {
         return emptyArray()
     }
 
-    fun isLoggedIn(httpRequest: HTTPRequest) : Boolean {
+    fun isLoggedIn(httpRequest: Request) : Boolean {
         return true
     }
 

@@ -1,16 +1,17 @@
 package mite.bodies
 
 import mite.core.*
+import mite.core.HTTP.*
 import mite.util.HTML
 
 /**
  * To report to the client that the request is unsupported.
  */
-object UnsupportedBodyHandler : HTTPBodyHandler, HTML {
+object UnsupportedBodyHandler : BodyHandler, HTML {
 
-    override fun handle(request: HTTPRequest) = HTTPResponse.of(NOT_IMPLEMENTED_PAGE, ContentType.HTML, StatusCode.NOT_IMPLEMENTED)
+    override fun handle(request: Request) = Response.of(NOT_IMPLEMENTED_PAGE, ContentType.HTML, StatusCode.NOT_IMPLEMENTED)
 
-    override fun handles(request: HTTPRequest) = true
+    override fun handles(request: Request) = true
 
     private val NOT_IMPLEMENTED_PAGE =
 html(

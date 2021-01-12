@@ -1,17 +1,18 @@
 package mite.headers
 
 import mite.core.*
+import mite.core.HTTP.*
 import java.util.*
 
-object ContentTypeHeaderHandler : HTTPHeaderHandler {
+object ContentTypeHeaderHandler : HeaderHandler {
 
-    override fun handleHeaders(httpRequest: HTTPRequest, response: HTTPResponse): Array<HTTPHeader> {
+    override fun handleHeaders(httpRequest: Request, response: Response): Array<Header> {
         return arrayOf(
-            HTTPHeader("HTTP 1.0",         response.status),
-            HTTPHeader("Date:",            Date()),
-            HTTPHeader("Server:",          MiteHTTPServer.NAME),
-            HTTPHeader("Content-length:",  response.bytes.size),
-            HTTPHeader("Content-type:",    response.contentType.streamName),
+            Header("HTTP 1.0",         response.status),
+            Header("Date:",            Date()),
+            Header("Server:",          MiteHTTPServer.NAME),
+            Header("Content-length:",  response.bytes.size),
+            Header("Content-type:",    response.contentType.streamName),
         )
     }
 

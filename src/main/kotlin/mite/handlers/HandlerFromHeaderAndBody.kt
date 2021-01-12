@@ -1,13 +1,13 @@
 package mite.handlers
 
-import mite.core.*
+import mite.core.HTTP.*
 
-class HandlerFromHeaderAndBody(val header: HTTPHeaderHandler, val body: HTTPBodyHandler) : HTTPHandler {
+class HandlerFromHeaderAndBody(val header: HeaderHandler, val body: BodyHandler) : Handler {
 
-    override fun handleHeaders(httpRequest: HTTPRequest, response: HTTPResponse) =
+    override fun handleHeaders(httpRequest: Request, response: Response) =
         header.handleHeaders(httpRequest,response)
 
-    override fun handles(request: HTTPRequest) = body.handles(request)
+    override fun handles(request: Request) = body.handles(request)
 
-    override fun handle(request: HTTPRequest): HTTPResponse? = body.handle(request)
+    override fun handle(request: Request): Response? = body.handle(request)
 }

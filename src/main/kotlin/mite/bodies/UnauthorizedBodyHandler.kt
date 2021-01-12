@@ -1,6 +1,6 @@
 package mite.bodies
 
-import mite.core.*
+import mite.core.HTTP.*
 import mite.util.HTML
 
 /**
@@ -8,11 +8,11 @@ import mite.util.HTML
  * Although the HTTP standard specifies "unauthorized", semantically this response means "unauthenticated".
  * That is, the client must authenticate itself to get the requested response.
  */
-object UnauthorizedBodyHandler : HTTPBodyHandler, HTML {
+object UnauthorizedBodyHandler : BodyHandler, HTML {
 
-    override fun handle(request: HTTPRequest) = HTTPResponse.of(UNAUTHORIZED_PAGE, ContentType.HTML, StatusCode.UNAUTHORIZED)
+    override fun handle(request: Request) = Response.of(UNAUTHORIZED_PAGE, ContentType.HTML, StatusCode.UNAUTHORIZED)
 
-    override fun handles(request: HTTPRequest) = true
+    override fun handles(request: Request) = true
 
     private val UNAUTHORIZED_PAGE =
         html(

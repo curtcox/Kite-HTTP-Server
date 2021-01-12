@@ -2,6 +2,7 @@ package mite.core
 
 import mite.bodies.AbstractBodyHandler
 import mite.util.HTML
+import mite.core.HTTP.*
 import java.time.Instant
 import java.util.concurrent.*
 
@@ -34,8 +35,8 @@ object Log : AbstractBodyHandler("/log"), HTML {
         println(message)
     }
 
-    override fun handle(request: HTTPRequest): HTTPResponse {
-        return HTTPResponse.OK(html(body(table())))
+    override fun handle(request: Request): Response {
+        return Response.OK(html(body(table())))
     }
 
     private fun table(): String {

@@ -1,6 +1,6 @@
 package mite.bodies
 
-import mite.core.*
+import mite.core.HTTP.*
 import mite.util.*
 
 /**
@@ -12,7 +12,7 @@ object PreferencesRequestHandler : HTML {
         .replace("<", "&lt;")
         .replace(">", "&gt;")
 
-    fun of() = FunctionBodyHandler("/prefs") { request: HTTPRequest ->
+    fun of() = FunctionBodyHandler("/prefs") { request: Request ->
         html(body(pre(htmlPrefs())))
     }
 

@@ -1,6 +1,7 @@
 package mite.bodies
 
 import mite.core.*
+import mite.core.HTTP.*
 
 /**
  * A handler that caches the results from another handler.
@@ -8,12 +9,12 @@ import mite.core.*
  * that lack a reliable independent handle implementation.
  * Namely, once to determine if they handle the request and once to actually do it.
  */
-class CachedBodyHandler private constructor(handler: HTTPBodyHandler) : AbstractBodyHandler() {
+class CachedBodyHandler private constructor(handler: BodyHandler) : AbstractBodyHandler() {
 
     private val handler = handler
-    private val cache: MutableMap<HTTPRequest, HTTPResponse?> = mutableMapOf()
+    private val cache: MutableMap<Request, Response?> = mutableMapOf()
 
-    override fun handle(request: HTTPRequest): HTTPResponse? {
+    override fun handle(request: Request): Response? {
         return if (cache.containsKey(request)) cache.get(request)
         else {
             val response = handler.handle(request)
@@ -23,7 +24,7 @@ class CachedBodyHandler private constructor(handler: HTTPBodyHandler) : Abstract
     }
 
     companion object {
-        fun of(handler: HTTPBodyHandler): CachedBodyHandler {
+        fun of(handler: BodyHandler): CachedBodyHandler {
             return CachedBodyHandler(handler)
         }
     }

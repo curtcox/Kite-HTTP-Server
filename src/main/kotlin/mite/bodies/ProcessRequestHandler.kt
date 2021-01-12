@@ -1,6 +1,6 @@
 package mite.bodies
 
-import mite.core.*
+import mite.core.HTTP.*
 import java.io.*
 import java.util.*
 import java.util.stream.Stream
@@ -12,12 +12,12 @@ object ProcessRequestHandler {
 
     @JvmOverloads
     fun of(
-        f: (HTTPRequest) -> List<String> = { request -> command(request) }
-    ): HTTPBodyHandler {
+        f: (Request) -> List<String> = { request -> command(request) }
+    ): BodyHandler {
         return FunctionBodyHandler { httpRequest -> run(f.invoke(httpRequest)) }
     }
 
-    private fun command(request: HTTPRequest): List<String> {
+    private fun command(request: Request): List<String> {
         val filename = request.filename
         val strings = filename.substring(1).split("\\+").toTypedArray()
         return Arrays.asList(*strings)

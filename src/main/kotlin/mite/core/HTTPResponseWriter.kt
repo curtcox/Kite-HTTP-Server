@@ -1,11 +1,12 @@
 package mite.core
 
 import java.io.*
+import mite.core.HTTP.*
 
 object HTTPResponseWriter {
 
     @Throws(IOException::class)
-    fun write(version:HTTPVersion, response: HTTPResponse, headers: Array<HTTPHeader>,  out: OutputStream) {
+    fun write(version:Version, response: Response, headers: Array<Header>,  out: OutputStream) {
         val writer: Writer = OutputStreamWriter(out)
         writer.use {
             version.writeHeaders(headers,writer)

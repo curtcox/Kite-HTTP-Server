@@ -3,6 +3,7 @@ package mite.core
 import mite.bodies.AbstractBodyHandler
 import mite.util.HTML
 import java.util.concurrent.*
+import mite.core.HTTP.*
 
 /**
  * Object browser.
@@ -15,7 +16,7 @@ object Objects : AbstractBodyHandler("/object"), HTML {
         objects.add(o)
     }
 
-    override fun handle(request: HTTPRequest): HTTPResponse {
+    override fun handle(request: Request): Response {
         val id = hashCode(request)
         return if (id==null) {
             allObjects()
@@ -24,7 +25,7 @@ object Objects : AbstractBodyHandler("/object"), HTML {
         }
     }
 
-    private fun hashCode(request: HTTPRequest) : Int? {
+    private fun hashCode(request: Request) : Int? {
         val parts = request.filename.split("/")
         return if (parts.size == 3) parts[2].toInt() else null
     }
@@ -37,8 +38,8 @@ object Objects : AbstractBodyHandler("/object"), HTML {
         return null
     }
 
-    private fun allObjects() = HTTPResponse.OK(html(body(table())))
-    private fun singleObject(o:Any?) = HTTPResponse.OK(html(body(objectPage(o))))
+    private fun allObjects() = Response.OK(html(body(table())))
+    private fun singleObject(o:Any?) = Response.OK(html(body(objectPage(o))))
 
     private fun objectPage(o : Any?): String {
         if (o==null)

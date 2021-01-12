@@ -3,6 +3,7 @@ package mite.core
 import java.io.IOException
 import java.net.ServerSocket
 import java.util.concurrent.*
+import mite.core.HTTP.*
 
 /**
  * Opens a server socket and hands off any requests to another thread.
@@ -24,7 +25,7 @@ class MiteHTTPServer(private val server:ServerSocket, val handler: SocketRequest
     companion object {
         const val NAME = "KiteHTTPServer 0.1"
         @Throws(IOException::class)
-        fun startListeningOnPort(port: Int, handler: HTTPHandler) {
+        fun startListeningOnPort(port: Int, handler: Handler) {
             log("Accepting connections on port $port")
             val server = MiteHTTPServer(ServerSocketSupplier.port(port), SocketRequestHandler(handler))
             server.start()
