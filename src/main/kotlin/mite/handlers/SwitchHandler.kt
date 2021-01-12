@@ -1,6 +1,6 @@
 package mite.handlers
 
-import mite.core.HTTP.*
+import mite.http.HTTP.*
 
 /**
  * Uses either one handler or the other depending on an on/off switch.

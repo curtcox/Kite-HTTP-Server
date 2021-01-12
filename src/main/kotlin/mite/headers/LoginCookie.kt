@@ -1,6 +1,6 @@
 package mite.headers
 
-import mite.core.HTTP.*
+import mite.http.HTTP.*
 
 object LoginCookie {
 

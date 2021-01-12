@@ -1,6 +1,6 @@
 package mite.handlers
 
-import mite.core.HTTP.*
+import mite.http.HTTP.*
 
 /**
  * Translates GET requests into analogous POST request.

@@ -1,6 +1,7 @@
 package mite.bodies
 
 import mite.core.*
+import mite.http.HTTP
 
 /**
  * Skeletal implementation of HTTPRequestHandler.

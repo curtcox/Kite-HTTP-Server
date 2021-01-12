@@ -2,7 +2,7 @@ package mite.core
 
 import java.io.*
 import java.net.Socket
-import mite.core.HTTP.*
+import mite.http.HTTP.*
 
 /**
  * A bridge between sockets and HTTP handlers.

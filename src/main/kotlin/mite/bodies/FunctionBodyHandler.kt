@@ -1,6 +1,6 @@
 package mite.bodies
 
-import mite.core.HTTP.*
+import mite.http.HTTP.*
 
 /**
  * A handler that uses a function to produce its responses.

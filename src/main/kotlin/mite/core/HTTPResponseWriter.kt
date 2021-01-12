@@ -1,7 +1,7 @@
 package mite.core
 
 import java.io.*
-import mite.core.HTTP.*
+import mite.http.HTTP.*
 
 object HTTPResponseWriter {
 

@@ -3,7 +3,7 @@ package mite.core
 import mite.bodies.AbstractBodyHandler
 import mite.util.HTML
 import java.util.concurrent.*
-import mite.core.HTTP.*
+import mite.http.HTTP.*
 
 /**
  * Object browser.

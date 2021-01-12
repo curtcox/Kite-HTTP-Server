@@ -1,7 +1,6 @@
 package mite.bodies
 
-import mite.core.*
-import mite.core.HTTP.*
+import mite.http.HTTP.*
 
 /**
  * A handler that caches the results from another handler.

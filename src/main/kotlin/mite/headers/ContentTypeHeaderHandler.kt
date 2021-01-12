@@ -1,7 +1,7 @@
 package mite.headers
 
 import mite.core.*
-import mite.core.HTTP.*
+import mite.http.HTTP.*
 import java.util.*
 
 object ContentTypeHeaderHandler : HeaderHandler {

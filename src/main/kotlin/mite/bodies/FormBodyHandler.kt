@@ -1,6 +1,6 @@
 package mite.bodies
 
-import mite.core.HTTP.Request
+import mite.http.HTTP.Request
 import mite.util.HTML
 
 class FormBodyHandler : HTML {

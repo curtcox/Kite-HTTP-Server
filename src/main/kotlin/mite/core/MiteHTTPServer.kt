@@ -3,7 +3,7 @@ package mite.core
 import java.io.IOException
 import java.net.ServerSocket
 import java.util.concurrent.*
-import mite.core.HTTP.*
+import mite.http.HTTP.*
 
 /**
  * Opens a server socket and hands off any requests to another thread.

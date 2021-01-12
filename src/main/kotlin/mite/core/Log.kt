@@ -2,7 +2,7 @@ package mite.core
 
 import mite.bodies.AbstractBodyHandler
 import mite.util.HTML
-import mite.core.HTTP.*
+import mite.http.HTTP.*
 import java.time.Instant
 import java.util.concurrent.*
 

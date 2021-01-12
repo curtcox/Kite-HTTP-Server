@@ -1,4 +1,4 @@
-package mite.core
+package mite.http
 
 import java.io.*
 import java.lang.Exception
@@ -135,7 +135,8 @@ interface HTTP {
      * The response to a HTTP request.
      */
     data class Response private constructor(
-        val bytes: ByteArray, val contentType: ContentType, val status: StatusCode)
+        val bytes: ByteArray, val contentType: ContentType, val status: StatusCode
+    )
     {
         val page: String = String(bytes)
 

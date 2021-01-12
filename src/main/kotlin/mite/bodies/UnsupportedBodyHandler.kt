@@ -1,7 +1,6 @@
 package mite.bodies
 
-import mite.core.*
-import mite.core.HTTP.*
+import mite.http.HTTP.*
 import mite.util.HTML
 
 /**
