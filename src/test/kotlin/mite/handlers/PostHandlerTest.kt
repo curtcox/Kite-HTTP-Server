@@ -1,21 +1,22 @@
 package mite.handlers
 
+import mite.http.HTTP.*
 import mite.core.*
 import org.junit.Test
 import kotlin.test.*
 
 class PostHandlerTest {
 
-    val inner = object : HTTPHandler {
-        override fun handleHeaders(httpRequest: HTTPRequest, response: HTTPResponse): Array<HTTPHeader> {
+    val inner = object : Handler {
+        override fun handleHeaders(httpRequest: Request, response: Response): Array<Header> {
             TODO("Not yet implemented")
         }
 
-        override fun handles(request: HTTPRequest): Boolean {
+        override fun handles(request: Request): Boolean {
             TODO("Not yet implemented")
         }
 
-        override fun handle(request: HTTPRequest): HTTPResponse? {
+        override fun handle(request: Request): Response? {
             TODO("Not yet implemented")
         }
 
@@ -23,7 +24,7 @@ class PostHandlerTest {
 
     val postHandler = PostHandler(inner)
 
-    fun filename(filename:String) = HTTPRequest(arrayOf(""),"", filename,HTTPVersion.Unknown)
+    fun filename(filename:String) = Request(arrayOf(""),"", filename,Version.Unknown)
 
     @Test
     fun `Only handles POST requests`() {

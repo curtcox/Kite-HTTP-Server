@@ -1,6 +1,6 @@
 package mite.bodies
 
-import mite.core.*
+import mite.http.HTTP.*
 import org.junit.Test
 import kotlin.test.*
 
@@ -8,20 +8,20 @@ class CachedRequestHandlerTest {
 
     fun page() = object: AbstractBodyHandler() {
         var count = 0
-        override fun handle(request: HTTPRequest) = HTTPResponse.OK((++count).toString())
+        override fun handle(request: Request) = Response.OK((++count).toString())
     }
 
     fun empty() = object: AbstractBodyHandler() {
-        override fun handle(request: HTTPRequest) = null
+        override fun handle(request: Request) = null
     }
 
     fun boom() = object: AbstractBodyHandler() {
-        override fun handle(request: HTTPRequest): HTTPResponse? {
+        override fun handle(request: Request): Response? {
             throw IllegalAccessError()
         }
     }
 
-    fun request(string:String) = HTTPRequest.parse(arrayOf(string))
+    fun request(string:String) = Request.parse(arrayOf(string))
 
     @Test
     fun handles_is_true_when_cached_handler_returns_string() {
@@ -29,7 +29,7 @@ class CachedRequestHandlerTest {
         assertTrue(cached.handles(request("foo")))
     }
 
-    fun cached(handler: HTTPBodyHandler) = CachedBodyHandler.of(handler)
+    fun cached(handler: BodyHandler) = CachedBodyHandler.of(handler)
 
     @Test
     fun handle_returns_string_from_cached_handler() {

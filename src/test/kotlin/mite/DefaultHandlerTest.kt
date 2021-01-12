@@ -1,6 +1,6 @@
 package mite
 
-import mite.core.*
+import mite.http.HTTP.*
 import org.junit.Test
 import kotlin.test.*
 
@@ -10,14 +10,14 @@ class DefaultHandlerTest {
 
     @Test
     fun favicon_is_icon() {
-        val request = HTTPRequest(arrayOf(),"","/favicon.ico",HTTPVersion.Unknown)
+        val request = Request(arrayOf(),"","/favicon.ico",Version.Unknown)
         val response = handler.handle(request)!!
         assertEquals(ContentType.ICON,response.contentType)
     }
 
     @Test
     fun log_is_HTML() {
-        val request = HTTPRequest(arrayOf(),"","/log",HTTPVersion.Unknown)
+        val request = Request(arrayOf(),"","/log",Version.Unknown)
         val response = handler.handle(request)!!
         assertEquals(ContentType.HTML,response.contentType)
         val page = response.page
@@ -28,7 +28,7 @@ class DefaultHandlerTest {
 
     @Test
     fun pwd_is_text() {
-        val request = HTTPRequest(arrayOf(),"","/pwd",HTTPVersion.Unknown)
+        val request = Request(arrayOf(),"","/pwd",Version.Unknown)
         val response = handler.handle(request)!!
         assertEquals(ContentType.TEXT,response.contentType)
         val page = response.page

@@ -1,5 +1,6 @@
 package mite.core
 
+import mite.http.HTTP.*
 import org.junit.Test
 import kotlin.test.*
 import java.io.ByteArrayOutputStream
@@ -7,8 +8,8 @@ import java.io.ByteArrayOutputStream
 class HTTPResponseWriterTest {
 
     val writer = HTTPResponseWriter
-    val unknown = HTTPVersion.Unknown
-    val _1_1 = HTTPVersion._1_1
+    val unknown = Version.Unknown
+    val _1_1 = Version._1_1
     val smallText = "Stuff I expect to be in the response"
     val mediumText = generateMediumText()
 
@@ -20,7 +21,7 @@ class HTTPResponseWriterTest {
         return out.toString()
     }
 
-    val header = HTTPHeader("header key","header value")
+    val header = Header("header key","header value")
     val headers = arrayOf(header)
 
     fun assertReasonableSmallBody(out:String) {
@@ -53,7 +54,7 @@ class HTTPResponseWriterTest {
 
     @Test
     fun `write small text to output stream contains text when HTTP version unknown`() {
-        val response = HTTPResponse.OK(smallText)
+        val response = Response.OK(smallText)
         val bytes = ByteArrayOutputStream()
         writer.write(unknown,response,headers,bytes)
         val out = bytes.toString()
@@ -63,7 +64,7 @@ class HTTPResponseWriterTest {
 
     @Test
     fun `write medium text to output stream contains text when HTTP version unknown`() {
-        val response = HTTPResponse.OK(mediumText)
+        val response = Response.OK(mediumText)
         val bytes = ByteArrayOutputStream()
         writer.write(unknown,response,headers,bytes)
         val out = bytes.toString()
@@ -73,7 +74,7 @@ class HTTPResponseWriterTest {
 
     @Test
     fun `write text to output stream contains text when HTTP version known`() {
-        val response = HTTPResponse.OK(smallText)
+        val response = Response.OK(smallText)
         val bytes = ByteArrayOutputStream()
         writer.write(_1_1,response,headers,bytes)
         val out = bytes.toString()
@@ -84,7 +85,7 @@ class HTTPResponseWriterTest {
 
     @Test
     fun `write binary to output stream contains text when HTTP version unknown`() {
-        val response = HTTPResponse.bytes(smallText.toByteArray(Charsets.UTF_8),ContentType.ICON)
+        val response = Response.bytes(smallText.toByteArray(Charsets.UTF_8),ContentType.ICON)
         val bytes = ByteArrayOutputStream()
         writer.write(unknown,response,headers,bytes)
         val out = bytes.toString()
@@ -94,7 +95,7 @@ class HTTPResponseWriterTest {
 
     @Test
     fun `write binary to output stream contains text when HTTP version known`() {
-        val response = HTTPResponse.bytes(smallText.toByteArray(Charsets.UTF_8),ContentType.ICON)
+        val response = Response.bytes(smallText.toByteArray(Charsets.UTF_8),ContentType.ICON)
         val bytes = ByteArrayOutputStream()
         writer.write(_1_1,response,headers,bytes)
         val out = bytes.toString()

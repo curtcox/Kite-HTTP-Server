@@ -1,5 +1,6 @@
 package mite.core
 
+import mite.http.HTTP.*
 import org.junit.Test
 import kotlin.test.*
 
@@ -8,7 +9,7 @@ class HTTPRequestTest {
     @Test
     fun `HTTP version is set when parsing fails`() {
         val string = toString()
-        val request: HTTPRequest = parse(string)
+        val request: Request = parse(string)
         assertEquals("Unknown", request.httpVersion.version)
         assertFalse(request.httpVersion.mimeAware)
     }
@@ -16,7 +17,7 @@ class HTTPRequestTest {
     @Test
     fun `raw string is set when parsing fails`() {
         val string = toString()
-        val request: HTTPRequest = parse(string)
+        val request: Request = parse(string)
         assertSame(string, request.raw[0])
     }
 
@@ -112,8 +113,8 @@ value2
 //    --boundary--
 
     companion object {
-        fun parse(request: String): HTTPRequest {
-            return HTTPRequest.parse(arrayOf(request))
+        fun parse(request: String): Request {
+            return Request.parse(arrayOf(request))
         }
     }
 }

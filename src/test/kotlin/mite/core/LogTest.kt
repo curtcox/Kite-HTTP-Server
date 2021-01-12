@@ -1,11 +1,12 @@
 package mite.core
 
+import mite.http.HTTP.*
 import org.junit.Test
 import kotlin.test.*
 
 class LogTest {
 
-    fun request(filename:String) = HTTPRequest(arrayOf(""),"",filename,HTTPVersion.Unknown)
+    fun request(filename:String) = Request(arrayOf(""),"",filename,Version.Unknown)
 
     @Test
     fun handles_expected_requests() {
