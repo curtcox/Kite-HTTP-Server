@@ -16,6 +16,14 @@ interface HTTP {
      */
     interface Handler : HeaderHandler, BodyHandler
 
+    interface Filter {
+        /**
+         * Return true if this handler handles this request.
+         */
+        fun handles(request: Request): Boolean
+
+    }
+
     /**
      * This interface is used to define what an HTTP Server does.
      *

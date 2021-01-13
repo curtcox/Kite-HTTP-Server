@@ -1,22 +1,26 @@
 package mite.bodies
 
 import mite.core.*
-import mite.http.HTTP
+import mite.http.HTTP.*
 
 /**
- * Skeletal implementation of HTTPRequestHandler.
+ * Skeletal implementation of HTTP.RequestHandler.
  *
- * Implementors need to supply an implementation of handle that returns a String
+ * Implementors need to supply an implementation of handle that returns a Response
  * if the handler handles the request.
  */
-abstract class AbstractBodyHandler constructor(open val prefix:String = "") : HTTP.BodyHandler {
+abstract class AbstractBodyHandler(open val filter:Filter) : BodyHandler {
+
+    constructor(prefix:String = "") : this(object : Filter {
+        override fun handles(request: Request): Boolean = request.filename.startsWith(prefix)
+    })
 
     /**
      * Call handle, to see if we actually DO handle this request.
      */
-    final override fun handles(request: HTTP.Request): Boolean {
+    final override fun handles(request: Request): Boolean {
         return try {
-            request.filename.startsWith(prefix) && handle(request) != null
+            filter.handles(request) && handle(request) != null
         } catch (t: Throwable) {
             Log.debug(t)
             false

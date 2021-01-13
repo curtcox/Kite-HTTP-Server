@@ -6,7 +6,7 @@ import mite.http.HTTP.*
  * A handler that uses a function to produce its responses.
  */
 data class FunctionBodyHandler
-    constructor(override val prefix:String = "", val f: (Request) -> String) : AbstractBodyHandler(prefix)
+    constructor(val prefix:String = "", val f: (Request) -> String) : AbstractBodyHandler(prefix)
 {
 
     override fun handle(request: Request): Response {
