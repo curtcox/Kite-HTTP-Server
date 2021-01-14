@@ -34,15 +34,7 @@ interface HTTP {
      *
      * Implementors may want to use AbstractRequestHandler, so that they only need implement handle.
      */
-    interface BodyHandler {
-
-        /**
-         * Return true if this handler handles this request.
-         *
-         * This method is primarily an optimization, since there is often no reasonable way to
-         * determine beforehand if a method will throw an exception.
-         */
-        fun handles(request: Request): Boolean
+    interface BodyHandler : Filter {
 
         /**
          * Handle this request and produce a response.
@@ -117,22 +109,31 @@ interface HTTP {
      */
     data class Request constructor(
         val         raw: Array<String>, // The entire unparsed request string we were sent
-        val      method: String, // GET, POST, etc...
+        val      method: Method,
+        val        host: String, // the server this request is for
         val    filename: String, // http://server/filename
+        val contentType: ContentType,
         val httpVersion: Version
     ) {
+        enum class Method { GET, POST, UNKNOWN }
         companion object {
-            val GET = "GET"
-            val POST = "POST"
+            private fun host(raw: Array<String>) = raw
+                .filter { it.startsWith("Host:") }
+                .map { x -> x.split(" ")[1] }
+                .first()
             fun parse(raw: Array<String>): Request {
                 return try {
                     val first = raw[0]
                     val tokenizer = StringTokenizer(first)
-                    val method = tokenizer.nextToken()
+                    val method = when(tokenizer.nextToken()) {
+                        "GET"  -> Method.GET
+                        "POST" -> Method.POST
+                        else   -> Method.UNKNOWN
+                    }
                     val filename = tokenizer.nextToken()
-                    Request(raw, method, filename, Version.fromRequest(first))
+                    Request(raw, method, host(raw), filename, ContentType.FORM_URLENCODED, Version.fromRequest(first))
                 } catch (e: Exception) {
-                    Request(raw, "", "", Version.Unknown)
+                    Request(raw, Method.UNKNOWN, "", "", ContentType.FORM_URLENCODED, Version.Unknown)
                 }
             }
         }
@@ -169,6 +170,7 @@ interface HTTP {
         HTML("text/html",false),
         TEXT("text/plain",false),
         ICON("image/x-icon"),
+        FORM_URLENCODED("application/x-www-form-urlencoded",false),
         GIF("image/gif"),
         CLASS("application/octet-stream"),
         JPEG("image/jpeg");

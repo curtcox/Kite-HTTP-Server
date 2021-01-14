@@ -8,7 +8,8 @@ import kotlin.test.*
 class FaviconHandlerTest {
 
     val favicon = FaviconHandler
-    fun request(filename:String) = Request(arrayOf(""),"",filename, Version.Unknown)
+    fun request(filename:String) =
+        Request(arrayOf(""),Request.Method.UNKNOWN,"",filename, ContentType.FORM_URLENCODED,Version.Unknown)
 
     @Test
     fun `returns icon`() {

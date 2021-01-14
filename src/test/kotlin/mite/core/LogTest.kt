@@ -6,7 +6,8 @@ import kotlin.test.*
 
 class LogTest {
 
-    fun request(filename:String) = Request(arrayOf(""),"",filename,Version.Unknown)
+    fun request(filename:String) =
+        Request(arrayOf(""),Request.Method.UNKNOWN,"",filename,ContentType.FORM_URLENCODED,Version.Unknown)
 
     @Test
     fun handles_expected_requests() {

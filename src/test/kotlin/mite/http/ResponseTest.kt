@@ -1,10 +1,10 @@
-package mite.core
+package mite.http
 
 import mite.http.HTTP.*
 import org.junit.Test
 import kotlin.test.*
 
-class HTTPResponseTest {
+class ResponseTest {
 
     @Test
     fun `empty has expected values`() {

@@ -1,10 +1,10 @@
-package mite.core
+package mite.http
 
 import mite.http.HTTP.*
 import org.junit.Test
 import kotlin.test.*
 
-class HTTPRequestTest {
+class RequestTest {
 
     @Test
     fun `HTTP version is set when parsing fails`() {
@@ -23,12 +23,14 @@ class HTTPRequestTest {
 
     @Test
     fun `method is set from request`() {
-        assertEquals("GET", parse("GET /").method)
-        assertEquals("GET", parse("GET /whatever").method)
-        assertEquals("GET", parse("GET /foo HTTP/1.0").method)
-        assertEquals("GET", parse("GET / HTTP/1.1").method)
+        val GET = Request.Method.GET
+        val POST = Request.Method.POST
+        assertEquals(GET, parse("GET /").method)
+        assertEquals(GET, parse("GET /whatever").method)
+        assertEquals(GET, parse("GET /foo HTTP/1.0").method)
+        assertEquals(GET, parse("GET / HTTP/1.1").method)
 
-        assertEquals("POST", parse("POST /").method)
+        assertEquals(POST, parse("POST /").method)
     }
 
     @Test
@@ -41,7 +43,7 @@ class HTTPRequestTest {
 
     @Test
     fun `httpVersion is set from request`() {
-        assertEquals("Unknown", parse("GET /").httpVersion.toString())
+        assertEquals(Version.Unknown, parse("GET /").httpVersion)
         assertEquals("Unknown", parse("GET /whatever").httpVersion.toString())
         assertEquals("HTTP/1.0", parse("GET /foo HTTP/1.0").httpVersion.toString())
         assertEquals("HTTP/1.1", parse("GET / HTTP/1.1").httpVersion.toString())
@@ -60,8 +62,10 @@ field1=value1&field2=value2
 """.trimIndent())
 
         assertEquals("HTTP/1.1",request.httpVersion.toString())
+        assertEquals(Request.Method.POST,request.method)
+        assertEquals("foo.example",request.host)
+        assertEquals(ContentType.FORM_URLENCODED,request.contentType)
         assertEquals("/test?field1=value1&field2=value2",request.filename)
-        assertEquals("POST",request.method)
 
     }
 
@@ -89,28 +93,27 @@ value2
 
     }
 
-    //    POST /test HTTP/1.1
-//    Host: foo.example
-//    Content-Type: application/x-www-form-urlencoded
-//    Content-Length: 27
-//
-//    field1=value1&field2=value2
+    @Test
+    fun `typical GET`() {
+    val request = parse("""
+GET /log HTTP/1.1
+Host: localhost:8000
+Connection: keep-alive
+Cache-Control: max-age=0
+sec-ch-ua: "Google Chrome";v="87", " Not;A Brand";v="99", "Chromium";v="87"
+sec-ch-ua-mobile: ?0
+Upgrade-Insecure-Requests: 1
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.141 Safari/537.36
+Accept:
+""".trimIndent())
 
-//    A form using the multipart/form-data content type:
-//
-//    POST /test HTTP/1.1
-//    Host: foo.example
-//    Content-Type: multipart/form-data;boundary="boundary"
-//
-//    --boundary
-//    Content-Disposition: form-data; name="field1"
-//
-//    value1
-//    --boundary
-//    Content-Disposition: form-data; name="field2"; filename="example.txt"
-//
-//    value2
-//    --boundary--
+        assertEquals("HTTP/1.1",request.httpVersion.toString())
+        assertEquals("/log",request.filename)
+        assertEquals(Request.Method.POST,request.method)
+        assertEquals("localhost:8000",request.host)
+        assertEquals(ContentType.FORM_URLENCODED,request.contentType)
+
+    }
 
     companion object {
         fun parse(request: String): Request {
