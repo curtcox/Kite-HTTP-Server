@@ -22,7 +22,7 @@ abstract class AbstractBodyHandler(open val filter:Filter) : BodyHandler {
         return try {
             filter.handles(request) && handle(request) != null
         } catch (t: Throwable) {
-            Log.debug(t)
+            Log.debug(AbstractBodyHandler::class,t)
             false
         }
     }

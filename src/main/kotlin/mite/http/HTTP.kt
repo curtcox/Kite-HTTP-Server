@@ -1,5 +1,6 @@
 package mite.http
 
+import mite.ast.Node
 import java.io.*
 import java.lang.Exception
 import java.util.*
@@ -14,7 +15,41 @@ interface HTTP {
      * will either provide a header or a body. There are, however, occasionally
      * things like authorization that will need to do both.
      */
-    interface Handler : HeaderHandler, BodyHandler
+//    interface Handler : HeaderHandler, BodyHandler
+    interface Handler : HeaderHandler {
+
+        /**
+         * Handle this request and produce a response.
+         *
+         * Note that this method may well be called again from a different
+         * thread before it returns.  It is the responsibility of the implementer to
+         * ensure that that doesn't cause any problems.
+         */
+        @Throws(IOException::class)
+        fun handle(request: Request): Response
+    }
+
+    /**
+     * A header writer that is also a body handler.
+     *
+     * This could obviously be one interface with optional methods rather than
+     * three different interfaces. This way seems more natural, since most things
+     * will either provide a header or a body. There are, however, occasionally
+     * things like authorization that will need to do both.
+     */
+//    interface Handler : HeaderHandler, BodyHandler
+    interface InternalHandler : BodyHandler, HeaderHandler {
+
+//        /**
+//         * Handle this request and produce a response.
+//         *
+//         * Note that this method may well be called again from a different
+//         * thread before it returns.  It is the responsibility of the implementer to
+//         * ensure that that doesn't cause any problems.
+//         */
+//        @Throws(IOException::class)
+//        fun handle(request: Request): InternalResponse?
+    }
 
     interface Filter {
         /**
@@ -35,7 +70,6 @@ interface HTTP {
      * Implementors may want to use AbstractRequestHandler, so that they only need implement handle.
      */
     interface BodyHandler : Filter {
-
         /**
          * Handle this request and produce a response.
          *
@@ -44,7 +78,7 @@ interface HTTP {
          * ensure that that doesn't cause any problems.
          */
         @Throws(IOException::class)
-        fun handle(request: Request): Response?
+        fun handle(request: Request): InternalResponse?
     }
 
     data class Header(val key:String, val value:Any)
@@ -143,18 +177,35 @@ interface HTTP {
     /**
      * The response to a HTTP request.
      */
+    data class InternalResponse constructor(
+        val payload: Any, val contentType: ContentType, val status: StatusCode
+    ) {
+        companion object {
+            val noValidHandler = message("No valid handler",StatusCode.NOT_IMPLEMENTED)
+            fun message(message: String, status: StatusCode) = InternalResponse(message, ContentType.TEXT, status)
+            fun node(payload: Node) = InternalResponse(payload, ContentType.AST, StatusCode.OK)
+            fun OK(payload: Any,contentType: ContentType) = InternalResponse(payload, contentType, StatusCode.OK)
+        }
+    }
+
+    /**
+     * The response to a HTTP request.
+     */
     data class Response private constructor(
         val bytes: ByteArray, val contentType: ContentType, val status: StatusCode
     )
     {
+        interface Renderer {
+            fun render(internalResponse: InternalResponse) : Response
+        }
         val page: String = String(bytes)
 
         companion object {
             val empty = Response("".toByteArray(), ContentType.TEXT, StatusCode.OK)
-
-            fun of(page: String, contentType: ContentType, status: StatusCode) =
-                Response(page.toByteArray(), contentType, status)
-
+//
+//            fun of(page: String, contentType: ContentType, status: StatusCode) =
+//                Response(page.toByteArray(), contentType, status)
+//
             fun bytes(bytes: ByteArray,contentType: ContentType) = Response(bytes, contentType, StatusCode.OK)
 
             fun OK(page: String = "", contentType: ContentType = ContentType.HTML) = Response(page.toByteArray(), contentType,
@@ -170,6 +221,7 @@ interface HTTP {
         HTML("text/html",false),
         TEXT("text/plain",false),
         ICON("image/x-icon"),
+        AST("internal/object"),
         FORM_URLENCODED("application/x-www-form-urlencoded",false),
         GIF("image/gif"),
         CLASS("application/octet-stream"),

@@ -7,7 +7,7 @@ import kotlin.test.*
 
 class PostHandlerTest {
 
-    val inner = object : Handler {
+    val inner = object : InternalHandler {
         override fun handleHeaders(httpRequest: Request, response: Response): Array<Header> {
             TODO("Not yet implemented")
         }
@@ -16,7 +16,7 @@ class PostHandlerTest {
             TODO("Not yet implemented")
         }
 
-        override fun handle(request: Request): Response? {
+        override fun handle(request: Request): InternalResponse? {
             TODO("Not yet implemented")
         }
 

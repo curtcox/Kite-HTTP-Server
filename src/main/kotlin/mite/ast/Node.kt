@@ -7,8 +7,19 @@ data class Node(val kind:Any, val arity:Arity, val list: List<Node>?, val map:Ma
     }
 
     companion object {
+        fun node(kind:Any,value:Any) : Node {
+            return when (value) {
+                is Map<*, *> -> map(kind,  value as Map<Any, Any>)
+                is   List<*> -> list(kind, value as List<Any>)
+                else         -> leaf(kind,value)
+            }
+        }
+        fun leaf(value:String)              = Node(String::class,Arity.leaf,null,null,value)
         fun leaf(kind:Any,value:Any)        = Node(kind,Arity.leaf,null,null,value)
-        fun map(kind:Any,map:Map<Any,Node>) = Node(kind,Arity.map,null,map,null)
-        fun list(kind:Any,list:List<Node>)  = Node(kind,Arity.list,list,null,null)
+        fun map(kind:Any,map:Map<Any,Any>) =
+            Node(kind,Arity.map,null,map.mapValues { node(kind,it) },null)
+        fun mapOfKind(kind:Any,vararg pairs: Pair<Any,Any>) = map(kind,mapOf(*pairs))
+        fun list(kind:Any,list:List<Any>)  =
+            Node(kind,Arity.list,list.map { node(kind,it) },null,null)
     }
 }

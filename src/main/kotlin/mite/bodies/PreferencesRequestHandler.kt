@@ -1,5 +1,6 @@
 package mite.bodies
 
+import mite.ast.Node
 import mite.http.HTTP.*
 import mite.util.*
 
@@ -8,12 +9,8 @@ import mite.util.*
  */
 object PreferencesRequestHandler : HTML {
 
-    private fun htmlPrefs() = PersistentStorage.toString()
-        .replace("<", "&lt;")
-        .replace(">", "&gt;")
-
     fun of() = FunctionBodyHandler("/prefs") { request: Request ->
-        html(body(pre(htmlPrefs())))
+        Node.leaf(PersistentStorage,PersistentStorage)
     }
 
 }

@@ -32,11 +32,11 @@ class MiteHTTPServer(private val server:ServerSocket, val handler: SocketRequest
         }
 
         private fun log(t: Throwable) {
-            Log.log(t)
+            Log.log(MiteHTTPServer::class,t)
         }
 
         private fun log(message: String) {
-            Log.log(message)
+            Log.log(MiteHTTPServer::class,message)
         }
     }
 

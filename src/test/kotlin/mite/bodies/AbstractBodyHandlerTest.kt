@@ -10,8 +10,8 @@ class AbstractBodyHandlerTest {
         Request(arrayOf(),Request.Method.UNKNOWN,"",filename, ContentType.FORM_URLENCODED,Version.Unknown)
 
     val handler = object : AbstractBodyHandler("prefix") {
-        override fun handle(request: Request): Response {
-            return Response.OK(request.filename)
+        override fun handle(request: Request): InternalResponse {
+            return InternalResponse.message(request.filename,StatusCode.OK)
         }
     }
 
@@ -32,6 +32,6 @@ class AbstractBodyHandlerTest {
     fun response_is_HTML() {
         val response = handler.handle(request("prefix"))!!
         assertEquals(ContentType.HTML,response.contentType)
-        assertEquals("prefix",response.page)
+        assertEquals("prefix",response)
     }
 }

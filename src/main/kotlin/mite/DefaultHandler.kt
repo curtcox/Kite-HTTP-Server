@@ -9,7 +9,7 @@ import mite.headers.*
 /**
  * Configure and start the server.
  */
-object DefaultHandler : Handler {
+object DefaultHandler : InternalHandler {
 
     private val headers = ContentTypeHeaderHandler
 
@@ -28,7 +28,7 @@ object DefaultHandler : Handler {
         Log,
         Objects,
         ProcessRequestHandler.of(),
-        EchoRequestHandler.of(),
+        EchoRequestHandler.handler,
         UnsupportedBodyHandler
     )
 
@@ -39,6 +39,6 @@ object DefaultHandler : Handler {
 
     override fun handles(request: Request): Boolean = switchHandler.handles(request)
 
-    override fun handle(request: Request): Response? = switchHandler.handle(request)
+    override fun handle(request: Request): InternalResponse? = switchHandler.handle(request)
 
 }

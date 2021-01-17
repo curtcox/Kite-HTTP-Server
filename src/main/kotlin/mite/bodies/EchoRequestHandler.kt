@@ -8,14 +8,25 @@ import mite.http.HTTP.Request
  */
 object EchoRequestHandler {
 
-    fun of(g:(Node)->String) = FunctionBodyHandler("",object: (Request) -> Node {
+    val handler = FunctionBodyHandler("",object: (Request) -> Node {
         val kind = EchoRequestHandler::class
-        override fun invoke(request: Request) = Node.map(kind,mapOf(
-                "request"  to request,
-                "method"   to request.method,
-                "version"  to request.httpVersion,
-                "host"     to request.host,
-                "filename" to request.filename
-            ))
-    },g)
+        override fun invoke(request: Request) = Node.mapOfKind(kind,
+            "request"  to request,
+            "method"   to request.method,
+            "version"  to request.httpVersion,
+            "host"     to request.host,
+            "filename" to request.filename
+        )
+    })
+
+//    fun of() = FunctionBodyHandler("",object: (Request) -> Node {
+//        val kind = EchoRequestHandler::class
+//        override fun invoke(request: Request) = Node.mapOfKind(kind,
+//                "request"  to request,
+//                "method"   to request.method,
+//                "version"  to request.httpVersion,
+//                "host"     to request.host,
+//                "filename" to request.filename
+//            )
+//    })
 }

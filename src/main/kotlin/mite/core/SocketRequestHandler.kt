@@ -22,13 +22,13 @@ class SocketRequestHandler constructor(handler: Handler) {
     @Throws(IOException::class)
     private fun write(request: Array<String>, out: OutputStream) {
         val httpRequest = Request.parse(request)
-        val    response = handler.handle(httpRequest)!!
+        val    response = handler.handle(httpRequest)
         val     headers = handler.handleHeaders(httpRequest,response)
         writer.write(httpRequest.httpVersion,response,headers,out)
     }
 
-    fun handles(request: Array<String>): Boolean {
-        return handler.handles(Request.parse(request))
-    }
+//    fun handles(request: Array<String>): Boolean {
+//        return handler.handles(Request.parse(request))
+//    }
 
 }

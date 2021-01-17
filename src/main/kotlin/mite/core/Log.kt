@@ -1,5 +1,6 @@
 package mite.core
 
+import mite.ast.Node
 import mite.bodies.AbstractBodyHandler
 import mite.util.HTML
 import mite.http.HTTP.*
@@ -12,47 +13,47 @@ import java.util.concurrent.*
 object Log : AbstractBodyHandler("/log"), HTML {
 
     private val entries = ConcurrentLinkedQueue<Entry>()
-    data class Entry constructor(val time: Instant, val message:String, val stack:Throwable)
+    data class Entry constructor(val time: Instant, val logger:Any, val record:Any, val stack:Throwable)
 
     private fun record(entry:Entry) {
         entries.add(entry)
-        Objects.record(entry.message)
+        Objects.record(entry.record)
         Objects.record(entry.stack)
     }
 
-    fun log(t: Throwable) {
-        record(Entry(Instant.now(),t.message!!,t))
+    fun log(logger:Any, t: Throwable) {
+        record(Entry(Instant.now(),t.message!!,t,t))
         t.printStackTrace()
     }
 
-    fun debug(t: Throwable) {
-        record(Entry(Instant.now(),t.message!!,t))
+    fun debug(logger:Any, t: Throwable) {
+        record(Entry(Instant.now(),t.message!!,t,t))
         t.printStackTrace()
     }
 
-    fun log(message: String) {
-        record(Entry(Instant.now(),message, Throwable()))
-        println(message)
+    fun log(logger:Any, record: Any) {
+        record(Entry(Instant.now(),logger, record, Throwable()))
+        println(record)
     }
 
-    override fun handle(request: Request): Response {
-        return Response.OK(html(body(table())))
+    override fun handle(request: Request): InternalResponse {
+        return InternalResponse.node(Node.list(Log::class,entries.toList()))
     }
 
-    private fun table(): String {
-        return """
-            <TABLE>
-            <TR><TH>Time</TH><TH>Message</TH><TH>Stack</TH></TR>
-            ${rows()}
-            </TABLE>
-        """.trimIndent()
-    }
-
-    private fun rows(): String {
-        val rows = StringBuilder()
-        for (entry in entries) {
-            rows.append("<TR><TD>${entry.time}</TD><TD>${entry.message}</TD><TD>${entry.stack}</TD></TR>")
-        }
-        return rows.toString()
-    }
+//    private fun table(): String {
+//        return """
+//            <TABLE>
+//            <TR><TH>Time</TH><TH>Message</TH><TH>Stack</TH></TR>
+//            ${rows()}
+//            </TABLE>
+//        """.trimIndent()
+//    }
+//
+//    private fun rows(): String {
+//        val rows = StringBuilder()
+//        for (entry in entries) {
+//            rows.append("<TR><TD>${entry.time}</TD><TD>${entry.message}</TD><TD>${entry.stack}</TD></TR>")
+//        }
+//        return rows.toString()
+//    }
 }

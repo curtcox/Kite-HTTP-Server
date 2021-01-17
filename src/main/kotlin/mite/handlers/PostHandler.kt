@@ -7,7 +7,7 @@ import mite.http.HTTP.*
  * This allows posts to be passed around as URLs, but can obviously trash
  * GET semantic guarantees.
  */
-class PostHandler constructor(val handler: Handler) : Handler
+class PostHandler constructor(val handler: InternalHandler) : InternalHandler
 {
     private val POST = "/POST/"
 

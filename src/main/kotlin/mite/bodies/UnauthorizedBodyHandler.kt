@@ -10,15 +10,8 @@ import mite.util.HTML
  */
 object UnauthorizedBodyHandler : BodyHandler, HTML {
 
-    override fun handle(request: Request) = Response.of(UNAUTHORIZED_PAGE, ContentType.HTML, StatusCode.UNAUTHORIZED)
+    override fun handle(request: Request) = InternalResponse.message("Unauthorized", StatusCode.UNAUTHORIZED)
 
     override fun handles(request: Request) = true
 
-    private val UNAUTHORIZED_PAGE =
-        html(
-            """
-${head(title("Unauthorized"))}
-${body(h1("HTTP Error 401: Unauthorized"))}
-"""
-            )
 }

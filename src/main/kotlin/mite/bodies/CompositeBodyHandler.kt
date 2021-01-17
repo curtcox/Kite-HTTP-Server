@@ -12,13 +12,13 @@ class CompositeBodyHandler constructor(vararg handlers: BodyHandler) : BodyHandl
     private val handlers = handlers as Array<BodyHandler>
 
     @Throws(IOException::class)
-    override fun handle(request: Request): Response? {
+    override fun handle(request: Request): InternalResponse? {
         for (handler in handlers) {
             if (handler.handles(request)) {
                 return handler.handle(request)
             }
         }
-        return Response.empty
+        return InternalResponse.noValidHandler
     }
 
     override fun handles(request: Request): Boolean {

@@ -7,9 +7,9 @@ import mite.http.HTTP.*
  */
 class SwitchHandler
     constructor(
-        val trueHandler: Handler,
-        val falseHandler: Handler,
-        val test: (Request)->Boolean): Handler
+        val trueHandler: InternalHandler,
+        val falseHandler: InternalHandler,
+        val test: (Request)->Boolean): InternalHandler
 {
     override fun handleHeaders(request: Request, response: Response) =
         if (test(request)) trueHandler.handleHeaders(request,response)

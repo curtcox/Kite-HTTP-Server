@@ -30,20 +30,19 @@ internal class RequestProcessor(
         //System.out.println("Handling $connection with $handler")
         val request = reader.readRequest(input)
         log(request)
-        if (handler.handles(request)) {
-            handler.handle(request, connection, out)
-            return
-        }
-        throw UnsupportedOperationException(request.toString())
+        handler.handle(request, connection, out)
+//            return
+//        }
+//        throw UnsupportedOperationException(request.toString())
     }
 
     companion object {
         private fun log(t: Throwable) {
-            Log.log(t)
+            Log.log(RequestProcessor::class,t)
         }
 
         private fun log(message: Array<String>) {
-            Log.log("RequestProcessor : ${message.toList()}")
+            Log.log(RequestProcessor::class,message)
         }
     }
 

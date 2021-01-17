@@ -23,9 +23,10 @@ class LogTest {
     fun response_is_HTML() {
         val response = Log.handle(request("/log"))
         assertEquals(ContentType.HTML,response.contentType)
-        val page = response.page
-        assertTrue(page.startsWith("<HTML>"),page)
-        assertTrue(page.endsWith("</HTML>"),page)
+        val page = response
+        assertEquals(page,"foo")
+//        assertTrue(page.startsWith("<HTML>"),page)
+//        assertTrue(page.endsWith("</HTML>"),page)
     }
 
 }
