@@ -1,5 +1,6 @@
 package mite
 
+import mite.ast.Node
 import mite.http.HTTP.*
 import org.junit.Test
 import kotlin.test.*
@@ -19,26 +20,24 @@ class DefaultHandlerTest {
     }
 
     @Test
-    fun log_is_HTML() {
+    fun log_is_AST_list() {
         val request = forFilename("/log")
         val response = handler.handle(request)!!
-        assertEquals(ContentType.HTML,response.contentType)
-        val page = response
-        assertEquals(page,"foo")
-//        assertTrue(page.contains("<HTML>"),page)
-//        assertTrue(page.contains("<TABLE>"),page)
-//        assertTrue(page.contains("<TH>Time</TH>"),page)
+        assertEquals(ContentType.AST,response.contentType)
+        assertEquals(StatusCode.OK,response.status)
+        val node = response.payload as Node
+        assertEquals(Node.Arity.list,node.arity)
     }
 
     @Test
     fun pwd_is_text() {
         val request = forFilename("/pwd")
         val response = handler.handle(request)!!
-        assertEquals(ContentType.TEXT,response.contentType)
-        val page = response
-        assertEquals(page,"foo")
-//        assertTrue(page.contains("/Users"),page)
-//        assertTrue(page.contains("/Kite-HTTP-Server"),page)
+        assertEquals(ContentType.AST,response.contentType)
+        assertEquals(StatusCode.OK,response.status)
+        val page = response.payload.toString()
+        assertTrue(page.contains("/Users"),page)
+        assertTrue(page.contains("/Kite-HTTP-Server"),page)
     }
 
 }

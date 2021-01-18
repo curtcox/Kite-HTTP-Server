@@ -178,7 +178,10 @@ interface HTTP {
      * The response to a HTTP request.
      */
     data class InternalResponse constructor(
-        val payload: Any, val contentType: ContentType, val status: StatusCode
+        val payload: Any,
+        val contentType: ContentType,
+        val status: StatusCode,
+        val renderer : Response.Renderer = Response.TO_STRING
     ) {
         companion object {
             val noValidHandler = message("No valid handler",StatusCode.NOT_IMPLEMENTED)
@@ -201,15 +204,21 @@ interface HTTP {
         val page: String = String(bytes)
 
         companion object {
+            val TO_STRING = object : Response.Renderer {
+                override fun render(inner: InternalResponse) =
+                    Response(inner.toString().toByteArray(),ContentType.TEXT,inner.status)
+            }
+
             val empty = Response("".toByteArray(), ContentType.TEXT, StatusCode.OK)
 //
 //            fun of(page: String, contentType: ContentType, status: StatusCode) =
 //                Response(page.toByteArray(), contentType, status)
 //
-            fun bytes(bytes: ByteArray,contentType: ContentType) = Response(bytes, contentType, StatusCode.OK)
+            fun bytes(bytes: ByteArray,contentType: ContentType) =
+                Response(bytes, contentType, StatusCode.OK)
 
-            fun OK(page: String = "", contentType: ContentType = ContentType.HTML) = Response(page.toByteArray(), contentType,
-                StatusCode.OK)
+            fun OK(page: String = "", contentType: ContentType = ContentType.HTML) =
+                Response(page.toByteArray(), contentType, StatusCode.OK)
         }
     }
 
