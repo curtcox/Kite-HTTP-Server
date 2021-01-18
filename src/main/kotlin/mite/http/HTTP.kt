@@ -51,13 +51,6 @@ interface HTTP {
 //        fun handle(request: Request): InternalResponse?
     }
 
-    interface Filter {
-        /**
-         * Return true if this handler handles this request.
-         */
-        fun handles(request: Request): Boolean
-
-    }
 
     /**
      * This interface is used to define what an HTTP Server does.
@@ -69,7 +62,7 @@ interface HTTP {
      *
      * Implementors may want to use AbstractRequestHandler, so that they only need implement handle.
      */
-    interface BodyHandler : Filter {
+    interface BodyHandler : Request.Filter {
         /**
          * Handle this request and produce a response.
          *
@@ -149,6 +142,13 @@ interface HTTP {
         val contentType: ContentType,
         val httpVersion: Version
     ) {
+        interface Filter {
+            /**
+             * Return true if this handler handles this request.
+             */
+            fun handles(request: Request): Boolean
+
+        }
         enum class Method { GET, POST, UNKNOWN }
         companion object {
             private fun host(raw: Array<String>) = raw
@@ -183,6 +183,13 @@ interface HTTP {
         val status: StatusCode,
         val renderer : Response.Renderer = Response.TO_STRING
     ) {
+        interface Filter {
+            /**
+             * Return true if this renderer renders this response.
+             */
+            fun handles(request: Request,response:InternalResponse): Boolean
+
+        }
         companion object {
             val noValidHandler = message("No valid handler",StatusCode.NOT_IMPLEMENTED)
             fun message(message: String, status: StatusCode) = InternalResponse(message, ContentType.TEXT, status)
@@ -198,13 +205,14 @@ interface HTTP {
         val bytes: ByteArray, val contentType: ContentType, val status: StatusCode
     )
     {
-        interface Renderer {
+        interface Renderer : InternalResponse.Filter {
             fun render(internalResponse: InternalResponse) : Response
         }
         val page: String = String(bytes)
 
         companion object {
-            val TO_STRING = object : Response.Renderer {
+            val TO_STRING = object : Renderer {
+                override fun handles(request: Request, response: InternalResponse) = true
                 override fun render(inner: InternalResponse) =
                     Response(inner.toString().toByteArray(),ContentType.TEXT,inner.status)
             }

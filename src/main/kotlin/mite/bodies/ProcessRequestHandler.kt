@@ -5,6 +5,7 @@ import mite.http.HTTP.*
 import java.io.*
 import java.util.*
 import java.util.stream.Stream
+import kotlin.streams.toList
 
 /**
  * Handlers that execute processes and return the results.
@@ -15,7 +16,7 @@ object ProcessRequestHandler {
     fun of(
         f: (Request) -> List<String> = { request -> command(request) }
     ): BodyHandler {
-        return FunctionBodyHandler { httpRequest -> Node.leaf(run(f.invoke(httpRequest))) }
+        return FunctionBodyHandler { httpRequest -> Node.list(Process::class,run(f.invoke(httpRequest))) }
     }
 
     private fun command(request: Request): List<String> {
@@ -24,7 +25,7 @@ object ProcessRequestHandler {
         return Arrays.asList(*strings)
     }
 
-    private fun run(params: List<String>): String {
+    private fun run(params: List<String>): List<String> {
         return try {
             runCommandForOutput(params)
         } catch (e: InterruptedException) {
@@ -39,17 +40,13 @@ object ProcessRequestHandler {
     }
 
     @Throws(IOException::class, InterruptedException::class)
-    private fun runCommandForOutput(params: List<String>): String {
+    private fun runCommandForOutput(params: List<String>): List<String> {
         val builder = ProcessBuilder(params)
         val process = builder.start()
         val stringJoiner = StringJoiner(System.getProperty("line.separator"))
-        outputOf(process).iterator().forEachRemaining { newElement: String? ->
-            stringJoiner.add(
-                newElement
-            )
-        }
+        val out = outputOf(process).toList()
         process.waitFor()
         process.destroy()
-        return stringJoiner.toString()
+        return out
     }
 }

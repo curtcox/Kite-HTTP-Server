@@ -5,9 +5,9 @@ import mite.http.HTTP.*
 import org.junit.Test
 import kotlin.test.*
 
-class DefaultHandlerTest {
+class DefaultInternalHandlerTest {
 
-    val handler = DefaultHandler
+    val handler = DefaultInternalHandler
 
     fun forFilename(filename:String) =
         Request(arrayOf(),Request.Method.UNKNOWN,"",filename,ContentType.FORM_URLENCODED,Version.Unknown)
@@ -35,6 +35,8 @@ class DefaultHandlerTest {
         val response = handler.handle(request)!!
         assertEquals(ContentType.AST,response.contentType)
         assertEquals(StatusCode.OK,response.status)
+        val node = response.payload as Node
+        assertEquals(Node.Arity.list,node.arity)
         val page = response.payload.toString()
         assertTrue(page.contains("/Users"),page)
         assertTrue(page.contains("/Kite-HTTP-Server"),page)
