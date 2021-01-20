@@ -195,7 +195,7 @@ interface HTTP {
             fun OK(payload: Any,contentType: ContentType) = InternalResponse(payload, contentType, StatusCode.OK)
             fun message(message: String, status: StatusCode) = InternalResponse(message, ContentType.TEXT, status)
             fun node(payload: Node,render:Response.Renderer=Response.TO_STRING) =
-                InternalResponse(payload, ContentType.AST, StatusCode.OK,render)
+                InternalResponse(payload, ContentType.AST, StatusCode.OK, render)
         }
     }
 
