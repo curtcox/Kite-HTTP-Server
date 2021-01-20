@@ -2,7 +2,7 @@ package mite.core
 
 import mite.ast.Node
 import mite.bodies.AbstractBodyHandler
-import mite.util.HTML
+import mite.renderers.HTML
 import java.util.concurrent.*
 import mite.http.HTTP.*
 

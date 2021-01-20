@@ -1,15 +1,14 @@
 package mite
 
 import mite.http.HTTP.*
+import mite.renderers.*
 
-object DefaultResponseRenderer : Response.Renderer {
+object DefaultResponseRenderer : Response.UnconditionalRenderer() {
 
-    override fun handles(request: Request, response: InternalResponse): Boolean {
-        TODO("Not yet implemented")
-    }
+    val composite = CompositeResponseRenderer()
 
-    override fun render(internalResponse: InternalResponse): Response {
-        TODO("Not yet implemented")
+    override fun render(request: Request, response: InternalResponse): Response {
+        return ToStringRenderer.render(request,response)
     }
 
 }

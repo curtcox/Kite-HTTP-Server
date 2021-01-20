@@ -8,7 +8,7 @@ object DefaultHandler : Handler {
     val responseRenderer = DefaultResponseRenderer
 
     override fun handle(request: Request) =
-        responseRenderer.render(internalHandler.handle(request)!!)
+        responseRenderer.render(request,internalHandler.handle(request)!!)
 
     override fun handleHeaders(httpRequest: Request, response: Response) =
         internalHandler.handleHeaders(httpRequest,response)

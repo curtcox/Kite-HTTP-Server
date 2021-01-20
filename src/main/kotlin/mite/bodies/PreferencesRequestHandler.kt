@@ -2,6 +2,7 @@ package mite.bodies
 
 import mite.ast.Node
 import mite.http.HTTP.*
+import mite.renderers.HTML
 import mite.util.*
 
 /**

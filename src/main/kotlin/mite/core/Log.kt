@@ -2,7 +2,7 @@ package mite.core
 
 import mite.ast.Node
 import mite.bodies.AbstractBodyHandler
-import mite.util.HTML
+import mite.renderers.HTML
 import mite.http.HTTP.*
 import java.time.Instant
 import java.util.concurrent.*
@@ -37,7 +37,13 @@ object Log : AbstractBodyHandler("/log"), HTML {
     }
 
     override fun handle(request: Request): InternalResponse {
-        return InternalResponse.node(Node.list(Log::class,entries.toList()))
+        val render = object : Response.Renderer {
+            override fun handles(request: Request, response: InternalResponse) = true
+            override fun render(request: Request, internalResponse: InternalResponse): Response {
+                TODO("Not yet implemented")
+            }
+        }
+        return InternalResponse.node(Node.list(Log::class,entries.toList()),render)
     }
 
 //    private fun table(): String {

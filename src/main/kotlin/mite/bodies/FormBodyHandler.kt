@@ -2,7 +2,7 @@ package mite.bodies
 
 import mite.ast.Node
 import mite.http.HTTP.Request
-import mite.util.HTML
+import mite.renderers.HTML
 
 class FormBodyHandler : HTML {
     val handler = FunctionBodyHandler("",object: (Request) -> Node {

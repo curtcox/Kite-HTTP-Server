@@ -43,7 +43,6 @@ object ProcessRequestHandler {
     private fun runCommandForOutput(params: List<String>): List<String> {
         val builder = ProcessBuilder(params)
         val process = builder.start()
-        val stringJoiner = StringJoiner(System.getProperty("line.separator"))
         val out = outputOf(process).toList()
         process.waitFor()
         process.destroy()

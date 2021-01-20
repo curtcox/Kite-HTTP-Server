@@ -192,28 +192,30 @@ interface HTTP {
         }
         companion object {
             val noValidHandler = message("No valid handler",StatusCode.NOT_IMPLEMENTED)
-            fun message(message: String, status: StatusCode) = InternalResponse(message, ContentType.TEXT, status)
-            fun node(payload: Node) = InternalResponse(payload, ContentType.AST, StatusCode.OK)
             fun OK(payload: Any,contentType: ContentType) = InternalResponse(payload, contentType, StatusCode.OK)
+            fun message(message: String, status: StatusCode) = InternalResponse(message, ContentType.TEXT, status)
+            fun node(payload: Node,render:Response.Renderer=Response.TO_STRING) =
+                InternalResponse(payload, ContentType.AST, StatusCode.OK,render)
         }
     }
 
     /**
      * The response to a HTTP request.
      */
-    data class Response private constructor(
+    data class Response constructor(
         val bytes: ByteArray, val contentType: ContentType, val status: StatusCode
     )
     {
         interface Renderer : InternalResponse.Filter {
-            fun render(internalResponse: InternalResponse) : Response
+            fun render(request: Request, internalResponse: InternalResponse) : Response
         }
         val page: String = String(bytes)
-
+        abstract class UnconditionalRenderer : Renderer {
+            override fun handles(request: Request, response: InternalResponse) = true
+        }
         companion object {
-            val TO_STRING = object : Renderer {
-                override fun handles(request: Request, response: InternalResponse) = true
-                override fun render(inner: InternalResponse) =
+            val TO_STRING = object : UnconditionalRenderer() {
+                override fun render(request: Request,inner: InternalResponse) =
                     Response(inner.toString().toByteArray(),ContentType.TEXT,inner.status)
             }
 

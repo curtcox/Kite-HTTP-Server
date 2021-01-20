@@ -2,7 +2,7 @@ package mite.bodies
 
 import mite.headers.LoginCookie
 import mite.http.HTTP.*
-import mite.util.HTML
+import mite.renderers.HTML
 
 class LoginHandler : InternalHandler, HTML {
 

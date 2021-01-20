@@ -1,4 +1,4 @@
-package mite.util
+package mite.renderers
 
 interface HTML {
 

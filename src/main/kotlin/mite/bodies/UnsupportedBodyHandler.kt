@@ -1,7 +1,7 @@
 package mite.bodies
 
 import mite.http.HTTP.*
-import mite.util.HTML
+import mite.renderers.HTML
 
 /**
  * To report to the client that the request is unsupported.
