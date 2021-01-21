@@ -5,10 +5,16 @@ import mite.renderers.*
 
 object DefaultResponseRenderer : Response.UnconditionalRenderer() {
 
-    val composite = CompositeResponseRenderer()
+    val composite = CompositeResponseRenderer(BinaryRenderer)
 
     override fun render(request: Request, response: InternalResponse): Response {
-        return ToStringRenderer.render(request,response)
+        return if (composite.handles(request,response)) {
+            composite.render(request,response)
+        } else if (response.renderer!=null) {
+            response.renderer.render(request,response)
+        } else {
+            ToStringRenderer.render(request,response)
+        }
     }
 
 }

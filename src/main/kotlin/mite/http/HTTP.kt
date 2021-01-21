@@ -181,7 +181,7 @@ interface HTTP {
         val payload: Any,
         val contentType: ContentType,
         val status: StatusCode,
-        val renderer : Response.Renderer = Response.TO_STRING
+        val renderer : Response.Renderer? = null
     ) {
         interface Filter {
             /**
@@ -237,10 +237,10 @@ interface HTTP {
      */
     enum class ContentType(val streamName: String, val binary:Boolean = true) {
 
+        AST("internal/object",false),
         HTML("text/html",false),
         TEXT("text/plain",false),
         ICON("image/x-icon"),
-        AST("internal/object"),
         FORM_URLENCODED("application/x-www-form-urlencoded",false),
         GIF("image/gif"),
         CLASS("application/octet-stream"),
