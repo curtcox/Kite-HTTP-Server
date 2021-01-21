@@ -33,7 +33,7 @@ class HtmlRenderer() : Response.UnconditionalRenderer(), HTML {
     private fun rows(list:List<Node>): String {
         val rows = StringBuilder()
         for (item in list) {
-            val entry = item as Log.Entry
+            val entry = item.leaf as Log.Entry
             rows.append(
                 "<TR><TD>${entry.time}</TD><TD>${entry.logger}</TD><TD>${entry.record}</TD><TD>${entry.stack}</TD></TR>")
         }
