@@ -2,6 +2,11 @@ package mite.ast
 
 data class Node(val kind:Any, val arity:Arity, val list: List<Node>?, val map:Map<Any,Node>?,val leaf:Any?) {
 
+    interface Renderer {
+        fun header() : String
+        fun render(node:Node) : String
+    }
+
     enum class Arity {
         list, map, leaf
     }
