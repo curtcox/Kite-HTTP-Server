@@ -8,11 +8,11 @@ object ContentTypeHeaderHandler : HeaderHandler {
 
     override fun handleHeaders(httpRequest: Request, response: Response): Array<Header> {
         return arrayOf(
-            Header("HTTP 1.0",         response.status),
-            Header("Date:",            Date()),
+            Header("HTTP/1.0",         response.status),
             Header("Server:",          MiteHTTPServer.NAME),
-            Header("Content-length:",  response.bytes.size),
-            Header("Content-type:",    response.contentType.streamName),
+            Header("Content-Type:",    response.contentType.streamName),
+            Header("Date:",            Date()),
+            Header("Content-Length:",  response.bytes.size),
         )
     }
 

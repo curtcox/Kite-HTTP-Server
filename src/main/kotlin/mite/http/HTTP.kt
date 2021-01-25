@@ -238,7 +238,7 @@ interface HTTP {
     enum class ContentType(val streamName: String, val binary:Boolean = true) {
 
         AST("internal/object",false),
-        HTML("text/html",false),
+        HTML("text/html; charset=utf-8",false),
         TEXT("text/plain",false),
         ICON("image/x-icon"),
         FORM_URLENCODED("application/x-www-form-urlencoded",false),

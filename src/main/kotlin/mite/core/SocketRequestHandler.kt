@@ -27,8 +27,4 @@ class SocketRequestHandler constructor(handler: Handler) {
         writer.write(httpRequest.httpVersion,response,headers,out)
     }
 
-//    fun handles(request: Array<String>): Boolean {
-//        return handler.handles(Request.parse(request))
-//    }
-
 }
