@@ -2,21 +2,28 @@ package mite.core
 
 import mite.ast.Node
 import mite.bodies.AbstractBodyHandler
-import mite.renderers.HTML
 import java.util.concurrent.*
 import mite.http.HTTP.*
+import mite.renderers.HtmlRenderer
 
 /**
  * Object browser.
  */
-object Objects : AbstractBodyHandler("/object"), HTML {
+object Objects : AbstractBodyHandler("/object") {
 
-    private val objects = ConcurrentLinkedQueue<Any>()
+    private val objects = ConcurrentLinkedQueue<SingleObject>()
+    val renderer = HtmlRenderer(object: Node.Renderer {
+        override fun header() = "<TR><TH>Class</TH><TH>Id</TH><TH>String</TH></TR>"
+        override fun render(node: Node): String {
+            val entry = node.leaf as SingleObject
+            return "<TR><TD>${entry.javaClass}</TD><TD>${entry.hashCode()}</TD><TD>${entry}</TD></TR>"
+        }
+    })
 
     data class SingleObject(val o : Any?)
 
     fun record(o:Any) {
-        objects.add(o)
+        objects.add(SingleObject(o))
     }
 
     override fun handle(request: Request): InternalResponse {
@@ -44,27 +51,4 @@ object Objects : AbstractBodyHandler("/object"), HTML {
     private fun allObjects()         = InternalResponse.node(Node.list(Objects::class,objects.toList()))
     private fun singleObject(o:Any?) = InternalResponse.node(Node.leaf(Objects::class,SingleObject(o)))
 
-//    private fun objectNode(o : Any?): String {
-//        if (o==null)
-//            return "null"
-//        else
-//            return "${o.hashCode()} $o ${o.javaClass}"
-//    }
-//
-//    private fun table(): String {
-//        return """
-//            <TABLE>
-//            <TR><TH>Hash Code</TH><TH>String</TH><TH>Class</TH></TR>
-//            ${rows()}
-//            </TABLE>
-//        """.trimIndent()
-//    }
-//
-//    private fun rows(): String {
-//        val rows = StringBuilder()
-//        for (o in objects) {
-//            rows.append("<TR><TD>${o.hashCode()}</TD><TD>${o}</TD><TD>${o.javaClass}</TD></TR>")
-//        }
-//        return rows.toString()
-//    }
 }

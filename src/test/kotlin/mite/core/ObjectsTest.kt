@@ -1,41 +1,39 @@
 package mite.core
 
 import mite.ast.Node
-import mite.core.Log.Entry
 import mite.http.HTTP.*
 import org.junit.Test
-import java.time.Instant
 import kotlin.test.*
 
-class LogTest {
+class ObjectsTest {
 
-    val renderer = Log.renderer
+    val renderer = Objects.renderer
 
     fun request(filename:String) =
         Request(arrayOf(""),Request.Method.UNKNOWN,"",filename,ContentType.FORM_URLENCODED,Version.Unknown)
 
-    fun entries(entries:List<Entry>) = InternalResponse.node(Node.list(Log::class, entries))
+    fun entries(entries:List<Objects.SingleObject>) = InternalResponse.node(Node.list(Log::class, entries))
 
     @Test
     fun `handles expected requests`() {
-        assertTrue(Log.handles(request("/log")))
+        assertTrue(Objects.handles(request("/object")))
     }
 
     @Test
     fun `ignores other requests`() {
-        assertFalse(Log.handles(request("/schmog")))
+        assertFalse(Objects.handles(request("/schmog")))
     }
 
     @Test
     fun `response is HTML`() {
-        val response = Log.handle(request("/log"))
+        val response = Objects.handle(request("/object"))
         assertEquals(ContentType.AST,response.contentType)
         assertEquals(StatusCode.OK,response.status)
         assertTrue(response.payload is Node)
     }
 
     @Test
-    fun `no entries renders as HTML`() {
+    fun `no objects renders as HTML`() {
         val response = entries(listOf())
         val rendered = renderer.render(request("/"),response)
         assertEquals(ContentType.HTML,rendered.contentType)
@@ -45,23 +43,17 @@ class LogTest {
     }
 
     @Test
-    fun `one log entry renders as HTML table`() {
-        val time = Instant.now()
-        val logger = this
+    fun `one object entry renders as HTML table`() {
         val record = "stuff we want to record"
-        val at = Throwable()
-        val response = entries(listOf(Entry(time,logger,record, at)))
+        val response = entries(listOf(Objects.SingleObject(record)))
         val rendered = renderer.render(request("/"),response)
         assertEquals(ContentType.HTML,rendered.contentType)
         val page = rendered.page
-        assertTrue(page.startsWith("<HTML>"))
-        assertTrue(page.endsWith("</HTML>"))
-        assertTrue(page.contains("<TABLE>"))
-        assertTrue(page.contains("</TABLE>"))
-        assertTrue(page.contains(time.toString()))
-        assertTrue(page.contains(logger.toString()))
-        assertTrue(page.contains(record))
-        assertTrue(page.contains(at.toString()))
+        assertTrue(page.startsWith("<HTML>"),page)
+        assertTrue(page.endsWith("</HTML>"),page)
+        assertTrue(page.contains("<TABLE>"),page)
+        assertTrue(page.contains("</TABLE>"),page)
+        assertTrue(page.contains(record),page)
     }
 
 }
