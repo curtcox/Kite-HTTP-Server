@@ -3,7 +3,6 @@ package mite.headers
 import mite.core.MiteHTTPServer
 import mite.http.HTTP.*
 import org.junit.Test
-import java.util.*
 import kotlin.test.*
 
 /*

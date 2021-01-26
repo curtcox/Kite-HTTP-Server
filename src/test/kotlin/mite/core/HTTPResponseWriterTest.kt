@@ -32,6 +32,10 @@ class HTTPResponseWriterTest {
         assertContains(out, mediumText)
     }
 
+    fun assertNoHeaders(out:String) {
+        assertFalse(out.contains("header"))
+    }
+
     fun assertReasonableHeaders(out:String,body:String) {
         val key = header.key
         val value = header.value.toString()
@@ -91,6 +95,7 @@ class HTTPResponseWriterTest {
         val out = bytes.toString()
 
         assertReasonableSmallBody(out)
+        assertNoHeaders(out)
     }
 
     @Test
