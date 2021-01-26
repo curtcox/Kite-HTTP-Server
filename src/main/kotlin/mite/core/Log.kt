@@ -13,13 +13,13 @@ import java.util.concurrent.*
 object Log : AbstractBodyHandler("/log") {
 
     private val entries = ConcurrentLinkedQueue<Entry>()
-    data class Entry constructor(val time: Instant, val logger:Any, val record:Any, val stack:Throwable)
+    data class Entry constructor(val time: Instant, val logger:Any, val record:Any, val stack:Throwable) {
+        fun toHtml() = "<TR><TD>${time}</TD><TD>${logger}</TD><TD>${record}</TD><TD>${stack}</TD></TR>"
+    }
+
     val renderer = HtmlRenderer(object: Node.Renderer {
         override fun header() = "<TR><TH>Time</TH><TH>Log</TH><TH>Record</TH><TH>Stack</TH></TR>"
-        override fun render(node: Node): String {
-            val entry = node.leaf as Entry
-            return "<TR><TD>${entry.time}</TD><TD>${entry.logger}</TD><TD>${entry.record}</TD><TD>${entry.stack}</TD></TR>"
-        }
+        override fun render(node: Node) = (node.leaf as Entry).toHtml()
     })
 
     private fun record(entry:Entry) {

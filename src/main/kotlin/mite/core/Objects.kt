@@ -14,13 +14,14 @@ object Objects : AbstractBodyHandler("/object") {
     private val objects = ConcurrentLinkedQueue<SingleObject>()
     val renderer = HtmlRenderer(object: Node.Renderer {
         override fun header() = "<TR><TH>Class</TH><TH>Id</TH><TH>String</TH></TR>"
-        override fun render(node: Node): String {
-            val entry = node.leaf as SingleObject
-            return "<TR><TD>${entry.javaClass}</TD><TD>${entry.hashCode()}</TD><TD>${entry}</TD></TR>"
-        }
+        override fun render(node: Node) = (node.leaf as SingleObject).toHtml()
     })
 
-    data class SingleObject(val o : Any?)
+    data class SingleObject(val o : Any?) {
+        fun toHtml() =
+            if (o==null) "<TR><TD></TD><TD></TD><TD></TD></TR>"
+            else "<TR><TD>${o.javaClass.simpleName}</TD><TD>${o.hashCode()}</TD><TD>${o}</TD></TR>"
+    }
 
     fun record(o:Any) {
         objects.add(SingleObject(o))
@@ -43,12 +44,13 @@ object Objects : AbstractBodyHandler("/object") {
     private fun objectFrom(hash:Int) : Any? {
         for (o in objects) {
             if (o.hashCode()==hash)
-                return o
+                return o.o
         }
         return null
     }
 
-    private fun allObjects()         = InternalResponse.node(Node.list(Objects::class,objects.toList()))
-    private fun singleObject(o:Any?) = InternalResponse.node(Node.leaf(Objects::class,SingleObject(o)))
+    private fun allObjects()         = response(Node.list(Objects::class,objects.toList()))
+    private fun singleObject(o:Any?) = response(Node.leaf(Objects::class,SingleObject(o)))
+    private fun response(node:Node)  = InternalResponse.node(node, renderer)
 
 }

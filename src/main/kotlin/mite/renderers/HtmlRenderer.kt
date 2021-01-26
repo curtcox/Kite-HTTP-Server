@@ -14,10 +14,11 @@ class HtmlRenderer(val nodeRenderer:Node.Renderer) : Response.UnconditionalRende
     }
 
     private fun node(node: Node): String {
-        if (node.arity == Node.Arity.list) {
-            return table(node.list!!)
+        return when (node.arity) {
+            (Node.Arity.leaf) -> table(listOf(node))
+            (Node.Arity.list) -> table(node.list!!)
+            else -> TODO("Not yet implemented")
         }
-        TODO("Not yet implemented")
     }
 
     private fun table(list:List<Node>): String {
