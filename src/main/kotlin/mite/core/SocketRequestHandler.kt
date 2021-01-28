@@ -13,14 +13,14 @@ class SocketRequestHandler constructor(handler: Handler) {
     private val writer = HTTPResponseWriter
 
     @Throws(IOException::class)
-    fun handle(request: Array<String>, socket: Socket, out: OutputStream) {
+    fun handle(request: Request.Raw, socket: Socket, out: OutputStream) {
         socket.use {
             write(request,out)
         }
     }
 
     @Throws(IOException::class)
-    private fun write(request: Array<String>, out: OutputStream) {
+    private fun write(request: Request.Raw, out: OutputStream) {
         val httpRequest = Request.parse(request)
         val    response = handler.handle(httpRequest)
         val     headers = handler.handleHeaders(httpRequest,response)

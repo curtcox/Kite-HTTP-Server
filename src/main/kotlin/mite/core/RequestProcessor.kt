@@ -1,5 +1,6 @@
 package mite.core
 
+import mite.http.HTTP.*
 import java.io.*
 import java.net.Socket
 
@@ -41,7 +42,7 @@ internal class RequestProcessor(
             Log.log(RequestProcessor::class,t)
         }
 
-        private fun log(message: Array<String>) {
+        private fun log(message: Request.Raw) {
             Log.log(RequestProcessor::class,message)
         }
     }

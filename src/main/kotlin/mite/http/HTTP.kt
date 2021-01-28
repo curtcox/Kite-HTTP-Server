@@ -15,7 +15,6 @@ interface HTTP {
      * will either provide a header or a body. There are, however, occasionally
      * things like authorization that will need to do both.
      */
-//    interface Handler : HeaderHandler, BodyHandler
     interface Handler : HeaderHandler {
 
         /**
@@ -37,20 +36,7 @@ interface HTTP {
      * will either provide a header or a body. There are, however, occasionally
      * things like authorization that will need to do both.
      */
-//    interface Handler : HeaderHandler, BodyHandler
-    interface InternalHandler : BodyHandler, HeaderHandler {
-
-//        /**
-//         * Handle this request and produce a response.
-//         *
-//         * Note that this method may well be called again from a different
-//         * thread before it returns.  It is the responsibility of the implementer to
-//         * ensure that that doesn't cause any problems.
-//         */
-//        @Throws(IOException::class)
-//        fun handle(request: Request): InternalResponse?
-    }
-
+    interface InternalHandler : BodyHandler, HeaderHandler
 
     /**
      * This interface is used to define what an HTTP Server does.
@@ -134,14 +120,15 @@ interface HTTP {
      * The HTTP request sent to the server.
      * valid characters are ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~:/?#[]@!$&'()*+,;=
      */
-    data class Request constructor(
-        val         raw: Array<String>, // The entire unparsed request string we were sent
+    data class Request (
+        val         raw: Raw, // The entire unparsed request string we were sent
         val      method: Method,
         val        host: String, // the server this request is for
         val    filename: String, // http://server/filename
         val contentType: ContentType,
         val httpVersion: Version
     ) {
+        data class Raw (val lines:Array<String>)
         interface Filter {
             /**
              * Return true if this handler handles this request.
@@ -151,13 +138,13 @@ interface HTTP {
         }
         enum class Method { GET, POST, UNKNOWN }
         companion object {
-            private fun host(raw: Array<String>) = raw
+            private fun host(raw: Raw) = raw.lines
                 .filter { it.startsWith("Host:") }
                 .map { x -> x.split(" ")[1] }
                 .first()
-            fun parse(raw: Array<String>): Request {
+            fun parse(raw: Raw): Request {
                 return try {
-                    val first = raw[0]
+                    val first = raw.lines[0]
                     val tokenizer = StringTokenizer(first)
                     val method = when(tokenizer.nextToken()) {
                         "GET"  -> Method.GET
@@ -220,10 +207,7 @@ interface HTTP {
             }
 
             val empty = Response("".toByteArray(), ContentType.TEXT, StatusCode.OK)
-//
-//            fun of(page: String, contentType: ContentType, status: StatusCode) =
-//                Response(page.toByteArray(), contentType, status)
-//
+
             fun bytes(bytes: ByteArray,contentType: ContentType) =
                 Response(bytes, contentType, StatusCode.OK)
 
