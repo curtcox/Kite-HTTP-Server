@@ -92,7 +92,7 @@ class RequestReaderTest {
         val lines = raw.split("\n")
         val standard = raw.replace("\n","\r\n")
         val read = RequestReader.readRequest(ByteArrayInputStream(standard.toByteArray()))
-        assertEquals(lines, read.asList())
+        assertEquals(lines, read.lines.asList())
     }
 
 }

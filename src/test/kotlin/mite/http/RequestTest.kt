@@ -18,7 +18,7 @@ class RequestTest {
     fun `raw string is set when parsing fails`() {
         val string = toString()
         val request: Request = parse(string)
-        assertSame(string, request.raw[0])
+        assertSame(string, request.raw.lines[0])
     }
 
     @Test
@@ -117,7 +117,7 @@ Accept:
 
     companion object {
         fun parse(request: String): Request {
-            return Request.parse(arrayOf(request))
+            return Request.parse(Request.Raw(arrayOf(request)))
         }
     }
 }

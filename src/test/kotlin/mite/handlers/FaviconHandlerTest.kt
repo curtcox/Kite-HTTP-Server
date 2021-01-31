@@ -9,7 +9,7 @@ class FaviconHandlerTest {
 
     val favicon = FaviconHandler
     fun request(filename:String) =
-        Request(arrayOf(""),Request.Method.UNKNOWN,"",filename, ContentType.FORM_URLENCODED,Version.Unknown)
+        Request(Request.Raw(arrayOf("")),Request.Method.UNKNOWN,"",filename, ContentType.FORM_URLENCODED,Version.Unknown)
 
     @Test
     fun `returns icon`() {

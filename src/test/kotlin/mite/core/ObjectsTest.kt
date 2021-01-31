@@ -10,7 +10,7 @@ class ObjectsTest {
     val renderer = Objects.renderer
 
     fun request(filename:String) =
-        Request(arrayOf(""),Request.Method.UNKNOWN,"",filename,ContentType.FORM_URLENCODED,Version.Unknown)
+        Request(Request.Raw(arrayOf("")),Request.Method.UNKNOWN,"",filename,ContentType.FORM_URLENCODED,Version.Unknown)
 
     fun objects(entries:List<Objects.SingleObject>) = InternalResponse.node(Node.list(Log::class, entries))
 

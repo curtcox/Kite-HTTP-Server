@@ -25,7 +25,7 @@ class PostHandlerTest {
     val postHandler = PostHandler(inner)
 
     fun filename(filename:String) =
-        Request(arrayOf(""),Request.Method.UNKNOWN, "",filename,ContentType.FORM_URLENCODED,Version.Unknown)
+        Request(Request.Raw(arrayOf("")),Request.Method.UNKNOWN, "",filename,ContentType.FORM_URLENCODED,Version.Unknown)
 
     @Test
     fun `Only handles POST requests`() {

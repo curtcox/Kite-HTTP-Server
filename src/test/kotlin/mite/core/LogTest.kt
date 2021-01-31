@@ -12,7 +12,7 @@ class LogTest {
     val renderer = Log.renderer
 
     fun request(filename:String) =
-        Request(arrayOf(""),Request.Method.UNKNOWN,"",filename,ContentType.FORM_URLENCODED,Version.Unknown)
+        Request(Request.Raw(arrayOf("")),Request.Method.UNKNOWN,"",filename,ContentType.FORM_URLENCODED,Version.Unknown)
 
     fun entries(entries:List<Entry>) = InternalResponse.node(Node.list(Log::class, entries))
 

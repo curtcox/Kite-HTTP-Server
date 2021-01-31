@@ -15,7 +15,7 @@ class DefaultResponseRendererTest {
     val favicon     = InternalResponse.OK(File("favicon.ico").readBytes(),ContentType.ICON)
 
     fun forFilename(filename:String) =
-        Request(arrayOf(),Request.Method.UNKNOWN,"",filename,ContentType.FORM_URLENCODED,Version.Unknown)
+        Request(Request.Raw(arrayOf()),Request.Method.UNKNOWN,"",filename,ContentType.FORM_URLENCODED,Version.Unknown)
 
     @Test
     fun `handles everything`() {

@@ -8,7 +8,7 @@ import kotlin.test.*
 class HtmlRendererTest {
 
     val request = Request(
-        arrayOf(), Request.Method.UNKNOWN, "","",
+        Request.Raw(arrayOf()), Request.Method.UNKNOWN, "","",
         ContentType.FORM_URLENCODED, Version.Unknown
     )
 
@@ -17,10 +17,10 @@ class HtmlRendererTest {
 
     private data class Singleton(val value:String)
     private val singletonRenderer = object : Node.Renderer  {
-        override fun header() = "<TR><TH>Value</TH></TR>"
-        override fun render(node: Node): String {
+        override fun header() : Array<Any> = arrayOf("Value")
+        override fun render(node: Node) : Array<Any> {
             val entry = node.leaf as Singleton
-            return "<TR><TD>${entry.value}</TD></TR>"
+            return arrayOf(entry.value)
         }
     }
 

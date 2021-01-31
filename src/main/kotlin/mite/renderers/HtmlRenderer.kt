@@ -24,16 +24,25 @@ class HtmlRenderer(val nodeRenderer:Node.Renderer) : Response.UnconditionalRende
     private fun table(list:List<Node>): String {
         return """
             <TABLE>
-            ${nodeRenderer.header()}
+            ${row(nodeRenderer.header(),"TH")}
             ${rows(list)}
             </TABLE>
         """.trimIndent()
     }
 
+    private fun row(list:Array<Any>,type:String) : String {
+        val out = StringBuilder("<TR>")
+        for (e in list) {
+            out.append("<$type>$e</$type>")
+        }
+        out.append("</TR>")
+        return out.toString()
+    }
+
     private fun rows(list:List<Node>): String {
         val rows = StringBuilder()
         for (item in list) {
-            rows.append(nodeRenderer.render(item))
+            rows.append(row(nodeRenderer.render(item),"TD"))
         }
         return rows.toString()
     }

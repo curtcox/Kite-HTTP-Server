@@ -10,7 +10,7 @@ class DefaultInternalHandlerTest {
     val handler = DefaultInternalHandler
 
     fun forFilename(filename:String) =
-        Request(arrayOf(),Request.Method.UNKNOWN,"",filename,ContentType.FORM_URLENCODED,Version.Unknown)
+        Request(Request.Raw(arrayOf()),Request.Method.UNKNOWN,"",filename,ContentType.FORM_URLENCODED,Version.Unknown)
 
     @Test
     fun `favicon is icon`() {

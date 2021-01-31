@@ -38,7 +38,7 @@ class NodeTest {
         assertEquals(kind, node.kind)
         assertEquals(Node.Arity.map,node.arity)
         val map = node.map!!
-        assertEquals(4, map!!.get(2)!!.leaf)
+        assertEquals(4, map.get(2)!!.leaf)
     }
 
     @Test

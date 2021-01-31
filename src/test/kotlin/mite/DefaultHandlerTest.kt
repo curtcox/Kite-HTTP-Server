@@ -9,7 +9,7 @@ class DefaultHandlerTest {
     val handler = DefaultHandler
 
     fun forFilename(filename:String) =
-        Request(arrayOf(),Request.Method.UNKNOWN,"",filename,ContentType.FORM_URLENCODED,Version.Unknown)
+        Request(Request.Raw(arrayOf()),Request.Method.UNKNOWN,"",filename,ContentType.FORM_URLENCODED,Version.Unknown)
 
     @Test
     fun `no headers for unknown version`() {
@@ -37,7 +37,7 @@ class DefaultHandlerTest {
     @Test
     fun `pwd is text`() {
         val request = forFilename("/pwd")
-        val response = handler.handle(request)!!
+        val response = handler.handle(request)
         assertEquals(ContentType.TEXT,response.contentType)
         assertEquals(StatusCode.OK,response.status)
         val page = response.page

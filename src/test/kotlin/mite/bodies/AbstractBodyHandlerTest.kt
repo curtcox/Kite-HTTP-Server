@@ -7,7 +7,7 @@ import kotlin.test.*
 class AbstractBodyHandlerTest {
 
     fun request(filename:String) =
-        Request(arrayOf(),Request.Method.UNKNOWN,"",filename, ContentType.FORM_URLENCODED,Version.Unknown)
+        Request(Request.Raw(arrayOf()),Request.Method.UNKNOWN,"",filename, ContentType.FORM_URLENCODED,Version.Unknown)
 
     val handler = object : AbstractBodyHandler("prefix") {
         override fun handle(request: Request): InternalResponse {
