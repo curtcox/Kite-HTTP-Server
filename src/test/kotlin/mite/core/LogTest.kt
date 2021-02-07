@@ -47,7 +47,7 @@ class LogTest {
     @Test
     fun `one log entry renders as HTML table`() {
         val time = Instant.now()
-        val logger = this
+        val logger = Log::class
         val record = "stuff we want to record"
         val at = Throwable()
         val response = entries(listOf(Entry(time,logger,record, at)))

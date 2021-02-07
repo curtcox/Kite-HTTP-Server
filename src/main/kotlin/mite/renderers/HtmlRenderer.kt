@@ -30,7 +30,7 @@ class HtmlRenderer(val nodeRenderer:Node.Renderer) : Response.UnconditionalRende
         """.trimIndent()
     }
 
-    private fun row(list:Array<Any>,type:String) : String {
+    private fun row(list:List<String>,type:String) : String {
         val out = StringBuilder("<TR>")
         for (e in list) {
             out.append("<$type>$e</$type>")

@@ -17,10 +17,10 @@ class HtmlRendererTest {
 
     private data class Singleton(val value:String)
     private val singletonRenderer = object : Node.Renderer  {
-        override fun header() : Array<Any> = arrayOf("Value")
-        override fun render(node: Node) : Array<Any> {
+        override fun header() : List<String> = listOf("Value")
+        override fun render(node: Node) : List<String> {
             val entry = node.leaf as Singleton
-            return arrayOf(entry.value)
+            return listOf(entry.value)
         }
     }
 

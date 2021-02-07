@@ -13,14 +13,14 @@ object Objects : AbstractBodyHandler("/object") {
 
     private val objects = ConcurrentLinkedQueue<SingleObject>()
     val renderer = HtmlRenderer(object: Node.Renderer {
-        override fun header() : Array<Any> = arrayOf("Class","Id","String")
+        override fun header() : List<String> = listOf("Class","Id","String")
         override fun render(node: Node) = (node.leaf as SingleObject).toHtml()
     })
 
     data class SingleObject(val o : Any?) {
-        fun toHtml(): Array<Any> =
-            if (o==null) arrayOf("","","")
-            else arrayOf(o.javaClass.simpleName,o.hashCode(),o)
+        fun toHtml(): List<String> =
+            if (o==null) listOf("","","")
+            else listOf(o.javaClass.simpleName,o.hashCode().toString(),o.toString())
     }
 
     fun record(o:Any) {

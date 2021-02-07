@@ -1,11 +1,12 @@
 package mite.core
 
-import mite.ast.Node
+import mite.ast.*
 import mite.bodies.AbstractBodyHandler
 import mite.http.HTTP.*
 import mite.renderers.HtmlRenderer
 import java.time.Instant
 import java.util.concurrent.*
+import kotlin.reflect.KClass
 
 /**
  * Shared logging abstraction.
@@ -13,14 +14,15 @@ import java.util.concurrent.*
 object Log : AbstractBodyHandler("/log") {
 
     private val entries = ConcurrentLinkedQueue<Entry>()
-    data class Entry constructor(val time: Instant, val logger:Any, val record:Any, val stack:Throwable) {
-        fun toHtml() = arrayOf(time,logger,record,stack)
+    data class Entry constructor(val time: Instant, val logger:KClass<*>, val record:Any, val stack:Throwable) {
+    //    fun toHtml() = listOf(time.toString(),logger.simpleName.toString(),record.toString(),stack.toString())
     }
 
-    val renderer = HtmlRenderer(object: Node.Renderer {
-        override fun header() : Array<Any> = arrayOf("Time","Log","Record","Stack")
-        override fun render(node: Node) = (node.leaf as Entry).toHtml()
-    })
+    val renderer = HtmlRenderer(ReflectionRenderer(Entry::class))
+//    val renderer = HtmlRenderer(object: Node.Renderer {
+//        override fun header() : List<String> = listOf("Time","Log","Record","Stack")
+//        override fun render(node: Node) = (node.leaf as Entry).toHtml()
+//    })
 
     private fun record(entry:Entry) {
         entries.add(entry)
@@ -28,17 +30,17 @@ object Log : AbstractBodyHandler("/log") {
         Objects.record(entry.stack)
     }
 
-    fun log(logger:Any, t: Throwable) {
+    fun log(logger:KClass<*>, t: Throwable) {
         record(Entry(Instant.now(),logger,t.message!!,t))
         t.printStackTrace()
     }
 
-    fun debug(logger:Any, t: Throwable) {
+    fun debug(logger: KClass<*>, t: Throwable) {
         record(Entry(Instant.now(),logger,t.message!!,t))
         t.printStackTrace()
     }
 
-    fun log(logger:Any, record: Any) {
+    fun log(logger:KClass<*>, record: Any) {
         record(Entry(Instant.now(),logger, record, Throwable()))
         println(record)
     }

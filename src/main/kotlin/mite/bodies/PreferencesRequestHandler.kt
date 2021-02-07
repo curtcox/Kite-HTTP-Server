@@ -11,7 +11,7 @@ import mite.util.*
 object PreferencesRequestHandler : HTML {
 
     fun of() = FunctionBodyHandler("/prefs") { request: Request ->
-        Node.leaf(PersistentStorage,PersistentStorage)
+        Node.leaf(PersistentStorage::class,PersistentStorage)
     }
 
 }

@@ -5,7 +5,7 @@ import kotlin.test.*
 
 class NodeTest {
 
-    val kind = "foo"
+    val kind = Node::class
     val value = "bar"
 
     @Test
