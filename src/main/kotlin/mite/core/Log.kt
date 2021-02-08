@@ -1,7 +1,6 @@
 package mite.core
 
 import mite.ast.*
-import mite.bodies.AbstractBodyHandler
 import mite.http.HTTP.*
 import mite.renderers.HtmlRenderer
 import java.time.Instant
@@ -11,18 +10,10 @@ import kotlin.reflect.KClass
 /**
  * Shared logging abstraction.
  */
-object Log : AbstractBodyHandler("/log") {
+object Log : AbstractAstNodeHandler("/log",HtmlRenderer(ReflectionRenderer(Entry::class))) {
 
     private val entries = ConcurrentLinkedQueue<Entry>()
-    data class Entry constructor(val time: Instant, val logger:KClass<*>, val record:Any, val stack:Throwable) {
-    //    fun toHtml() = listOf(time.toString(),logger.simpleName.toString(),record.toString(),stack.toString())
-    }
-
-    val renderer = HtmlRenderer(ReflectionRenderer(Entry::class))
-//    val renderer = HtmlRenderer(object: Node.Renderer {
-//        override fun header() : List<String> = listOf("Time","Log","Record","Stack")
-//        override fun render(node: Node) = (node.leaf as Entry).toHtml()
-//    })
+    data class Entry constructor(val time: Instant, val logger:KClass<*>, val record:Any, val stack:Throwable)
 
     private fun record(entry:Entry) {
         entries.add(entry)
@@ -45,8 +36,6 @@ object Log : AbstractBodyHandler("/log") {
         println(record)
     }
 
-    override fun handle(request: Request): InternalResponse {
-        return InternalResponse.node(Node.list(Log::class,entries.toList()), renderer)
-    }
+    override fun node(request: Request) = Node.list(Log::class,entries.toList())
 
 }
