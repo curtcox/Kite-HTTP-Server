@@ -43,5 +43,17 @@ class AbstractAstNodeHandlerTest {
         assertEquals(1, list.size)
         assertEquals(entry, list[0].leaf)
     }
-    
+
+    @Test
+    fun `root is map of entries`() {
+        val handler = object : AbstractAstNodeHandler("/root",Log.Entry::class) {
+            override fun node(request: HTTP.Request): Node = Node.map(kind,mapOf("entry" to entry))
+        }
+        val root = handler.node(request("/root"))
+
+        val map = root.map!!
+        assertEquals(1, map.size)
+        assertEquals(entry, map["entry"]!!.leaf)
+    }
+
 }
