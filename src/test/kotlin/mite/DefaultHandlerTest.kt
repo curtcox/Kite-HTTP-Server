@@ -8,8 +8,7 @@ class DefaultHandlerTest {
 
     val handler = DefaultHandler
 
-    fun forFilename(filename:String) =
-        Request(Request.Raw(arrayOf()),Request.Method.UNKNOWN,"",filename,ContentType.FORM_URLENCODED,Version.Unknown)
+    fun forFilename(filename:String) = TestObjects.requestForFilename(filename)
 
     @Test
     fun `no headers for unknown version`() {

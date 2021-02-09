@@ -1,5 +1,6 @@
 package mite.renderers
 
+import mite.TestObjects
 import mite.ast.Node
 import mite.http.HTTP.*
 import org.junit.Test
@@ -7,10 +8,7 @@ import kotlin.test.*
 
 class HtmlRendererTest {
 
-    val request = Request(
-        Request.Raw(arrayOf()), Request.Method.UNKNOWN, "","",
-        ContentType.FORM_URLENCODED, Version.Unknown
-    )
+    val request = TestObjects.request
 
     private fun singletons(list:List<Singleton>) = InternalResponse.node(Node.list(Singleton::class, list))
     private fun leaf(one:Singleton) = InternalResponse.node(Node.leaf(Singleton::class, one))

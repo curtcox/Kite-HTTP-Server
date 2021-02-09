@@ -1,5 +1,6 @@
 package mite.handlers
 
+import mite.TestObjects
 import mite.http.HTTP.*
 import mite.core.*
 import org.junit.Test
@@ -8,8 +9,7 @@ import kotlin.test.*
 class FaviconHandlerTest {
 
     val favicon = FaviconHandler
-    fun request(filename:String) =
-        Request(Request.Raw(arrayOf("")),Request.Method.UNKNOWN,"",filename, ContentType.FORM_URLENCODED,Version.Unknown)
+    fun request(filename:String) = TestObjects.requestForFilename(filename)
 
     @Test
     fun `returns icon`() {

@@ -10,7 +10,7 @@ import kotlin.reflect.KClass
 /**
  * Shared logging abstraction.
  */
-object Log : AbstractAstNodeHandler("/log",HtmlRenderer(ReflectionRenderer(Entry::class))) {
+object Log : AbstractAstNodeHandler("/log",Entry::class) {
 
     private val entries = ConcurrentLinkedQueue<Entry>()
     data class Entry constructor(val time: Instant, val logger:KClass<*>, val record:Any, val stack:Throwable)

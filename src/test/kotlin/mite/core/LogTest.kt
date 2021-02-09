@@ -1,5 +1,6 @@
 package mite.core
 
+import mite.TestObjects
 import mite.ast.Node
 import mite.core.Log.Entry
 import mite.http.HTTP.*
@@ -11,8 +12,7 @@ class LogTest {
 
     val renderer = Log.renderer
 
-    fun request(filename:String) =
-        Request(Request.Raw(arrayOf("")),Request.Method.UNKNOWN,"",filename,ContentType.FORM_URLENCODED,Version.Unknown)
+    fun request(filename:String) = TestObjects.requestForFilename(filename)
 
     fun entries(entries:List<Entry>) = InternalResponse.node(Node.list(Log::class, entries))
 

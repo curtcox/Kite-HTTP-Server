@@ -1,5 +1,6 @@
 package mite.core
 
+import mite.TestObjects
 import mite.ast.Node
 import mite.http.HTTP.*
 import org.junit.Test
@@ -9,8 +10,7 @@ class ObjectsTest {
 
     val renderer = Objects.renderer
 
-    fun request(filename:String) =
-        Request(Request.Raw(arrayOf("")),Request.Method.UNKNOWN,"",filename,ContentType.FORM_URLENCODED,Version.Unknown)
+    fun request(filename:String) = TestObjects.requestForFilename(filename)
 
     fun objects(entries:List<Objects.SingleObject>) = InternalResponse.node(Node.list(Log::class, entries))
 

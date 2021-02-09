@@ -14,8 +14,7 @@ class DefaultResponseRendererTest {
     val BAD_message = InternalResponse.message("BAD",StatusCode.UNAUTHORIZED)
     val favicon     = InternalResponse.OK(File("favicon.ico").readBytes(),ContentType.ICON)
 
-    fun forFilename(filename:String) =
-        Request(Request.Raw(arrayOf()),Request.Method.UNKNOWN,"",filename,ContentType.FORM_URLENCODED,Version.Unknown)
+    fun forFilename(filename:String) = TestObjects.requestForFilename(filename)
 
     @Test
     fun `handles everything`() {

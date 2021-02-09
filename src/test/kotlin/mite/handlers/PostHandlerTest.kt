@@ -1,5 +1,6 @@
 package mite.handlers
 
+import mite.TestObjects
 import mite.http.HTTP.*
 import mite.core.*
 import org.junit.Test
@@ -24,8 +25,7 @@ class PostHandlerTest {
 
     val postHandler = PostHandler(inner)
 
-    fun filename(filename:String) =
-        Request(Request.Raw(arrayOf("")),Request.Method.UNKNOWN, "",filename,ContentType.FORM_URLENCODED,Version.Unknown)
+    fun filename(filename:String) = TestObjects.requestForFilename(filename)
 
     @Test
     fun `Only handles POST requests`() {

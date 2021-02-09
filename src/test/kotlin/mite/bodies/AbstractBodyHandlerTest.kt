@@ -1,13 +1,13 @@
 package mite.bodies
 
+import mite.TestObjects
 import mite.http.HTTP.*
 import org.junit.Test
 import kotlin.test.*
 
 class AbstractBodyHandlerTest {
 
-    fun request(filename:String) =
-        Request(Request.Raw(arrayOf()),Request.Method.UNKNOWN,"",filename, ContentType.FORM_URLENCODED,Version.Unknown)
+    fun request(filename:String) = TestObjects.requestForFilename(filename)
 
     val handler = object : AbstractBodyHandler("prefix") {
         override fun handle(request: Request): InternalResponse {

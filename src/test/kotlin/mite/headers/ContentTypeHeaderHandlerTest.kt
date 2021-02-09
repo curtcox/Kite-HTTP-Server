@@ -1,5 +1,6 @@
 package mite.headers
 
+import mite.TestObjects
 import mite.core.MiteHTTPServer
 import mite.http.HTTP.*
 import org.junit.Test
@@ -16,8 +17,7 @@ class ContentTypeHeaderHandlerTest {
     val request = request("/")
     val response = Response.empty
 
-    fun request(filename:String) =
-        Request(Request.Raw(arrayOf("")),Request.Method.UNKNOWN,"",filename, ContentType.FORM_URLENCODED,Version.Unknown)
+    fun request(filename:String) = TestObjects.requestForFilename(filename)
 
     @Test
     fun `contains expected headers`() {
