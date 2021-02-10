@@ -36,6 +36,6 @@ object Log : AbstractAstNodeHandler("/log",Entry::class) {
         println(record)
     }
 
-    override fun node(request: Request) = Node.list(Log::class,entries.toList())
+    override fun root() = Node.list(Log::class,entries.toList())
 
 }
