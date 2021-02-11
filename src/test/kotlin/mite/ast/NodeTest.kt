@@ -9,16 +9,17 @@ class NodeTest {
     val value = "bar"
 
     @Test
-    fun leaf() {
+    fun `leaf`() {
         val node = Node.leaf(kind,value)
 
         assertEquals(kind, node.kind)
         assertEquals(Node.Arity.leaf,node.arity)
         assertEquals(value,node.leaf)
+        assertEquals(value,node.value)
     }
 
     @Test
-    fun list() {
+    fun `list`() {
         val node = Node.list(kind,listOf(3,5,7,9))
 
         assertEquals(kind, node.kind)
@@ -26,10 +27,11 @@ class NodeTest {
         val list = node.list!!
         assertEquals(4, list.size)
         assertEquals(3, list.get(0).leaf)
+        assertEquals(list,node.value)
     }
 
     @Test
-    fun map() {
+    fun `map`() {
         val node = Node.map(kind,mapOf(
             2 to 4,
             3 to 6
@@ -39,10 +41,11 @@ class NodeTest {
         assertEquals(Node.Arity.map,node.arity)
         val map = node.map!!
         assertEquals(4, map.get(2)!!.leaf)
+        assertEquals(map,node.value)
     }
 
     @Test
-    fun mapOfKind() {
+    fun `map of kind`() {
         val node = Node.mapOfKind(kind,
             3 to 9,
             4 to 16
@@ -53,6 +56,7 @@ class NodeTest {
         val map = node.map!!
         assertEquals(9, map.get(3)!!.leaf)
         assertEquals(16, map.get(4)!!.leaf)
+        assertEquals(map,node.value)
     }
 
 }

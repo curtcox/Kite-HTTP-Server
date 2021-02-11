@@ -12,6 +12,12 @@ import kotlin.reflect.KClass
  */
 data class Node(val kind: KClass<*>, val arity:Arity, val list: List<Node>?, val map:Map<Any,Node>?, val leaf:Any?) {
 
+    val value : Any =
+         if (list!=null) list
+    else if (map!=null) map
+    else if (leaf!=null) leaf
+    else ""
+
     interface Renderer {
         fun header() : List<String>
         fun render(node:Node) : List<String>
@@ -37,4 +43,5 @@ data class Node(val kind: KClass<*>, val arity:Arity, val list: List<Node>?, val
         fun list(kind:KClass<*>,list:List<Any>)  =
             Node(kind,Arity.list,list.map { node(kind,it) },null,null)
     }
+
 }
