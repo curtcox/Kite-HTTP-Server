@@ -59,4 +59,28 @@ class NodeTest {
         assertEquals(map,node.value)
     }
 
+    @Test
+    fun `map entries when root is list of maps`() {
+        val node = Node.list(kind,
+            listOf(
+                Node.map(kind, mapOf(
+                    "first" to 1,
+                    "second" to 2
+                )),
+                Node.map(kind, mapOf(
+                    "1" to "gun",
+                    "2" to "shoe"
+                ))
+            ))
+
+        val list = node.list!!
+        assertEquals(2,list.size)
+        val map1 = list[0].map!!
+        assertEquals(2,map1.size)
+        assertEquals(1,      map1["first"])
+        assertEquals(2,      map1["second"])
+        assertEquals("gun",  node.list!![1].map!!["1"])
+        assertEquals("Shoe", node.list!![1].map!!["2"])
+    }
+
 }

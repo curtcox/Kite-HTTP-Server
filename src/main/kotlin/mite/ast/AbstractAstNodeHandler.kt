@@ -33,14 +33,21 @@ abstract class AbstractAstNodeHandler(prefix: String, val renderer:Response.Rend
         if (steps.isEmpty()) {
             return node
         }
-        val part = steps[0]
-        if (isIndexStep(node,part)) {
-            return nodeAtIndex(node,part)
+        val next = nodeStep(node,steps[0])
+        if (steps.size==1) {
+            return next
         }
-        if (isKeyStep(node,part)) {
-            return nodeAtKey(node,part)
+        return node(next,steps.subList(1,steps.size))
+    }
+
+    private fun nodeStep(node:Node, step: String): Node {
+        if (isIndexStep(node,step)) {
+            return nodeAtIndex(node,step)
         }
-        throw IllegalArgumentException("$part not in $node")
+        if (isKeyStep(node,step)) {
+            return nodeAtKey(node,step)
+        }
+        throw IllegalArgumentException("$step not in $node")
     }
 
     private fun isIndexStep(node: Node, part: String) = node.arity == Node.Arity.list && part.toIntOrNull() != null

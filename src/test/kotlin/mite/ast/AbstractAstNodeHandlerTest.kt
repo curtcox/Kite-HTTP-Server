@@ -22,6 +22,7 @@ class AbstractAstNodeHandlerTest {
 
     class TestHandler(val root:Node) : AbstractAstNodeHandler("/root",Log.Entry::class) {
         override fun root() = root
+        fun payload(filename:String) = (handle(TestObjects.requestForFilename(filename)).payload as Node).value!!
     }
 
     @Test
@@ -48,9 +49,9 @@ class AbstractAstNodeHandlerTest {
     @Test
     fun `root when root is list of entries`() {
         val handler = TestHandler(Node.list(kind,listOf(entry)))
-        val root = handler.handle(request("/root")).payload as Node
+        val root = handler.payload("/root") as List<Node>
 
-        val list = root.list!!
+        val list = root
         assertEquals(1, list.size)
         assertEquals(entry, list[0].leaf)
     }
@@ -68,10 +69,32 @@ class AbstractAstNodeHandlerTest {
     fun `fields of item when root is list of entries`() {
         val handler = TestHandler(Node.list(kind,listOf(entry)))
 
-        assertEquals(time,   (handler.handle(request("/root@0@time")).payload as Node).leaf!!)
-        assertEquals(logger, (handler.handle(request("/root@0@logger")).payload as Node).leaf!!)
-        assertEquals(record, (handler.handle(request("/root@0@record")).payload as Node).leaf!!)
-        assertEquals(stack,  (handler.handle(request("/root@0@stack")).payload as Node).leaf!!)
+        assertEquals(entry,   (handler.payload("/root") as List<Node>)[0].leaf)
+        assertEquals(entry,   handler.payload("/root@0"))
+        assertEquals(time,    handler.payload("/root@0@time"))
+        assertEquals(logger,  handler.payload("/root@0@logger"))
+        assertEquals(record,  handler.payload("/root@0@record"))
+        assertEquals(stack,   handler.payload("/root@0@stack"))
+    }
+
+    @Test
+    fun `map entries when root is list of maps`() {
+        val handler = TestHandler(Node.list(kind,
+            listOf(
+                Node.map(kind,mapOf(
+                    "first"  to 1,
+                    "second" to 2
+                )),
+                Node.map(kind,mapOf(
+                    "1" to "gun",
+                    "2" to "shoe"
+                ))
+            )))
+
+        assertEquals(1,      handler.payload("/root@0@first"))
+        assertEquals(2,      handler.payload("/root@0@second"))
+        assertEquals("gun",  handler.payload("/root@1@gun"))
+        assertEquals("Shoe", handler.payload("/root@2@shoe"))
     }
 
     @Test
