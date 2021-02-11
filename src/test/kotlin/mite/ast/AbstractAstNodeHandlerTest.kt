@@ -5,7 +5,6 @@ import mite.core.Log
 import mite.http.HTTP
 import org.junit.Test
 import java.time.Instant
-import kotlin.reflect.KClass
 import kotlin.test.*
 
 class AbstractAstNodeHandlerTest {
@@ -21,12 +20,13 @@ class AbstractAstNodeHandlerTest {
 
     fun request(filename:String) = TestObjects.requestForFilename(filename)
 
+    class TestHandler(val root:Node) : AbstractAstNodeHandler("/root",Log.Entry::class) {
+        override fun root() = root
+    }
 
     @Test
     fun `root is log entry`() {
-        val handler = object : AbstractAstNodeHandler("/root",Log.Entry::class) {
-            override fun root() = Node.leaf(kind,entry)
-        }
+        val handler = TestHandler(Node.leaf(kind,entry))
         val root = handler.handle(request("/root"))
 
         assertEquals(HTTP.ContentType.AST, root.contentType)
@@ -35,25 +35,19 @@ class AbstractAstNodeHandlerTest {
 
     @Test
     fun `list does not handle invalid index`() {
-        val handler = object : AbstractAstNodeHandler("/root",Log.Entry::class) {
-            override fun root(): Node = Node.list(kind,listOf(entry))
-        }
+        val handler = TestHandler(Node.list(kind,listOf(entry)))
         assertFalse(handler.handles(request("/root@1")))
     }
 
     @Test
     fun `list handles valid index`() {
-        val handler = object : AbstractAstNodeHandler("/root",Log.Entry::class) {
-            override fun root(): Node = Node.list(kind,listOf(entry))
-        }
+        val handler = TestHandler(Node.list(kind,listOf(entry)))
         assertTrue(handler.handles(request("/root@0")))
     }
 
     @Test
     fun `root when root is list of entries`() {
-        val handler = object : AbstractAstNodeHandler("/root",Log.Entry::class) {
-            override fun root(): Node = Node.list(kind,listOf(entry))
-        }
+        val handler = TestHandler(Node.list(kind,listOf(entry)))
         val root = handler.handle(request("/root")).payload as Node
 
         val list = root.list!!
@@ -63,9 +57,7 @@ class AbstractAstNodeHandlerTest {
 
     @Test
     fun `item when root is list of entries`() {
-        val handler = object : AbstractAstNodeHandler("/root",Log.Entry::class) {
-            override fun root(): Node = Node.list(kind,listOf(entry))
-        }
+        val handler = TestHandler(Node.list(kind,listOf(entry)))
         val node = handler.handle(request("/root@0")).payload as Node
 
         val leaf = node.leaf!!
@@ -74,9 +66,7 @@ class AbstractAstNodeHandlerTest {
 
     @Test
     fun `root when root is is map of entries`() {
-        val handler = object : AbstractAstNodeHandler("/root",Log.Entry::class) {
-            override fun root(): Node = Node.map(kind,mapOf("entry" to entry))
-        }
+        val handler = TestHandler(Node.map(kind,mapOf("entry" to entry)))
         val root = handler.handle(request("/root")).payload as Node
 
         val map = root.map!!
@@ -86,9 +76,7 @@ class AbstractAstNodeHandlerTest {
 
     @Test
     fun `value when root is is map of entries`() {
-        val handler = object : AbstractAstNodeHandler("/root",Log.Entry::class) {
-            override fun root(): Node = Node.map(kind,mapOf("entry" to entry))
-        }
+        val handler = TestHandler(Node.map(kind,mapOf("entry" to entry)))
         val node = handler.handle(request("/root@entry")).payload as Node
 
         val leaf = node.leaf
