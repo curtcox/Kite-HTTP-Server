@@ -65,6 +65,16 @@ class AbstractAstNodeHandlerTest {
     }
 
     @Test
+    fun `fields of item when root is list of entries`() {
+        val handler = TestHandler(Node.list(kind,listOf(entry)))
+
+        assertEquals(time,   (handler.handle(request("/root@0@time")).payload as Node).leaf!!)
+        assertEquals(logger, (handler.handle(request("/root@0@logger")).payload as Node).leaf!!)
+        assertEquals(record, (handler.handle(request("/root@0@record")).payload as Node).leaf!!)
+        assertEquals(stack,  (handler.handle(request("/root@0@stack")).payload as Node).leaf!!)
+    }
+
+    @Test
     fun `root when root is is map of entries`() {
         val handler = TestHandler(Node.map(kind,mapOf("entry" to entry)))
         val root = handler.handle(request("/root")).payload as Node
