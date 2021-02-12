@@ -1,7 +1,7 @@
 package mite.core
 
 import mite.TestObjects
-import mite.ast.Node
+import mite.ast.*
 import mite.http.HTTP.*
 import org.junit.Test
 import kotlin.test.*
@@ -12,7 +12,7 @@ class ObjectsTest {
 
     fun request(filename:String) = TestObjects.requestForFilename(filename)
 
-    fun objects(entries:List<Objects.SingleObject>) = InternalResponse.node(Node.list(Log::class, entries))
+    fun objects(entries:List<Objects.SingleObject>) = InternalResponse.node(SimpleNode.list(Log::class, entries))
 
     @Test
     fun `handles expected requests`() {

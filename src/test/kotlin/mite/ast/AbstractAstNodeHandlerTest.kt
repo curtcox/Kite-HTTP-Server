@@ -27,28 +27,28 @@ class AbstractAstNodeHandlerTest {
 
     @Test
     fun `root is log entry`() {
-        val handler = TestHandler(Node.leaf(kind,entry))
+        val handler = TestHandler(SimpleNode.leaf(kind,entry))
         val root = handler.handle(request("/root"))
 
         assertEquals(HTTP.ContentType.AST, root.contentType)
-        assertEquals(Node.leaf(kind,entry), root.payload)
+        assertEquals(SimpleNode.leaf(kind,entry), root.payload)
     }
 
     @Test
     fun `list does not handle invalid index`() {
-        val handler = TestHandler(Node.list(kind,listOf(entry)))
+        val handler = TestHandler(SimpleNode.list(kind,listOf(entry)))
         assertFalse(handler.handles(request("/root@1")))
     }
 
     @Test
     fun `list handles valid index`() {
-        val handler = TestHandler(Node.list(kind,listOf(entry)))
+        val handler = TestHandler(SimpleNode.list(kind,listOf(entry)))
         assertTrue(handler.handles(request("/root@0")))
     }
 
     @Test
     fun `root when root is list of entries`() {
-        val handler = TestHandler(Node.list(kind,listOf(entry)))
+        val handler = TestHandler(SimpleNode.list(kind,listOf(entry)))
         val root = handler.payload("/root") as List<Node>
 
         val list = root
@@ -58,7 +58,7 @@ class AbstractAstNodeHandlerTest {
 
     @Test
     fun `item when root is list of entries`() {
-        val handler = TestHandler(Node.list(kind,listOf(entry)))
+        val handler = TestHandler(SimpleNode.list(kind,listOf(entry)))
         val node = handler.handle(request("/root@0")).payload as Node
 
         val leaf = node.leaf!!
@@ -67,7 +67,7 @@ class AbstractAstNodeHandlerTest {
 
     @Test
     fun `fields of item when root is list of entries`() {
-        val handler = TestHandler(Node.list(kind,listOf(entry)))
+        val handler = TestHandler(SimpleNode.list(kind,listOf(entry)))
 
         assertEquals(entry,   (handler.payload("/root") as List<Node>)[0].leaf)
         assertEquals(entry,   handler.payload("/root@0"))
@@ -79,13 +79,13 @@ class AbstractAstNodeHandlerTest {
 
     @Test
     fun `map entries when root is list of maps`() {
-        val handler = TestHandler(Node.list(kind,
+        val handler = TestHandler(SimpleNode.list(kind,
             listOf(
-                Node.map(kind,mapOf(
+                SimpleNode.map(kind,mapOf(
                     "first"  to 1,
                     "second" to 2
                 )),
-                Node.map(kind,mapOf(
+                SimpleNode.map(kind,mapOf(
                     "1" to "gun",
                     "2" to "shoe"
                 ))
@@ -99,7 +99,7 @@ class AbstractAstNodeHandlerTest {
 
     @Test
     fun `root when root is is map of entries`() {
-        val handler = TestHandler(Node.map(kind,mapOf("entry" to entry)))
+        val handler = TestHandler(SimpleNode.map(kind,mapOf("entry" to entry)))
         val root = handler.handle(request("/root")).payload as Node
 
         val map = root.map!!
@@ -109,7 +109,7 @@ class AbstractAstNodeHandlerTest {
 
     @Test
     fun `value when root is is map of entries`() {
-        val handler = TestHandler(Node.map(kind,mapOf("entry" to entry)))
+        val handler = TestHandler(SimpleNode.map(kind,mapOf("entry" to entry)))
         val node = handler.handle(request("/root@entry")).payload as Node
 
         val leaf = node.leaf

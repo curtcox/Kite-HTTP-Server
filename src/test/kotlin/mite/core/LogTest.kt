@@ -1,7 +1,7 @@
 package mite.core
 
 import mite.TestObjects
-import mite.ast.Node
+import mite.ast.*
 import mite.core.Log.Entry
 import mite.http.HTTP.*
 import org.junit.Test
@@ -14,7 +14,7 @@ class LogTest {
 
     fun request(filename:String) = TestObjects.requestForFilename(filename)
 
-    fun entries(entries:List<Entry>) = InternalResponse.node(Node.list(Log::class, entries))
+    fun entries(entries:List<Entry>) = InternalResponse.node(SimpleNode.list(Log::class, entries))
 
     @Test
     fun `handles expected requests`() {

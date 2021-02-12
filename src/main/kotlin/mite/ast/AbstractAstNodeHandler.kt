@@ -1,5 +1,6 @@
 package mite.ast
 
+import mite.ast.Node.*
 import mite.bodies.AbstractBodyHandler
 import mite.http.HTTP.*
 import mite.renderers.HtmlRenderer
@@ -50,10 +51,10 @@ abstract class AbstractAstNodeHandler(prefix: String, val renderer:Response.Rend
         throw IllegalArgumentException("$step not in $node")
     }
 
-    private fun isIndexStep(node: Node, part: String) = node.arity == Node.Arity.list && part.toIntOrNull() != null
+    private fun isIndexStep(node: Node, part: String) = node.arity == Arity.list && part.toIntOrNull() != null
     private fun nodeAtIndex(node: Node, part: String) = node.list[part.toInt()]
 
-    private fun isKeyStep(node: Node, part: String) = node.arity == Node.Arity.map && part != null
+    private fun isKeyStep(node: Node, part: String) = node.arity == Arity.map && part != null
     private fun nodeAtKey(node: Node, part: String) =
         if (node.map[part]==null) throw IllegalArgumentException("Missing $part")
         else node.map[part]!!

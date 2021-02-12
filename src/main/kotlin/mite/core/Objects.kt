@@ -25,6 +25,6 @@ object Objects : AbstractAstNodeHandler("/object",HtmlRenderer(object: Node.Rend
         objects.add(SingleObject(o))
     }
 
-    override fun root() = Node.list(Objects::class,objects.toList())
+    override fun root() = SimpleNode.list(Objects::class,objects.toList())
 
 }

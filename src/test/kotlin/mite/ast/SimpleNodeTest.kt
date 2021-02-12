@@ -3,14 +3,14 @@ package mite.ast
 import org.junit.Test
 import kotlin.test.*
 
-class NodeTest {
+class SimpleNodeTest {
 
     val kind = Node::class
     val value = "bar"
 
     @Test
     fun `leaf`() {
-        val node = Node.leaf(kind,value)
+        val node = SimpleNode.leaf(kind,value)
 
         assertEquals(kind, node.kind)
         assertEquals(Node.Arity.leaf,node.arity)
@@ -20,7 +20,7 @@ class NodeTest {
 
     @Test
     fun `list`() {
-        val node = Node.list(kind,listOf(3,5,7,9))
+        val node = SimpleNode.list(kind,listOf(3,5,7,9))
 
         assertEquals(kind, node.kind)
         assertEquals(Node.Arity.list,node.arity)
@@ -32,7 +32,7 @@ class NodeTest {
 
     @Test
     fun `map`() {
-        val node = Node.map(kind,mapOf(
+        val node = SimpleNode.map(kind,mapOf(
             2 to 4,
             3 to 6
         ))
@@ -47,7 +47,7 @@ class NodeTest {
 
     @Test
     fun `map of kind`() {
-        val node = Node.mapOfKind(kind,
+        val node = SimpleNode.mapOfKind(kind,
             3 to 9,
             4 to 16
         )
@@ -62,13 +62,13 @@ class NodeTest {
 
     @Test
     fun `map entries when root is list of maps`() {
-        val node = Node.list(kind,
+        val node = SimpleNode.list(kind,
             listOf(
-                Node.map(kind, mapOf(
+                SimpleNode.map(kind, mapOf(
                     "first" to 1,
                     "second" to 2
                 )),
-                Node.map(kind, mapOf(
+                SimpleNode.map(kind, mapOf(
                     "1" to "gun",
                     "2" to "shoe"
                 ))
@@ -86,10 +86,10 @@ class NodeTest {
 
     @Test
     fun `map entries when root is map of lists`() {
-        val node = Node.map(kind,
+        val node = SimpleNode.map(kind,
             mapOf(
-                "1st" to Node.list(kind, listOf("alpha","beta")),
-                "2nd" to Node.list(kind, listOf("compact","disc"))
+                "1st" to SimpleNode.list(kind, listOf("alpha","beta")),
+                "2nd" to SimpleNode.list(kind, listOf("compact","disc"))
             ))
 
         val map = node.map

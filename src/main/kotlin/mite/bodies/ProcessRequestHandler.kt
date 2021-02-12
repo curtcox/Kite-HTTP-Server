@@ -1,6 +1,6 @@
 package mite.bodies
 
-import mite.ast.Node
+import mite.ast.*
 import mite.http.HTTP.*
 import java.io.*
 import java.util.*
@@ -16,7 +16,7 @@ object ProcessRequestHandler {
     fun of(
         f: (Request) -> List<String> = { request -> command(request) }
     ): BodyHandler {
-        return FunctionBodyHandler { httpRequest -> Node.list(Process::class,run(f.invoke(httpRequest))) }
+        return FunctionBodyHandler { httpRequest -> SimpleNode.list(Process::class,run(f.invoke(httpRequest))) }
     }
 
     private fun command(request: Request): List<String> {

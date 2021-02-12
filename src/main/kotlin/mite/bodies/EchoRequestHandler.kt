@@ -1,6 +1,6 @@
 package mite.bodies
 
-import mite.ast.Node
+import mite.ast.*
 import mite.http.HTTP.Request
 
 /**
@@ -10,7 +10,7 @@ object EchoRequestHandler {
 
     val handler = FunctionBodyHandler("",object: (Request) -> Node {
         val kind = EchoRequestHandler::class
-        override fun invoke(request: Request) = Node.mapOfKind(kind,
+        override fun invoke(request: Request) = SimpleNode.mapOfKind(kind,
             "request"  to request,
             "method"   to request.method,
             "version"  to request.httpVersion,

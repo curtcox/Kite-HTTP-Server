@@ -40,7 +40,7 @@ class ReflectionRendererTest {
     fun `infield values should match field values`() {
         val infield = Infield("Buckner","Sandberg","Nettles")
         val renderer = ReflectionRenderer(Infield::class)
-        val values = renderer.render(Node.leaf(Infield::class,infield))
+        val values = renderer.render(SimpleNode.leaf(Infield::class,infield))
 
         assertEquals(3,values.size)
 
@@ -58,7 +58,7 @@ class ReflectionRendererTest {
         val entry = Log.Entry(time,logger,record,stack)
         val renderer = ReflectionRenderer(Log.Entry::class)
 
-        val values = renderer.render(Node.leaf(Log.Entry::class,entry))
+        val values = renderer.render(SimpleNode.leaf(Log.Entry::class,entry))
 
         assertEquals(4,values.size)
 

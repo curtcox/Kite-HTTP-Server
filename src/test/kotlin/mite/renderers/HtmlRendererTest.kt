@@ -1,7 +1,7 @@
 package mite.renderers
 
 import mite.TestObjects
-import mite.ast.Node
+import mite.ast.*
 import mite.http.HTTP.*
 import org.junit.Test
 import kotlin.test.*
@@ -10,8 +10,8 @@ class HtmlRendererTest {
 
     val request = TestObjects.request
 
-    private fun singletons(list:List<Singleton>) = InternalResponse.node(Node.list(Singleton::class, list))
-    private fun leaf(one:Singleton) = InternalResponse.node(Node.leaf(Singleton::class, one))
+    private fun singletons(list:List<Singleton>) = InternalResponse.node(SimpleNode.list(Singleton::class, list))
+    private fun leaf(one:Singleton) = InternalResponse.node(SimpleNode.leaf(Singleton::class, one))
 
     private data class Singleton(val value:String)
     private val singletonRenderer = object : Node.Renderer  {

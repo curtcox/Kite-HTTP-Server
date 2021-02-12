@@ -1,8 +1,6 @@
 package mite.core
 
 import mite.ast.*
-import mite.http.HTTP.*
-import mite.renderers.HtmlRenderer
 import java.time.Instant
 import java.util.concurrent.*
 import kotlin.reflect.KClass
@@ -36,6 +34,6 @@ object Log : AbstractAstNodeHandler("/log",Entry::class) {
         println(record)
     }
 
-    override fun root() = Node.list(Log::class,entries.toList())
+    override fun root() = SimpleNode.list(Log::class,entries.toList())
 
 }
