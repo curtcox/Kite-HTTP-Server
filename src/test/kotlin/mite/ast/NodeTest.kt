@@ -24,7 +24,7 @@ class NodeTest {
 
         assertEquals(kind, node.kind)
         assertEquals(Node.Arity.list,node.arity)
-        val list = node.list!!
+        val list = node.list
         assertEquals(4, list.size)
         assertEquals(3, list.get(0).leaf)
         assertEquals(list,node.value)
@@ -39,8 +39,9 @@ class NodeTest {
 
         assertEquals(kind, node.kind)
         assertEquals(Node.Arity.map,node.arity)
-        val map = node.map!!
+        val map = node.map
         assertEquals(4, map.get(2)!!.leaf)
+        assertEquals(6, map.get(3)!!.leaf)
         assertEquals(map,node.value)
     }
 
@@ -53,7 +54,7 @@ class NodeTest {
 
         assertEquals(kind, node.kind)
         assertEquals(Node.Arity.map,node.arity)
-        val map = node.map!!
+        val map = node.map
         assertEquals(9, map.get(3)!!.leaf)
         assertEquals(16, map.get(4)!!.leaf)
         assertEquals(map,node.value)
@@ -73,14 +74,32 @@ class NodeTest {
                 ))
             ))
 
-        val list = node.list!!
+        val list = node.list
         assertEquals(2,list.size)
-        val map1 = list[0].map!!
+        val map1 = list[0].map
         assertEquals(2,map1.size)
-        assertEquals(1,      map1["first"])
-        assertEquals(2,      map1["second"])
-        assertEquals("gun",  node.list!![1].map!!["1"])
-        assertEquals("Shoe", node.list!![1].map!!["2"])
+        assertEquals(1,      map1["first"]!!.value)
+        assertEquals(2,      map1["second"]!!.value)
+        assertEquals("gun",  node.list[1].map["1"]!!.value)
+        assertEquals("shoe", node.list[1].map["2"]!!.value)
+    }
+
+    @Test
+    fun `map entries when root is map of lists`() {
+        val node = Node.map(kind,
+            mapOf(
+                "1st" to Node.list(kind, listOf("alpha","beta")),
+                "2nd" to Node.list(kind, listOf("compact","disc"))
+            ))
+
+        val map = node.map
+        assertEquals(2,map.size)
+        val list1 = map["1st"]!!.list
+        assertEquals(2,list1.size)
+        assertEquals("alpha",list1[0].value)
+        assertEquals("beta", list1[1].value)
+        assertEquals("compact",  node.map["2nd"]!!.list[0].value)
+        assertEquals("disc",     node.map["2nd"]!!.list[1].value)
     }
 
 }

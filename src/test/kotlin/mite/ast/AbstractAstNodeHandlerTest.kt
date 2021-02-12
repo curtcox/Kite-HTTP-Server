@@ -93,8 +93,8 @@ class AbstractAstNodeHandlerTest {
 
         assertEquals(1,      handler.payload("/root@0@first"))
         assertEquals(2,      handler.payload("/root@0@second"))
-        assertEquals("gun",  handler.payload("/root@1@gun"))
-        assertEquals("Shoe", handler.payload("/root@2@shoe"))
+        assertEquals("gun",  handler.payload("/root@1@1"))
+        assertEquals("shoe", handler.payload("/root@1@2"))
     }
 
     @Test

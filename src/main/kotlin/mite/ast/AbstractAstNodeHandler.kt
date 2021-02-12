@@ -51,9 +51,11 @@ abstract class AbstractAstNodeHandler(prefix: String, val renderer:Response.Rend
     }
 
     private fun isIndexStep(node: Node, part: String) = node.arity == Node.Arity.list && part.toIntOrNull() != null
-    private fun nodeAtIndex(node: Node, part: String) = node.list!![part.toInt()]
+    private fun nodeAtIndex(node: Node, part: String) = node.list[part.toInt()]
 
     private fun isKeyStep(node: Node, part: String) = node.arity == Node.Arity.map && part != null
-    private fun nodeAtKey(node: Node, part: String) = node.map!![part]!!
+    private fun nodeAtKey(node: Node, part: String) =
+        if (node.map[part]==null) throw IllegalArgumentException("Missing $part")
+        else node.map[part]!!
 
 }
