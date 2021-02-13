@@ -33,8 +33,8 @@ class SimpleNodeTest {
     @Test
     fun `map`() {
         val node = SimpleNode.map(kind,mapOf(
-            2 to 4,
-            3 to 6
+            "2" to 4,
+            "3" to 6
         ))
 
         assertEquals(kind, node.kind)
@@ -48,15 +48,15 @@ class SimpleNodeTest {
     @Test
     fun `map of kind`() {
         val node = SimpleNode.mapOfKind(kind,
-            3 to 9,
-            4 to 16
+            "three" to 9,
+            "four" to 16
         )
 
         assertEquals(kind, node.kind)
         assertEquals(Node.Arity.map,node.arity)
         val map = node.map
-        assertEquals(9, map.get(3)!!.leaf)
-        assertEquals(16, map.get(4)!!.leaf)
+        assertEquals(9, map.get("three")!!.leaf)
+        assertEquals(16, map.get("four")!!.leaf)
         assertEquals(map,node.value)
     }
 

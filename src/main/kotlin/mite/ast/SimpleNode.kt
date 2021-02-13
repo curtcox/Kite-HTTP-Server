@@ -8,7 +8,7 @@ import mite.ast.Node.*
  * A node implementation that can produce arbitrary structures of arrays and trees.
  */
 data class SimpleNode(val kind: KClass<*>, private val arityValue:Arity,
-    private val listValue: List<Node>?, private val mapValue:Map<Any,Node>?, val leafValue:Any?) : Node
+    private val listValue: List<Node>?, private val mapValue:Map<String,Node>?, val leafValue:Any?) : Node
 {
     init {
         if (
@@ -45,16 +45,16 @@ data class SimpleNode(val kind: KClass<*>, private val arityValue:Arity,
     companion object {
         fun node(kind:KClass<*>,value:Any) : Node {
             return when (value) {
-                is Map<*, *> -> map(kind,  value as Map<Any, Any>)
+                is Map<*, *> -> map(kind,  value as Map<String, Any>)
                 is   List<*> -> list(kind, value as List<Any>)
                 is      Node -> value
                 else         -> leaf(kind, value)
             }
         }
         fun leaf(kind:KClass<*>,value:Any)       = SimpleNode(kind,Arity.leaf,null,null,value)
-        fun map(kind:KClass<*>,map:Map<Any,Any>) =
+        fun map(kind:KClass<*>,map:Map<String,Any>) =
             SimpleNode(kind,Arity.map,null,map.mapValues { node(kind,it.value) },null)
-        fun mapOfKind(kind:KClass<*>,vararg pairs: Pair<Any,Any>) = map(kind,mapOf(*pairs))
+        fun mapOfKind(kind:KClass<*>,vararg pairs: Pair<String,Any>) = map(kind,mapOf(*pairs))
         fun list(kind:KClass<*>,list:List<Any>)  =
             SimpleNode(kind,Arity.list,list.map { node(kind,it) },null,null)
     }
