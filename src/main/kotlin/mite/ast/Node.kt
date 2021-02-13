@@ -1,8 +1,5 @@
 package mite.ast
 
-import java.lang.IllegalStateException
-import kotlin.reflect.KClass
-
 /**
  * A node in a tree of objects. Nodes can be maps, lists, or leaves.
  * Node trees exist for three reasons:

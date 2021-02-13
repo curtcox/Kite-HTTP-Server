@@ -5,6 +5,7 @@ import kotlin.reflect.KClass
 import mite.ast.Node.*
 
 /**
+ * A node implementation that can produce arbitrary structures of arrays and trees.
  */
 data class SimpleNode(val kind: KClass<*>, private val arityValue:Arity,
     private val listValue: List<Node>?, private val mapValue:Map<Any,Node>?, val leafValue:Any?) : Node
@@ -42,11 +43,11 @@ data class SimpleNode(val kind: KClass<*>, private val arityValue:Arity,
     }
 
     companion object {
-        fun node(kind:KClass<*>,value:Any) : SimpleNode {
+        fun node(kind:KClass<*>,value:Any) : Node {
             return when (value) {
                 is Map<*, *> -> map(kind,  value as Map<Any, Any>)
                 is   List<*> -> list(kind, value as List<Any>)
-                is      SimpleNode -> value
+                is      Node -> value
                 else         -> leaf(kind, value)
             }
         }
