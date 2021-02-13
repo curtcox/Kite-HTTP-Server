@@ -10,7 +10,7 @@ package mite.ast
  */
 interface Node {
 
-   val map   : Map<Any,Node>
+   val map   : Map<String,Node>
    val list  : List<Node>
    val leaf  : Any
    val value : Any
