@@ -47,7 +47,6 @@ class ReflectiveNodeTest {
 
     @Test
     fun `maps are maps`() {
-
         val map = mapOf(
             "Tinker" to "Evers",
             "Evers" to "Chance"
@@ -65,6 +64,20 @@ class ReflectiveNodeTest {
         assertNull(node.map["size"])
         assertNull(node.map["toString"])
         assertNull(node.map["hashCode"])
+    }
+
+    @Test
+    fun `lists are lists`() {
+        val list = listOf("Who","What","IDKW")
+        val node = ReflectiveNode(list)
+
+        assertEquals(Arity.list, node.arity)
+        assertEquals(3, node.list.size)
+        assertEquals(list,       node.value)
+
+        assertEquals(ReflectiveNode("Who"),  node.list[0])
+        assertEquals(ReflectiveNode("What"), node.list[1])
+        assertEquals(ReflectiveNode("IDKW"), node.list[2])
     }
 
 }

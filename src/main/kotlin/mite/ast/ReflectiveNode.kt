@@ -13,15 +13,19 @@ data class ReflectiveNode(val nodeValue:Any) : Node {
         if (nodeValue is Map<*,*>) mapAsNodeMap(nodeValue)
         else propsAsMap()
 
-    override val list: List<Node> get() = TODO("Not yet implemented")
+    override val list: List<Node> get() =
+        if (nodeValue is List<*>) listAsNodeList(nodeValue)
+        else throw IllegalArgumentException()
 
     override val leaf: Any get() = TODO("Not yet implemented")
 
     override val value: Any get() = nodeValue
 
-    override val arity: Arity get() = Arity.map
+    override val arity: Arity get() = if (nodeValue is List<*>) Arity.list else Arity.map
 
     private fun mapAsNodeMap(map:Map<*,*>) = map.map { e -> Pair(e.key.toString(),node(e.value))}.toMap()
+
+    private fun listAsNodeList(list:List<*>) = list.map { x -> node(x) }
 
     private fun props() = nodeValue::class.members.filter { member -> weShouldCall(member) }
 
