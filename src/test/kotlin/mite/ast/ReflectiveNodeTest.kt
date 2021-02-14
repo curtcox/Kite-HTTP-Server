@@ -80,4 +80,18 @@ class ReflectiveNodeTest {
         assertEquals(ReflectiveNode("IDKW"), node.list[2])
     }
 
+    @Test
+    fun `arrays are lists`() {
+        val list = arrayOf("ho","hat","how")
+        val node = ReflectiveNode(list)
+
+        assertEquals(Arity.list, node.arity)
+        assertEquals(3, node.list.size)
+        assertEquals(list,       node.value)
+
+        assertEquals(ReflectiveNode("ho"),  node.list[0])
+        assertEquals(ReflectiveNode("hat"), node.list[1])
+        assertEquals(ReflectiveNode("how"), node.list[2])
+    }
+
 }
