@@ -55,14 +55,16 @@ class ReflectiveNodeTest {
         val node = ReflectiveNode(map)
 
         assertEquals(Arity.map, node.arity)
-        assertEquals(19,node.map.size)
+        assertEquals(2,node.map.size)
         assertEquals(map,     node.value)
 
-        assertEquals(ReflectiveNode(map.toString()),     node.map["toString"])
-        assertEquals(ReflectiveNode(map.hashCode()),     node.map["hashCode"])
-        assertEquals(ReflectiveNode(map.size),           node.map["size"])
         assertEquals(ReflectiveNode("Evers"),  node.map["Tinker"])
         assertEquals(ReflectiveNode("Chance"), node.map["Evers"])
+
+        // this is a map, so don't allow object names to collide with keys
+        assertNull(node.map["size"])
+        assertNull(node.map["toString"])
+        assertNull(node.map["hashCode"])
     }
 
 }

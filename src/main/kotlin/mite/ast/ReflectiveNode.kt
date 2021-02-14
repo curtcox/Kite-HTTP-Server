@@ -2,15 +2,16 @@ package mite.ast
 
 import kotlin.reflect.*
 import kotlin.reflect.jvm.*
+import mite.ast.Node.*
 
 /**
  * A wrapper to turn a value into a Node via reflection.
  */
 data class ReflectiveNode(val nodeValue:Any) : Node {
 
-    override val map: Map<String, Node> get() = props()
-        .map { member -> Pair(member.name,node(call(member))) }
-        .toMap()
+    override val map: Map<String, Node> get() =
+        if (nodeValue is Map<*,*>) mapAsNodeMap(nodeValue)
+        else propsAsMap()
 
     override val list: List<Node> get() = TODO("Not yet implemented")
 
@@ -18,9 +19,15 @@ data class ReflectiveNode(val nodeValue:Any) : Node {
 
     override val value: Any get() = nodeValue
 
-    override val arity: Node.Arity get() = Node.Arity.map
+    override val arity: Arity get() = Arity.map
+
+    private fun mapAsNodeMap(map:Map<*,*>) = map.map { e -> Pair(e.key.toString(),node(e.value))}.toMap()
 
     private fun props() = nodeValue::class.members.filter { member -> weShouldCall(member) }
+
+    private fun propsAsMap(): Map<String, Node> = props()
+        .map { member -> Pair(member.name,node(call(member))) }
+        .toMap()
 
     // There must be a better way to determine if a callable can safely be called and yet here we are.
     private fun weShouldCall(member: KCallable<*>) =
