@@ -10,6 +10,7 @@ class HtmlRendererTest {
 
     val request = TestObjects.request
 
+    private fun pairs(map:Map<String,Singleton>) = InternalResponse.node(SimpleNode.map(Singleton::class, map))
     private fun singletons(list:List<Singleton>) = InternalResponse.node(SimpleNode.list(Singleton::class, list))
     private fun leaf(one:Singleton) = InternalResponse.node(SimpleNode.leaf(Singleton::class, one))
 
@@ -37,6 +38,27 @@ class HtmlRendererTest {
             <TABLE>
             <TR><TH>Value</TH></TR>
             <TR><TD>stuff</TD></TR>
+            </TABLE>
+            </BODY>
+            </HTML>
+        """.trimIndent(), page)
+    }
+
+    @Test
+    fun `a map of one singleton renders as HTML table`() {
+        val renderer = HtmlRenderer(singletonRenderer)
+        val value = "thing"
+        val one = Singleton(value)
+        val response = pairs(mapOf("one" to one))
+        val rendered = renderer.render(request,response)
+        assertEquals(ContentType.HTML,rendered.contentType)
+        val page = rendered.page
+        assertEquals("""
+            <HTML>
+            <BODY>
+            <TABLE>
+            <TR><TH>Key</TH><TH>Value</TH></TR>
+            <TR><TD>one</TD><TD>Singleton(value=thing)</TD></TR>
             </TABLE>
             </BODY>
             </HTML>

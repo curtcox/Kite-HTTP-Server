@@ -1,9 +1,10 @@
 package mite.renderers
 
 import mite.ast.Node
+import mite.ast.Node.*
 import mite.http.HTTP.*
 
-class HtmlRenderer(val nodeRenderer:Node.Renderer) : Response.UnconditionalRenderer(), HTML {
+class HtmlRenderer(val nodeRenderer:Renderer) : Response.UnconditionalRenderer(), HTML {
 
     override fun render(request: Request, response: InternalResponse): Response {
         if (response.contentType == ContentType.AST) {
@@ -15,8 +16,9 @@ class HtmlRenderer(val nodeRenderer:Node.Renderer) : Response.UnconditionalRende
 
     private fun node(node: Node): String {
         return when (node.arity) {
-            (Node.Arity.leaf) -> table(listOf(node))
-            (Node.Arity.list) -> table(node.list!!)
+            (Arity.leaf) -> table(listOf(node))
+            (Arity.list) -> table(node.list)
+            (Arity.map)  -> table(node.map)
             else -> TODO("Not yet implemented")
         }
     }
@@ -26,6 +28,15 @@ class HtmlRenderer(val nodeRenderer:Node.Renderer) : Response.UnconditionalRende
             <TABLE>
             ${row(nodeRenderer.header(),"TH")}
             ${rows(list)}
+            </TABLE>
+        """.trimIndent()
+    }
+
+    private fun table(map:Map<String,Node>): String {
+        return """
+            <TABLE>
+            ${row(listOf("Key","Value"),"TH")}
+            ${rows(map)}
             </TABLE>
         """.trimIndent()
     }
@@ -43,6 +54,17 @@ class HtmlRenderer(val nodeRenderer:Node.Renderer) : Response.UnconditionalRende
         val rows = StringBuilder()
         for (item in list) {
             rows.append(row(nodeRenderer.render(item),"TD"))
+        }
+        return rows.toString()
+    }
+
+    private fun rows(map:Map<String,Node>): String {
+        val rows = StringBuilder()
+        for (entry in map) {
+            val key = entry.key
+            val value = entry.value.value.toString()
+            val list = listOf(key,value)
+            rows.append(row(list,"TD"))
         }
         return rows.toString()
     }
