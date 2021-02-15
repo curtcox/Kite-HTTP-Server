@@ -24,21 +24,17 @@ class HtmlRenderer(val nodeRenderer:Renderer) : Response.UnconditionalRenderer()
     }
 
     private fun table(list:List<Node>): String {
-        return """
-            <TABLE>
+        return table("""
             ${row(nodeRenderer.header(),"TH")}
             ${rows(list)}
-            </TABLE>
-        """.trimIndent()
+        """.trimIndent())
     }
 
     private fun table(map:Map<String,Node>): String {
-        return """
-            <TABLE>
+        return table("""
             ${row(listOf("Key","Value"),"TH")}
             ${rows(map)}
-            </TABLE>
-        """.trimIndent()
+        """.trimIndent())
     }
 
     private fun row(list:List<String>,type:String) : String {
