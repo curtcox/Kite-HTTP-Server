@@ -1,6 +1,7 @@
 package mite.http
 
 import mite.ast.Node
+import mite.html.HTML
 import java.io.*
 import java.util.*
 
@@ -170,10 +171,10 @@ interface HTTP {
     /**
      * The response to a HTTP request.
      */
-    data class Response constructor(
-        val bytes: ByteArray, val contentType: ContentType, val status: StatusCode
-    )
+    data class Response constructor(val bytes: ByteArray, val contentType: ContentType, val status: StatusCode)
     {
+        constructor(html: HTML, status: StatusCode) : this(html.toHtml().toByteArray(),ContentType.HTML,status)
+
         interface Renderer : InternalResponse.Filter {
             fun render(request: Request, internalResponse: InternalResponse) : Response
         }

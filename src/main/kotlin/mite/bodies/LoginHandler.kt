@@ -2,9 +2,9 @@ package mite.bodies
 
 import mite.headers.LoginCookie
 import mite.http.HTTP.*
-import mite.renderers.HTML
+import mite.html.HTML
 
-class LoginHandler : InternalHandler, HTML {
+class LoginHandler : InternalHandler {
 
     override fun handleHeaders(httpRequest: Request, response: Response) =
         LoginCookie.handleHeaders(httpRequest,response)

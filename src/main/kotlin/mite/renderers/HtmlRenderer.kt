@@ -2,19 +2,21 @@ package mite.renderers
 
 import mite.ast.Node
 import mite.ast.Node.*
+import mite.html.Page
+import mite.html.Table
 import mite.http.HTTP.*
 
-class HtmlRenderer(val nodeRenderer:Renderer) : Response.UnconditionalRenderer(), HTML {
+class HtmlRenderer(val nodeRenderer:Renderer) : Response.UnconditionalRenderer() {
 
     override fun render(request: Request, response: InternalResponse): Response {
         if (response.contentType == ContentType.AST) {
-            val s = html(body(node(response.payload as Node)))
-            return Response(s.toByteArray(),ContentType.HTML,response.status)
+            val page = Page(node(response.payload as Node))
+            return Response(page,response.status)
         }
         TODO("Not yet implemented")
     }
 
-    private fun node(node: Node): String {
+    private fun node(node: Node): Table {
         return when (node.arity) {
             (Arity.leaf) -> table(listOf(node))
             (Arity.list) -> table(node.list)
@@ -23,27 +25,17 @@ class HtmlRenderer(val nodeRenderer:Renderer) : Response.UnconditionalRenderer()
         }
     }
 
-    private fun table(list:List<Node>): String {
-        return table("""
-            ${row(nodeRenderer.header(),"TH")}
-            ${rows(list)}
-        """.trimIndent())
-    }
+    private fun table(list:List<Node>)     = Table(row(nodeRenderer.header(),"TH"),rows(list))
 
-    private fun table(map:Map<String,Node>): String {
-        return table("""
-            ${row(listOf("Key","Value"),"TH")}
-            ${rows(map)}
-        """.trimIndent())
-    }
+    private fun table(map:Map<String,Node>) = Table(row(listOf("Key","Value"),"TH"),rows(map))
+
 
     private fun row(list:List<String>,type:String) : String {
-        val out = StringBuilder("<TR>")
+        val out = StringBuilder()
         for (e in list) {
             out.append("<$type>$e</$type>")
         }
-        out.append("</TR>")
-        return out.toString()
+        return "<TR>$out</TR>"
     }
 
     private fun rows(list:List<Node>): String {

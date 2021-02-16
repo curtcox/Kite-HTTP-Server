@@ -1,6 +1,8 @@
-package mite.renderers
+package mite.html
 
 interface HTML {
+
+    fun toHtml() : String
 
     fun css() = """<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.23/datatables.min.css"/>"""
     fun javascript() = """<script type="text/javascript" src="DataTables/datatables.min.js"></script>"""

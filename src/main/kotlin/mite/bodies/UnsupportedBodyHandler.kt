@@ -1,12 +1,12 @@
 package mite.bodies
 
 import mite.http.HTTP.*
-import mite.renderers.HTML
+import mite.html.HTML
 
 /**
  * To report to the client that the request is unsupported.
  */
-object UnsupportedBodyHandler : BodyHandler, HTML {
+object UnsupportedBodyHandler : BodyHandler {
 
     override fun handle(request: Request) = InternalResponse.message("Not Implemented", StatusCode.NOT_IMPLEMENTED)
 
