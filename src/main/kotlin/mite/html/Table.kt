@@ -1,6 +1,29 @@
 package mite.html
 
-data class Table(val head:String,val body:String) : HTML {
+/**
+ * An HTML table.
+ */
+data class Table(val head:Row,val body:Body) : HTML {
+
+    data class Row(val cells:List<String>,val type:String) : HTML {
+        override fun toHtml(): String {
+            val out = StringBuilder()
+            for (e in cells) {
+                out.append("<$type>$e</$type>")
+            }
+            return "<TR>$out</TR>"
+        }
+    }
+
+    data class Body(val rows:List<Row>) : HTML {
+        override fun toHtml(): String {
+            val out = StringBuilder()
+            for (r in rows) {
+                out.append(r.toHtml())
+            }
+            return "<tbody>$out</tbody>"
+        }
+    }
 
     val css = """<link rel="stylesheet" type="text/css" href="/datatables.min.css"/>"""
 
@@ -20,11 +43,10 @@ data class Table(val head:String,val body:String) : HTML {
         script(documentReady) +
 
         table("""
-                ${thead(head)}
-                ${tbody(body)}""".trimIndent())
+                ${thead(head.toHtml())}
+                ${body.toHtml()}""".trimIndent())
 
-    fun table(text:String) = tag(text,"""<table id="table_id" class="display">""","</table>")
-    fun thead(text:String) = tag(text,"<thead>","</thead>")
-    fun tbody(text:String) = tag(text,"<tbody>","</tbody>")
+    private fun table(text:String) = tag(text,"""<table id="table_id" class="display">""","</table>")
+    private fun thead(text:String) = tag(text,"<thead>","</thead>")
 
 }
