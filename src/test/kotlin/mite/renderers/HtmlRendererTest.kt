@@ -35,10 +35,14 @@ class HtmlRendererTest {
         assertEquals("""
             <HTML>
             <BODY>
-            <TABLE>
+            <table id="table_id" class="display">
+            <thead>
             <TR><TH>Value</TH></TR>
+            </thead>
+            <tbody>
             <TR><TD>stuff</TD></TR>
-            </TABLE>
+            </tbody>
+            </table>
             </BODY>
             </HTML>
         """.trimIndent(), page)
@@ -56,10 +60,14 @@ class HtmlRendererTest {
         assertEquals("""
             <HTML>
             <BODY>
-            <TABLE>
+            <table id="table_id" class="display">
+            <thead>
             <TR><TH>Key</TH><TH>Value</TH></TR>
+            </thead>
+            <tbody>
             <TR><TD>one</TD><TD>Singleton(value=thing)</TD></TR>
-            </TABLE>
+            </tbody>
+            </table>
             </BODY>
             </HTML>
         """.trimIndent(), page)
@@ -77,10 +85,14 @@ class HtmlRendererTest {
         assertEquals("""
             <HTML>
             <BODY>
-            <TABLE>
+            <table id="table_id" class="display">
+            <thead>
             <TR><TH>Value</TH></TR>
+            </thead>
+            <tbody>
             <TR><TD>stuff</TD></TR>
-            </TABLE>
+            </tbody>
+            </table>
             </BODY>
             </HTML>
         """.trimIndent(), page)

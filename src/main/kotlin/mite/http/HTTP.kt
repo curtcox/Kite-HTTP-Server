@@ -202,22 +202,16 @@ interface HTTP {
      * Content AKA MIME types
      */
     enum class ContentType(val streamName: String, val binary:Boolean = true) {
-
         AST("internal/object",false),
         HTML("text/html; charset=utf-8",false),
         TEXT("text/plain",false),
-        ICON("image/x-icon"),
         FORM_URLENCODED("application/x-www-form-urlencoded",false),
+        ICON("image/x-icon"),
+        JAVASCRIPT("text/javascript"),
+        CSS("text/css"),
         GIF("image/gif"),
         CLASS("application/octet-stream"),
         JPEG("image/jpeg");
-
-        companion object {
-            fun auto(content:String) = if (seemsLikeHTML(content)) HTML else TEXT
-            fun seemsLikeHTML(content:String) =
-                content.length > 10 &&
-                        content.substring(0,10).toLowerCase().contains("<html>")
-        }
     }
 
     /**

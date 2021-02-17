@@ -15,7 +15,7 @@ object DefaultInternalHandler : InternalHandler {
 
     private val login = LoginHandler()
 
-    private val favicon = FaviconHandler
+    private val favicon = ResourceHandler
 
     private fun handler(vararg handlers: BodyHandler) =
         HandlerFromHeaderAndBody(headers, CompositeBodyHandler(*handlers))

@@ -7,5 +7,5 @@ import java.io.File
 object FaviconHandler : AbstractBodyHandler("/favicon.ico") {
 
     override fun handle(request: Request) =
-        InternalResponse.OK(File("favicon.ico").readBytes(),ContentType.ICON)
+        InternalResponse.OK(File("resources/favicon.ico").readBytes(),ContentType.ICON)
 }
