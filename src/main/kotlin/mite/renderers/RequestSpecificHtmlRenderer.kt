@@ -16,11 +16,13 @@ class RequestSpecificHtmlRenderer(val request: HTTP.Request, val nodeRenderer: N
         }
     }
 
-    private fun table(list:List<Node>)     = Table(Row(nodeRenderer.header(), "TH"),Body(rows(list)))
+    private fun table(list:List<Node>) = Table(Row(listOf("#") + nodeRenderer.header(), "TH"),Body(rows(list)))
 
     private fun table(map:Map<String, Node>) = Table(Row(listOf("Key","Value"),"TH"),Body(rows(map)))
 
-    private fun rows(list:List<Node>) = list.map { n -> Row(nodeRenderer.render(n),"TD")  }
+    private fun rows(list:List<Node>) = list.mapIndexed {
+        i, n -> Row(listOf(linkTo(i.toString())) + nodeRenderer.render(n),"TD")
+    }
 
     private fun rows(map:Map<String, Node>) =
         map.entries.map { e ->
