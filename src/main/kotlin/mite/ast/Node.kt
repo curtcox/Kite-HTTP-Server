@@ -27,7 +27,7 @@ interface Node {
         /**
          * Render header values to label the parts of a node value.
          */
-        fun header() :          List<String>
+        fun header(nodes:List<*>) : List<String>
 
         /**
          * Render the node component values that correspond to node headers for this node.

@@ -4,7 +4,6 @@ import mite.ast.Node.*
 import mite.bodies.AbstractBodyHandler
 import mite.http.HTTP.*
 import mite.renderers.HtmlRenderer
-import kotlin.reflect.KClass
 
 /**
  * Skeletal implementation of a handler that produces an AST node.
@@ -13,7 +12,7 @@ import kotlin.reflect.KClass
  */
 abstract class AbstractAstNodeHandler(prefix: String, val renderer:Response.Renderer) : AbstractBodyHandler(prefix) {
 
-    constructor(prefix: String,kind: KClass<*>) : this(prefix,HtmlRenderer(ReflectionRenderer(kind)))
+    constructor(prefix: String) : this(prefix,HtmlRenderer(ReflectionRenderer()))
 
     abstract fun root(): Node
 

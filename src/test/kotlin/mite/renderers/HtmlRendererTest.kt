@@ -16,7 +16,7 @@ class HtmlRendererTest {
 
     private data class Singleton(val value:String)
     private val singletonRenderer = object : Node.Renderer  {
-        override fun header() : List<String> = listOf("Value")
+        override fun header(list:List<*>) : List<String> = listOf("Value")
         override fun render(node: Node) : List<String> {
             val entry = node.leaf as Singleton
             return listOf(entry.value)

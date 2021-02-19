@@ -1,9 +1,11 @@
 package mite.reflect
 
+import mite.ast.ReflectionRenderer
+import mite.core.Log
 import kotlin.reflect.*
 import kotlin.reflect.jvm.*
 
-class Callable(val target:Any, val member: KCallable<*>) {
+data class Callable(val target:Any, val member: KCallable<*>) {
 
     // There must be a better way to determine if a callable can safely be called and yet here we are.
     fun couldBeCalled() =
@@ -21,11 +23,12 @@ class Callable(val target:Any, val member: KCallable<*>) {
 
     private fun declassify(c: Any) = c.toString().replace("class ","")
 
-    fun call() =
+    fun call(): Any? =
         try {
             member.isAccessible = true
             member.call(target)
         } catch (t: Throwable) {
+            Log.log(ReflectionRenderer::class,target,t)
             t
         }
 

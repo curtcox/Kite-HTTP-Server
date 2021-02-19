@@ -2,14 +2,13 @@ package mite.core
 
 import mite.ast.*
 import java.util.concurrent.*
-import mite.http.HTTP.*
 import mite.renderers.HtmlRenderer
 
 /**
  * Object browser.
  */
 object Objects : AbstractAstNodeHandler("/object",HtmlRenderer(object: Node.Renderer {
-    override fun header() : List<String> = listOf("Class","Id","String")
+    override fun header(list:List<*>) : List<String> = listOf("Class","Id","String")
     override fun render(node: Node) = (node.value as SingleObject).toHtml()
 })) {
 

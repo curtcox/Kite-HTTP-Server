@@ -16,7 +16,7 @@ class RequestSpecificHtmlRenderer(val request: HTTP.Request, val nodeRenderer: N
         }
     }
 
-    private fun table(list:List<Node>) = Table(Row(listOf("#") + nodeRenderer.header(), "TH"),Body(rows(list)))
+    private fun table(list:List<Node>) = Table(Row(listOf("#") + nodeRenderer.header(list), "TH"),Body(rows(list)))
 
     private fun table(map:Map<String, Node>) = Table(Row(listOf("Key","Value"),"TH"),Body(rows(map)))
 

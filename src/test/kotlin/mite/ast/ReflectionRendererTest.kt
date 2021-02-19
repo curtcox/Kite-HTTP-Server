@@ -7,13 +7,18 @@ import kotlin.test.*
 
 class ReflectionRendererTest {
 
+    val renderer = ReflectionRenderer()
     data class Infield(val first:String,val second:String,val third:String)
+    val infield = Infield("Buckner","Sandberg","Nettles")
+    val time = Instant.now()
+    val logger = Infield::class
+    val record = "stuff"
+    val stack  = Throwable()
+    val entry = Log.Entry(time,logger,record,stack)
 
     @Test
     fun `infield header should match field names`() {
-        val renderer = ReflectionRenderer(Infield::class)
-
-        val header = renderer.header()
+        val header = renderer.header(listOf(infield))
 
         assertEquals(3,header.size)
 
@@ -24,9 +29,7 @@ class ReflectionRendererTest {
 
     @Test
     fun `log entry header should match field names`() {
-        val renderer = ReflectionRenderer(Log.Entry::class)
-
-        val header = renderer.header()
+        val header = renderer.header(listOf(entry))
 
         assertEquals(4,header.size)
 
@@ -38,8 +41,6 @@ class ReflectionRendererTest {
 
     @Test
     fun `infield values should match field values`() {
-        val infield = Infield("Buckner","Sandberg","Nettles")
-        val renderer = ReflectionRenderer(Infield::class)
         val values = renderer.render(SimpleNode.leaf(Infield::class,infield))
 
         assertEquals(3,values.size)
@@ -51,12 +52,6 @@ class ReflectionRendererTest {
 
     @Test
     fun `log entry values should match field values`() {
-        val time = Instant.now()
-        val logger = Infield::class
-        val record = "stuff"
-        val stack  = Throwable()
-        val entry = Log.Entry(time,logger,record,stack)
-        val renderer = ReflectionRenderer(Log.Entry::class)
 
         val values = renderer.render(SimpleNode.leaf(Log.Entry::class,entry))
 
@@ -66,15 +61,6 @@ class ReflectionRendererTest {
         assertEquals(record,             values[1])
         assertEquals(stack.toString(),   values[2])
         assertEquals(time.toString(),    values[3])
-    }
-
-    @Test
-    fun `render returns IllegalArgumentException when asked to render a different class`() {
-        val kind = Log.Entry::class
-        val renderer = ReflectionRenderer(kind)
-        val value = Infield("Buckner", "Sandberg", "Nettles")
-        val rendered = renderer.render(SimpleNode.leaf(Infield::class,value))
-        assertEquals("$value is not a $kind",rendered[0])
     }
 
 }

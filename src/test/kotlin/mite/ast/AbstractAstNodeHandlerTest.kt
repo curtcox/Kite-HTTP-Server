@@ -20,7 +20,7 @@ class AbstractAstNodeHandlerTest {
 
     fun request(filename:String) = TestObjects.requestForFilename(filename)
 
-    class TestHandler(val root:Node) : AbstractAstNodeHandler("/root",Log.Entry::class) {
+    class TestHandler(val root:Node) : AbstractAstNodeHandler("/root") {
         override fun root() = root
         fun payload(filename:String) = (handle(TestObjects.requestForFilename(filename)).payload as Node).value!!
     }
@@ -61,7 +61,7 @@ class AbstractAstNodeHandlerTest {
         val handler = TestHandler(SimpleNode.list(kind,listOf(entry)))
         val node = handler.handle(request("/root@0")).payload as Node
 
-        val leaf = node.leaf!!
+        val leaf = node.leaf
         assertEquals(entry, leaf)
     }
 
@@ -102,7 +102,7 @@ class AbstractAstNodeHandlerTest {
         val handler = TestHandler(SimpleNode.map(kind,mapOf("entry" to entry)))
         val root = handler.handle(request("/root")).payload as Node
 
-        val map = root.map!!
+        val map = root.map
         assertEquals(1, map.size)
         assertEquals(entry, map["entry"]!!.leaf)
     }
