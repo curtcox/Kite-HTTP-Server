@@ -20,8 +20,18 @@ interface Node {
         list, map, leaf
     }
 
+    /**
+     * For rendering nodes.
+     */
     interface Renderer {
+        /**
+         * Render header values to label the parts of a node value.
+         */
         fun header() :          List<String>
+
+        /**
+         * Render the node component values that correspond to node headers for this node.
+         */
         fun render(node:Node) : List<String>
     }
 

@@ -1,5 +1,6 @@
 package mite.ast
 
+import mite.core.Log
 import kotlin.reflect.*
 
 /**
@@ -15,12 +16,18 @@ data class ReflectionRenderer(val kind: KClass<*>) : Node.Renderer {
 
     override fun header() = props().map { x -> x.name }
 
-    override fun render(node: Node) = props().map { x -> value(node,x) }
+    override fun render(node: Node) =
+        if (kind.isInstance(node.value)) renderPropValues(node) else renderBadArgumentMessages(node.value)
+
+    private fun renderBadArgumentMessages(value: Any) = props().map { x -> "$value is not a $kind" }
+
+    private fun renderPropValues(node: Node) = props().map { x -> value(node,x) }
 
     private fun value(node: Node,member:KCallable<*>) = try {
         member.call(node.value).toString()
     } catch (t :Throwable) {
-        "$t rendering ${node.value} as $kind"
+        Log.log(ReflectionRenderer::class,node,t)
+        "$t while rendering ${node.value} as $kind"
     }
 
 }

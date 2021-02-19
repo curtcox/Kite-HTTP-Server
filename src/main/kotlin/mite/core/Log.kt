@@ -34,6 +34,11 @@ object Log : AbstractAstNodeHandler("/log",Entry::class) {
         println(record)
     }
 
+    fun log(logger:KClass<*>, record: Any,throwable: Throwable) {
+        record(Entry(Instant.now(),logger, record, throwable))
+        println(record)
+    }
+
     override fun root() = ReflectiveNode(entries.toList())
 
 }

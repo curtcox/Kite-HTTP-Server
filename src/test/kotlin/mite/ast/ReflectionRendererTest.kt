@@ -68,4 +68,13 @@ class ReflectionRendererTest {
         assertEquals(time.toString(),    values[3])
     }
 
+    @Test
+    fun `render returns IllegalArgumentException when asked to render a different class`() {
+        val kind = Log.Entry::class
+        val renderer = ReflectionRenderer(kind)
+        val value = Infield("Buckner", "Sandberg", "Nettles")
+        val rendered = renderer.render(SimpleNode.leaf(Infield::class,value))
+        assertEquals("$value is not a $kind",rendered[0])
+    }
+
 }
