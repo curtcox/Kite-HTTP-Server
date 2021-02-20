@@ -32,10 +32,14 @@ data class Table(val head:Row,val body:Body) : HTML {
         <script type="text/javascript" src="/datatables.min.js"></script>
         """.trimIndent()
 
-    val documentReady = """${'$'}(document).ready(function() {
-                           ${'$'}('#table_id').DataTable();
-                        } );
-                        """.trimIndent()
+    // See https://datatables.net/reference/option/paging
+    val documentReady =
+"""${'$'}(document).ready(function() {
+   ${'$'}('#table_id').DataTable({
+      "paging": false
+   });
+} );
+""".trimIndent()
 
     override fun toHtml() =
         css +
