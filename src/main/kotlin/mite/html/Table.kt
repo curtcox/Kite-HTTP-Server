@@ -36,7 +36,12 @@ data class Table(val head:Row,val body:Body) : HTML {
     val documentReady =
 """${'$'}(document).ready(function() {
    ${'$'}('#table_id').DataTable({
-      "paging": false
+      "paging": false,
+      dom: 'Bfrtip',
+      buttons: [ 'colvis', 'copy', 'csv', 'excel', 'pdf', 'print'],
+      rowReorder: true,
+      colReorder: true,
+      fixedHeader: true
    });
 } );
 """.trimIndent()
