@@ -9,10 +9,9 @@ import kotlin.reflect.*
 data class ClassSpecificReflectionRenderer(val kind: KClass<*>) {
 
     private fun props() = kind.members
-        .filter { member -> member.parameters.size == 1 }
+        .filter { member -> Callable("",member).couldBeCalledWithRightValue()}
         .filter { member -> member.name != "hashCode" }
         .filter { member -> member.name != "toString" }
-        .filter { member -> !member.name.startsWith("component") }
 
     fun header() = props().map { x -> x.name }
 

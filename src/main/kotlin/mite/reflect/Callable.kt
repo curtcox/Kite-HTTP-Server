@@ -9,10 +9,12 @@ data class Callable(val target:Any, val member: KCallable<*>) {
 
     // There must be a better way to determine if a callable can safely be called and yet here we are.
     fun couldBeCalled() =
+        couldBeCalledWithRightValue() && valueTypeMatches(member.parameters[0].type)
+
+    fun couldBeCalledWithRightValue() =
         try {
             member.returnType.toString()!="kotlin.Unit" &&
             member.parameters.size == 1 &&
-            valueTypeMatches(member.parameters[0].type) &&
             !member.name.startsWith("component")
         } catch (t: Throwable) {
             false // backoff if anything throws an exception
@@ -31,5 +33,4 @@ data class Callable(val target:Any, val member: KCallable<*>) {
             Log.log(ReflectionRenderer::class,target,t)
             t
         }
-
 }
