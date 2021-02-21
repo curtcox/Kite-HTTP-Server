@@ -2,6 +2,8 @@ package mite.reflect
 
 import mite.ast.ReflectionRenderer
 import mite.core.Log
+import java.lang.reflect.Method
+import java.lang.reflect.Modifier
 import kotlin.reflect.*
 import kotlin.reflect.jvm.*
 
@@ -15,10 +17,15 @@ data class Callable(val target:Any, val member: KCallable<*>) {
         try {
             member.returnType.toString()!="kotlin.Unit" &&
             member.parameters.size == 1 &&
-            !member.name.startsWith("component")
+            !member.name.startsWith("component") &&
+            !isStatic()
         } catch (t: Throwable) {
             false // backoff if anything throws an exception
         }
+
+    private fun isStatic() = if (member is KFunction) isStatic(member.javaMethod) else false
+
+    private fun isStatic(method: Method?) = if (method==null) false else Modifier.isStatic(method.modifiers)
 
     private fun valueTypeMatches(t : KType) =
         declassify(t) == declassify(target::class) || declassify(t.javaType) == declassify(target::class)
