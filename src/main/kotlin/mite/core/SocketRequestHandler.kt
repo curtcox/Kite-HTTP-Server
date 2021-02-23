@@ -20,11 +20,16 @@ class SocketRequestHandler constructor(handler: Handler) {
     }
 
     @Throws(IOException::class)
-    private fun write(request: Request.Raw, out: OutputStream) {
-        val httpRequest = Request.parse(request)
-        val    response = handler.handle(httpRequest)
-        val     headers = handler.handleHeaders(httpRequest,response)
-        writer.write(httpRequest.httpVersion,response,headers,out)
+    private fun write(rawRequest: Request.Raw, out: OutputStream) {
+        val request = Request.parse(rawRequest)
+        val        body = handler.handle(request)
+        val     headers = handler.handleHeaders(request,body)
+        val    response = Response(body,headers)
+        log(Transaction(request,response))
+        writer.write(request.httpVersion,response,out)
     }
 
+    private fun log(transaction: Transaction) {
+        Log.log(SocketRequestHandler::class,transaction)
+    }
 }

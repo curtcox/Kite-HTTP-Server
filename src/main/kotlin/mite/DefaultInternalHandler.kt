@@ -34,7 +34,7 @@ object DefaultInternalHandler : InternalHandler {
 
     private val switchHandler = SwitchHandler(loggedIn,needsToLogin,login.isLoggedIn())
 
-    override fun handleHeaders(httpRequest: Request, response: Response) =
+    override fun handleHeaders(httpRequest: Request, response: Response.Body) =
         headers.handleHeaders(httpRequest,response)
 
     override fun handles(request: Request): Boolean = switchHandler.handles(request)

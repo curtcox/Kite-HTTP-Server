@@ -11,7 +11,7 @@ class PostHandler constructor(val handler: InternalHandler) : InternalHandler
 {
     private val POST = "/POST/"
 
-    override fun handleHeaders(request: Request, response: Response) =
+    override fun handleHeaders(request: Request, response: Response.Body) =
         handler.handleHeaders(request,response)
 
     override fun handles(request: Request) = request.filename.startsWith(POST)

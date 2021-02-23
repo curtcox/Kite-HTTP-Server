@@ -10,7 +10,7 @@ import mite.renderers.HtmlRenderer
  * The implementor must implement node.
  * This base class will handle node tree navigation.
  */
-abstract class AbstractAstNodeHandler(prefix: String, val renderer:Response.Renderer) : AbstractBodyHandler(prefix) {
+abstract class AbstractAstNodeHandler(prefix: String, val renderer:Response.Body.Renderer) : AbstractBodyHandler(prefix) {
 
     constructor(prefix: String) : this(prefix,HtmlRenderer(ReflectionRenderer()))
 

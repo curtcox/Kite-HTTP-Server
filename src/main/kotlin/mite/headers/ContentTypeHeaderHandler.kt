@@ -6,7 +6,7 @@ import java.util.*
 
 object ContentTypeHeaderHandler : HeaderHandler {
 
-    override fun handleHeaders(httpRequest: Request, response: Response): Array<Header> {
+    override fun handleHeaders(httpRequest: Request, response: Response.Body): Array<Header> {
         return arrayOf(
             Header("HTTP/1.0",         response.status),
             Header("Server:",          MiteHTTPServer.NAME),

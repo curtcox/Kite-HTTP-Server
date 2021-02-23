@@ -11,7 +11,7 @@ class SwitchHandler
         val falseHandler: InternalHandler,
         val test: (Request)->Boolean): InternalHandler
 {
-    override fun handleHeaders(request: Request, response: Response) =
+    override fun handleHeaders(request: Request, response: Response.Body) =
         if (test(request)) trueHandler.handleHeaders(request,response)
         else              falseHandler.handleHeaders(request,response)
 

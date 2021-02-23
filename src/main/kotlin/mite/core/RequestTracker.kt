@@ -22,9 +22,6 @@ object RequestTracker {
     }
 
     fun info(): RequestInfo = synchronized(this) {
-        val ct = Thread.currentThread()
-        println("${ct} infos = $infos")
-        infos.forEach { i-> println("${ct} == ${i.thread} ? ${ct==i.thread} == ${current(i)}") }
         infos.first { i -> current(i) }
     }
 

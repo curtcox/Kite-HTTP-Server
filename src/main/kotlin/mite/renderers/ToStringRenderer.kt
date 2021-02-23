@@ -1,8 +1,9 @@
 package mite.renderers
 
-import mite.http.HTTP
+import mite.http.HTTP.*
+import mite.http.HTTP.Response.*
 
-object ToStringRenderer : HTTP.Response.UnconditionalRenderer() {
-    override fun render(request: HTTP.Request, inner: HTTP.InternalResponse) =
-        HTTP.Response(inner.toString().toByteArray(), HTTP.ContentType.TEXT, inner.status)
+object ToStringRenderer : Body.UnconditionalRenderer() {
+    override fun render(request: Request, inner: InternalResponse) =
+        Body(inner.toString().toByteArray(), ContentType.TEXT, inner.status)
 }

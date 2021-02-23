@@ -7,6 +7,8 @@ import java.util.*
 
 interface HTTP {
 
+    data class Transaction(val request: Request,val response: Response)
+
     /**
      * A header writer that is also a body handler.
      *
@@ -25,7 +27,7 @@ interface HTTP {
          * ensure that that doesn't cause any problems.
          */
         @Throws(IOException::class)
-        fun handle(request: Request): Response
+        fun handle(request: Request): Response.Body
     }
 
     /**
@@ -67,7 +69,7 @@ interface HTTP {
      */
     interface HeaderHandler {
 
-        fun handleHeaders(httpRequest: Request, response: Response) : Array<Header>
+        fun handleHeaders(httpRequest: Request, response: Response.Body) : Array<Header>
 
     }
 
@@ -150,7 +152,7 @@ interface HTTP {
         val payload: Any,
         val contentType: ContentType,
         val status: StatusCode,
-        val renderer : Response.Renderer? = null
+        val renderer : Response.Body.Renderer? = null
     ) {
         interface Filter {
             /**
@@ -163,7 +165,7 @@ interface HTTP {
             val noValidHandler = message("No valid handler",StatusCode.NOT_IMPLEMENTED)
             fun OK(payload: Any,contentType: ContentType) = InternalResponse(payload, contentType, StatusCode.OK)
             fun message(message: String, status: StatusCode) = InternalResponse(message, ContentType.TEXT, status)
-            fun node(payload: Node,render:Response.Renderer=Response.TO_STRING) =
+            fun node(payload: Node,render:Response.Body.Renderer=Response.Body.TO_STRING) =
                 InternalResponse(payload, ContentType.AST, StatusCode.OK, render)
         }
     }
@@ -171,30 +173,32 @@ interface HTTP {
     /**
      * The response to a HTTP request.
      */
-    data class Response constructor(val bytes: ByteArray, val contentType: ContentType, val status: StatusCode)
-    {
-        constructor(html: HTML, status: StatusCode) : this(html.toHtml().toByteArray(),ContentType.HTML,status)
+    data class Response(val body:Body,val headers: Array<Header>) {
+        data class Body constructor(val bytes: ByteArray, val contentType: ContentType, val status: StatusCode)
+        {
+            constructor(html: HTML, status: StatusCode) : this(html.toHtml().toByteArray(),ContentType.HTML,status)
 
-        interface Renderer : InternalResponse.Filter {
-            fun render(request: Request, internalResponse: InternalResponse) : Response
-        }
-        val page: String = String(bytes)
-        abstract class UnconditionalRenderer : Renderer {
-            override fun handles(request: Request, response: InternalResponse) = true
-        }
-        companion object {
-            val TO_STRING = object : UnconditionalRenderer() {
-                override fun render(request: Request,inner: InternalResponse) =
-                    Response(inner.toString().toByteArray(),ContentType.TEXT,inner.status)
+            interface Renderer : InternalResponse.Filter {
+                fun render(request: Request, internalResponse: InternalResponse) : Body
             }
+            val page: String = String(bytes)
+            abstract class UnconditionalRenderer : Renderer {
+                override fun handles(request: Request, response: InternalResponse) = true
+            }
+            companion object {
+                val TO_STRING = object : UnconditionalRenderer() {
+                    override fun render(request: Request,inner: InternalResponse) =
+                        Body(inner.toString().toByteArray(), ContentType.TEXT, inner.status)
+                }
 
-            val empty = Response("".toByteArray(), ContentType.TEXT, StatusCode.OK)
+                val empty = Body("".toByteArray(), ContentType.TEXT, StatusCode.OK)
 
-            fun bytes(bytes: ByteArray,contentType: ContentType) =
-                Response(bytes, contentType, StatusCode.OK)
+                fun bytes(bytes: ByteArray,contentType: ContentType) =
+                    Body(bytes, contentType, StatusCode.OK)
 
-            fun OK(page: String = "", contentType: ContentType = ContentType.HTML) =
-                Response(page.toByteArray(), contentType, StatusCode.OK)
+                fun OK(page: String = "", contentType: ContentType = ContentType.HTML) =
+                    Body(page.toByteArray(), contentType, StatusCode.OK)
+            }
         }
     }
 

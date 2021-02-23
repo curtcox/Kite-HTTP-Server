@@ -10,7 +10,7 @@ object DefaultHandler : Handler {
     override fun handle(request: Request) =
         responseRenderer.render(request,internalHandler.handle(request)!!)
 
-    override fun handleHeaders(httpRequest: Request, response: Response) =
+    override fun handleHeaders(httpRequest: Request, response: Response.Body) =
         internalHandler.handleHeaders(httpRequest,response)
 
 }

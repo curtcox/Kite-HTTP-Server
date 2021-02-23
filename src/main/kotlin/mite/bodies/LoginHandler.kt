@@ -6,7 +6,7 @@ import mite.html.HTML
 
 class LoginHandler : InternalHandler {
 
-    override fun handleHeaders(httpRequest: Request, response: Response) =
+    override fun handleHeaders(httpRequest: Request, response: Response.Body) =
         LoginCookie.handleHeaders(httpRequest,response)
 
     override fun handles(request: Request): Boolean = true

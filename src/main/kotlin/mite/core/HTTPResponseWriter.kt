@@ -6,14 +6,15 @@ import mite.http.HTTP.*
 object HTTPResponseWriter {
 
     @Throws(IOException::class)
-    fun write(version:Version, response: Response, headers: Array<Header>,  out: OutputStream) {
+    fun write(version:Version, response: Response,  out: OutputStream) {
         val writer: Writer = OutputStreamWriter(out)
         writer.use {
-            version.writeHeaders(headers,writer)
-            if (response.contentType.binary)
-                out.write(response.bytes)
+            version.writeHeaders(response.headers,writer)
+            val body = response.body
+            if (body.contentType.binary)
+                out.write(body.bytes)
             else
-                writer.write(response.page)
+                writer.write(body.page)
         }
     }
 
