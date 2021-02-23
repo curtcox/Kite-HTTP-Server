@@ -11,7 +11,10 @@ import kotlin.reflect.KClass
 object Log : AbstractAstNodeHandler("/log") {
 
     private val entries = ConcurrentLinkedQueue<Entry>()
-    data class Entry constructor(val time: Instant, val logger:KClass<*>, val record:Any, val stack:Throwable)
+
+    data class Entry constructor(val number:Int, val time: Instant, val logger:KClass<*>, val record:Any, val stack:Throwable) {
+        constructor(info:RequestInfo,logger:KClass<*>,record:Any,stack:Throwable) : this(info.number,info.time,logger,record,stack)
+    }
 
     private fun record(entry:Entry) {
         entries.add(entry)
@@ -20,24 +23,26 @@ object Log : AbstractAstNodeHandler("/log") {
     }
 
     fun log(logger:KClass<*>, t: Throwable) {
-        record(Entry(Instant.now(),logger,t.message!!,t))
+        record(Entry(info(),logger,t.message!!,t))
         t.printStackTrace()
     }
 
     fun debug(logger: KClass<*>, t: Throwable) {
-        record(Entry(Instant.now(),logger,t.message!!,t))
+        record(Entry(info(),logger,t.message!!,t))
         t.printStackTrace()
     }
 
     fun log(logger:KClass<*>, record: Any) {
-        record(Entry(Instant.now(),logger, record, Throwable()))
+        record(Entry(info(),logger, record, Throwable()))
         println(record)
     }
 
     fun log(logger:KClass<*>, record: Any,throwable: Throwable) {
-        record(Entry(Instant.now(),logger, record, throwable))
+        record(Entry(info(),logger, record, throwable))
         println(record)
     }
+
+    private fun info() = RequestTracker.info()
 
     override fun root() = ReflectiveNode(entries.toList())
 

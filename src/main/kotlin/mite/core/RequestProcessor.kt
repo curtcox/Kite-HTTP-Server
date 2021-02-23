@@ -9,7 +9,8 @@ import java.net.Socket
  * This class contains just enough logic to determine who to hand the request to.
  */
 internal class RequestProcessor(
-    private val connection: Socket, private val handler: SocketRequestHandler //This will really handle the request
+    private val connection: Socket,
+    private val handler: SocketRequestHandler //This will really handle the request
 ) : Runnable {
 
     private val input: InputStream = connection.getInputStream()
@@ -32,9 +33,6 @@ internal class RequestProcessor(
         val request = reader.readRequest(input)
         log(request)
         handler.handle(request, connection, out)
-//            return
-//        }
-//        throw UnsupportedOperationException(request.toString())
     }
 
     companion object {

@@ -46,11 +46,12 @@ class LogTest {
 
     @Test
     fun `one log entry renders as HTML table`() {
+        val number = 42L
         val time = Instant.now()
         val logger = Log::class
         val record = "stuff we want to record"
         val at = Throwable()
-        val response = entries(listOf(Entry(time,logger,record, at)))
+        val response = entries(listOf(Entry(number,time,logger,record, at)))
         val rendered = renderer.render(request("/"),response)
         assertEquals(ContentType.HTML,rendered.contentType)
         val page = rendered.page
