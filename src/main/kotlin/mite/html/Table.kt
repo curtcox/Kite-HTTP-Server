@@ -55,7 +55,7 @@ data class Table(val head:Row,val body:Body) : HTML {
                 ${thead(head.toHtml())}
                 ${body.toHtml()}""".trimIndent())
 
-    private fun table(text:String) = tag(text,"""<table id="table_id" class="display responsive nowrap" style="width:100%">""","</table>")
+    private fun table(text:String) = tag(text,"""<table id="table_id" class="display responsive wrap" style="width:100%">""","</table>")
     private fun thead(text:String) = tag(text,"<thead>","</thead>")
 
 }
