@@ -5,6 +5,11 @@ import mite.html.HTML
 import java.io.*
 import java.util.*
 
+/**
+ * This interface is essentially a namespace.
+ * It doesn't define any methods, but groups a set of definitions about how we view the HTTP protocol
+ * and what parts of it we support.
+ */
 interface HTTP {
 
     data class Transaction(val request: Request,val response: Response)
@@ -185,16 +190,19 @@ interface HTTP {
             abstract class UnconditionalRenderer : Renderer {
                 override fun handles(request: Request, response: InternalResponse) = true
             }
+
+            override fun toString() = "Body($contentType $status $page)"
+
             companion object {
                 val TO_STRING = object : UnconditionalRenderer() {
                     override fun render(request: Request,inner: InternalResponse) =
                         Body(inner.toString().toByteArray(), ContentType.TEXT, inner.status)
                 }
 
-                val empty = Body("".toByteArray(), ContentType.TEXT, StatusCode.OK)
-
-                fun bytes(bytes: ByteArray,contentType: ContentType) =
-                    Body(bytes, contentType, StatusCode.OK)
+//                val empty = Body("".toByteArray(), ContentType.TEXT, StatusCode.OK)
+//
+//                fun bytes(bytes: ByteArray,contentType: ContentType) =
+//                    Body(bytes, contentType, StatusCode.OK)
 
                 fun OK(page: String = "", contentType: ContentType = ContentType.HTML) =
                     Body(page.toByteArray(), contentType, StatusCode.OK)

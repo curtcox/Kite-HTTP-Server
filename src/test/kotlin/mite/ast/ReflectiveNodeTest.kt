@@ -25,12 +25,13 @@ class ReflectiveNodeTest {
     @Test
     fun `entry values are maps`() {
         val kind = Node::class
+        val number = 42
         val time = Instant.now()
         val logger = kind
         val record = "record"
         val stack = Throwable()
 
-        val entry = Log.Entry(time,logger,record,stack)
+        val entry = Log.Entry(number,time,logger,record,stack)
         val node = ReflectiveNode(entry)
 
         assertEquals(Arity.map, node.arity)

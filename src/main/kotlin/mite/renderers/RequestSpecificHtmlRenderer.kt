@@ -1,6 +1,7 @@
 package mite.renderers
 
 import mite.ast.Node
+import mite.html.Escaper
 import mite.html.Table
 import mite.html.Table.*
 import mite.http.HTTP
@@ -26,11 +27,13 @@ class RequestSpecificHtmlRenderer(val request: HTTP.Request, val nodeRenderer: N
 
     private fun rows(map:Map<String, Node>) =
         map.entries.map { e ->
-            val key = linkTo(e.key)
-            val value = e.value.value.toString()
+            val key = linkTo(escape(e.key))
+            val value = escape(e.value.value.toString())
             val list = listOf(key,value)
             Row(list,"TD")
         }
+
+    private fun escape(html:String) = Escaper.escape(html,10000)
 
     private fun linkTo(text:String) = """<a href="${request.filename}@$text">$text</a>"""
 }

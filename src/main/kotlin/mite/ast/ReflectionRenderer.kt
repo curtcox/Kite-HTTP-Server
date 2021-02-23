@@ -3,7 +3,7 @@ package mite.ast
 /**
  * Uses reflection to render any list.
  */
-class ReflectionRenderer : Node.Renderer {
+object ReflectionRenderer : Node.Renderer {
 
     override fun header(list: List<*>): List<String> = ClassSpecificReflectionRenderer(classOf(list)).header()
 

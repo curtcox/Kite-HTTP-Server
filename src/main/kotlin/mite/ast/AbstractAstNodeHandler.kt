@@ -12,7 +12,7 @@ import mite.renderers.HtmlRenderer
  */
 abstract class AbstractAstNodeHandler(prefix: String, val renderer:Response.Body.Renderer) : AbstractBodyHandler(prefix) {
 
-    constructor(prefix: String) : this(prefix,HtmlRenderer(ReflectionRenderer()))
+    constructor(prefix: String) : this(prefix,HtmlRenderer(ReflectionRenderer))
 
     abstract fun root(): Node
 
