@@ -12,7 +12,7 @@ import java.util.*
  */
 interface HTTP {
 
-    data class Transaction(val request: Request,val response: Response)
+    data class Exchange(val request: Request, val response: Response)
 
     /**
      * A header writer that is also a body handler.

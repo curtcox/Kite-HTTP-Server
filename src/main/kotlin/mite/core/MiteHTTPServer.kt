@@ -11,7 +11,7 @@ import mite.http.HTTP.*
 class MiteHTTPServer(private val server:ServerSocket, val handler: SocketRequestHandler) : Thread() {
 
     private val executor: Executor = Executors.newFixedThreadPool(3)
-    private val generator = RequestTracker
+    private val generator = ExchangeTracker
 
     override fun run() {
         while (true) {
@@ -27,7 +27,7 @@ class MiteHTTPServer(private val server:ServerSocket, val handler: SocketRequest
         const val NAME = "KiteHTTPServer 0.1"
         @Throws(IOException::class)
         fun startListeningOnPort(port: Int, handler: Handler) {
-            RequestTracker.nextInfo()
+            ExchangeTracker.nextInfo()
             log("Accepting connections on port $port")
             val server = MiteHTTPServer(ServerSocketSupplier.port(port), SocketRequestHandler(handler))
             server.start()

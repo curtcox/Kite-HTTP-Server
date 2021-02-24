@@ -13,7 +13,7 @@ object Log : AbstractAstNodeHandler("/log") {
     private val entries = ConcurrentLinkedQueue<Entry>()
 
     data class Entry constructor(val number:Int, val time: Instant, val logger:KClass<*>, val record:Any, val stack:Throwable) {
-        constructor(info:RequestInfo,logger:KClass<*>,record:Any,stack:Throwable) : this(info.number,info.time,logger,record,stack)
+        constructor(info:ExchangeInfo, logger:KClass<*>, record:Any, stack:Throwable) : this(info.number,info.time,logger,record,stack)
     }
 
     private fun record(entry:Entry) {
@@ -42,7 +42,7 @@ object Log : AbstractAstNodeHandler("/log") {
         println(record)
     }
 
-    private fun info() = RequestTracker.info()
+    private fun info() = ExchangeTracker.info()
 
     override fun root() = ReflectiveNode(entries.toList())
 

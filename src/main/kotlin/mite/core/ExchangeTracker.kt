@@ -2,15 +2,15 @@ package mite.core
 
 import java.time.Instant
 
-data class RequestInfo(val number:Int, val time: Instant, val thread: Thread)
+data class ExchangeInfo(val number:Int, val time: Instant, val thread: Thread)
 
 /**
  * Tracks request info.
  */
-object RequestTracker {
+object ExchangeTracker {
 
     private var id = 0
-    private val infos = ArrayList<RequestInfo>()
+    private val infos = ArrayList<ExchangeInfo>()
 
     fun next(runnable: Runnable): Runnable {
         return object : Runnable {
@@ -21,18 +21,18 @@ object RequestTracker {
         }
     }
 
-    fun info(): RequestInfo = synchronized(this) {
+    fun info(): ExchangeInfo = synchronized(this) {
         infos.first { i -> current(i) }
     }
 
     fun nextInfo() {
         synchronized(this) {
             infos.removeIf { i -> current(i) }
-            infos.add(RequestInfo(id++, Instant.now(), currentThread()))
+            infos.add(ExchangeInfo(id++, Instant.now(), currentThread()))
         }
     }
 
-    private fun current(info:RequestInfo) = info.thread == currentThread()
+    private fun current(info:ExchangeInfo) = info.thread == currentThread()
 
     private fun currentThread() = Thread.currentThread()
 }

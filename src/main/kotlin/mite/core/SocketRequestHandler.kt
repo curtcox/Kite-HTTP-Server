@@ -25,11 +25,11 @@ class SocketRequestHandler constructor(handler: Handler) {
         val        body = handler.handle(request)
         val     headers = handler.handleHeaders(request,body)
         val    response = Response(body,headers)
-        log(Transaction(request,response))
+        log(Exchange(request,response))
         writer.write(request.httpVersion,response,out)
     }
 
-    private fun log(transaction: Transaction) {
-        Log.log(SocketRequestHandler::class,transaction)
+    private fun log(exchange: Exchange) {
+        Log.log(SocketRequestHandler::class,exchange)
     }
 }

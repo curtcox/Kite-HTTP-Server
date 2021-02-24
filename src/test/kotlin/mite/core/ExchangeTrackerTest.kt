@@ -1,14 +1,10 @@
 package mite.core
 
-import mite.TestObjects
-import mite.ast.*
-import mite.http.HTTP.*
 import org.junit.Test
-import kotlin.test.*
 
-class RequestTrackerTest {
+class ExchangeTrackerTest {
 
-    val tracker = RequestTracker
+    val tracker = ExchangeTracker
     class TestRunnable : Runnable {
         override fun run() {
             TODO("Not yet implemented")
