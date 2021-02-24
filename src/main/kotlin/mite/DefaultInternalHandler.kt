@@ -28,7 +28,7 @@ object DefaultInternalHandler : InternalHandler {
         Log,
         Objects,
         ProcessRequestHandler.of(),
-        EchoRequestHandler.handler,
+        EchoRequestHandler,
         UnsupportedBodyHandler
     )
 

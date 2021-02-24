@@ -1,6 +1,7 @@
 package mite.core
 
 import mite.ast.*
+import mite.http.HTTP
 import java.util.concurrent.*
 import mite.renderers.HtmlRenderer
 
@@ -24,6 +25,6 @@ object Objects : AbstractAstNodeHandler("/object",HtmlRenderer(object: Node.Rend
         objects.add(SingleObject(o))
     }
 
-    override fun root() = ReflectiveNode(objects.toList())
+    override fun root(request: HTTP.Request) = ReflectiveNode(objects.toList())
 
 }

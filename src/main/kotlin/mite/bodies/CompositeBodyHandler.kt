@@ -10,21 +10,30 @@ import mite.http.HTTP.*
 class CompositeBodyHandler constructor(vararg handlers: BodyHandler) : BodyHandler {
 
     private val handlers = handlers as Array<BodyHandler>
+    private val debug = DebugBodyHandler(*handlers)
 
     @Throws(IOException::class)
     override fun handle(request: Request): InternalResponse? {
-        for (handler in handlers) {
-            if (handler.handles(request)) {
-                return handler.handle(request)
+        if (debug.handles(request)) {
+            debug.handle(request)
+        } else {
+            for (handler in handlers) {
+                if (handler.handles(request)) {
+                    return handler.handle(request)
+                }
             }
         }
         return InternalResponse.noValidHandler
     }
 
     override fun handles(request: Request): Boolean {
-        for (handler in handlers) {
-            if (handler.handles(request)) {
-                return true
+        if (debug.handles(request)) {
+            return true
+        } else {
+            for (handler in handlers) {
+                if (handler.handles(request)) {
+                    return true
+                }
             }
         }
         return false

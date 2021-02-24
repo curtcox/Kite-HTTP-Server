@@ -14,7 +14,9 @@ internal object RequestReader {
         val lines = ArrayList<String>()
         while (reader.ready() || lines.isEmpty()) { // <-- This line is vital. It needs a test
             val line = reader.readLine()
-            lines.add(line)
+            if (line!=null) {
+                lines.add(line)
+            }
         }
         return Raw(lines.toTypedArray())
     }

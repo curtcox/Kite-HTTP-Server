@@ -14,19 +14,17 @@ abstract class AbstractAstNodeHandler(prefix: String, val renderer:Response.Body
 
     constructor(prefix: String) : this(prefix,HtmlRenderer(ReflectionNodeRenderer))
 
-    abstract fun root(): Node
+    abstract fun root(request: Request): Node
 
-    final override fun handle(request: Request): InternalResponse {
-        return InternalResponse.node(node(request),renderer)
-    }
+    final override fun handle(request: Request) = InternalResponse.node(node(request),renderer)
 
     private fun node(request: Request): Node {
         val parts = request.filename.split("@")
         if (parts.isEmpty()) {
-            return root()
+            return root(request)
         }
         val steps = parts.subList(1,parts.size)
-        return node(root(),steps)
+        return node(root(request),steps)
     }
 
     private fun node(node:Node, steps: List<String>): Node {

@@ -20,6 +20,7 @@ abstract class AbstractBodyHandler(open val filter:Request.Filter) : BodyHandler
      */
     final override fun handles(request: Request): Boolean {
         return try {
+            println("${filter.handles(request)} ${request.filename} ${this}")
             filter.handles(request) && handle(request) != null
         } catch (t: Throwable) {
             Log.debug(AbstractBodyHandler::class,t)
