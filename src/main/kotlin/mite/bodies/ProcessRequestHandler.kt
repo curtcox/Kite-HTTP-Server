@@ -16,7 +16,7 @@ object ProcessRequestHandler {
     fun of(
         f: (Request) -> List<String> = { request -> command(request) }
     ): BodyHandler {
-        return FunctionBodyHandler { httpRequest -> SimpleNode.list(Process::class,run(f.invoke(httpRequest))) }
+        return FunctionBodyHandler("/exec",{ httpRequest -> SimpleNode.list(Process::class,run(f.invoke(httpRequest))) })
     }
 
     private fun command(request: Request): List<String> {

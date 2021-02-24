@@ -10,8 +10,8 @@ import mite.util.*
  */
 object PreferencesRequestHandler {
 
-    fun of() = FunctionBodyHandler("/prefs") { request: Request ->
+    fun of() = FunctionBodyHandler("/prefs", { request: Request ->
         SimpleNode.leaf(PersistentStorage::class,PersistentStorage)
-    }
+    })
 
 }
