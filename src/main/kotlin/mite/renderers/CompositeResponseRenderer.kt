@@ -11,7 +11,7 @@ import java.lang.IllegalArgumentException
  */
 class CompositeResponseRenderer constructor(vararg renderers: Renderer) : Renderer {
 
-    private val renderers = renderers as Array<Body.Renderer>
+    private val renderers = renderers as Array<Renderer>
     override fun render(request: Request, response: InternalResponse): Body {
         for (handler in renderers) {
             if (handler.handles(request,response)) {

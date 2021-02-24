@@ -1,6 +1,6 @@
 package mite.reflect
 
-import mite.ast.ReflectionRenderer
+import mite.ast.ReflectionNodeRenderer
 import mite.core.Log
 import java.lang.reflect.Method
 import java.lang.reflect.Modifier
@@ -37,7 +37,7 @@ data class Callable(val target:Any, val member: KCallable<*>) {
             member.isAccessible = true
             member.call(target)
         } catch (t: Throwable) {
-            Log.log(ReflectionRenderer::class,target,t)
+            Log.log(ReflectionNodeRenderer::class,target,t)
             t
         }
 }

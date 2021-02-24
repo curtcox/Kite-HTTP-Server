@@ -187,6 +187,10 @@ interface HTTP {
                 fun render(request: Request, internalResponse: InternalResponse) : Body
             }
             val page: String = String(bytes)
+
+            /**
+             * Unconditional because it will render any response.
+             */
             abstract class UnconditionalRenderer : Renderer {
                 override fun handles(request: Request, response: InternalResponse) = true
             }
@@ -198,11 +202,6 @@ interface HTTP {
                     override fun render(request: Request,inner: InternalResponse) =
                         Body(inner.toString().toByteArray(), ContentType.TEXT, inner.status)
                 }
-
-//                val empty = Body("".toByteArray(), ContentType.TEXT, StatusCode.OK)
-//
-//                fun bytes(bytes: ByteArray,contentType: ContentType) =
-//                    Body(bytes, contentType, StatusCode.OK)
 
                 fun OK(page: String = "", contentType: ContentType = ContentType.HTML) =
                     Body(page.toByteArray(), contentType, StatusCode.OK)

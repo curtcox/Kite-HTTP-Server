@@ -1,20 +1,22 @@
 package mite.ast
 
 import mite.core.Log
+import mite.http.HTTP
 import org.junit.Test
 import java.time.Instant
 import kotlin.test.*
 
-class ReflectionRendererTest {
+class ReflectionNodeRendererTest {
 
-    val renderer = ReflectionRenderer()
+    val renderer = ReflectionNodeRenderer
     data class Infield(val first:String,val second:String,val third:String)
     val infield = Infield("Buckner","Sandberg","Nettles")
     val time = Instant.now()
     val logger = Infield::class
     val record = "stuff"
     val stack  = Throwable()
-    val entry = Log.Entry(time,logger,record,stack)
+    val number = 42
+    val entry = Log.Entry(number,time,logger,record,stack)
 
     @Test
     fun `infield header should match field names`() {

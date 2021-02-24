@@ -3,11 +3,11 @@ package mite.ast
 /**
  * Uses reflection to render any list.
  */
-object ReflectionRenderer : Node.Renderer {
+object ReflectionNodeRenderer : Node.Renderer {
 
-    override fun header(list: List<*>): List<String> = ClassSpecificReflectionRenderer(classOf(list)).header()
+    override fun header(list: List<*>): List<String> = ClassSpecificReflectionNodeRenderer(classOf(list)).header()
 
-    override fun render(node: Node): List<String> = ClassSpecificReflectionRenderer(node.value::class).render(node)
+    override fun render(node: Node): List<String> = ClassSpecificReflectionNodeRenderer(node.value::class).render(node)
 
     private fun classOf(list: List<*>) = when {
         list.isEmpty()       -> String::class

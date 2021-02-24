@@ -5,13 +5,13 @@ import org.junit.Test
 import java.time.Instant
 import kotlin.test.*
 
-class ClassSpecificReflectionRendererTest {
+class ClassSpecificReflectionNodeRendererTest {
 
     data class Infield(val first:String,val second:String,val third:String)
 
     @Test
     fun `infield header should match field names`() {
-        val renderer = ClassSpecificReflectionRenderer(Infield::class)
+        val renderer = ClassSpecificReflectionNodeRenderer(Infield::class)
 
         val header = renderer.header()
 
@@ -24,7 +24,7 @@ class ClassSpecificReflectionRendererTest {
 
     @Test
     fun `log entry header should match field names`() {
-        val renderer = ClassSpecificReflectionRenderer(Log.Entry::class)
+        val renderer = ClassSpecificReflectionNodeRenderer(Log.Entry::class)
 
         val header = renderer.header()
 
@@ -38,7 +38,7 @@ class ClassSpecificReflectionRendererTest {
 
     @Test
     fun `stack trace element header should match field names`() {
-        val renderer = ClassSpecificReflectionRenderer(StackTraceElement::class)
+        val renderer = ClassSpecificReflectionNodeRenderer(StackTraceElement::class)
 
         val header = renderer.header()
 
@@ -55,7 +55,7 @@ class ClassSpecificReflectionRendererTest {
     @Test
     fun `infield values should match field values`() {
         val infield = Infield("Buckner","Sandberg","Nettles")
-        val renderer = ClassSpecificReflectionRenderer(Infield::class)
+        val renderer = ClassSpecificReflectionNodeRenderer(Infield::class)
         val values = renderer.render(SimpleNode.leaf(Infield::class,infield))
 
         assertEquals(3,values.size)
@@ -71,8 +71,9 @@ class ClassSpecificReflectionRendererTest {
         val logger = Infield::class
         val record = "stuff"
         val stack  = Throwable()
-        val entry = Log.Entry(time,logger,record,stack)
-        val renderer = ClassSpecificReflectionRenderer(Log.Entry::class)
+        val number = 42
+        val entry = Log.Entry(number,time,logger,record,stack)
+        val renderer = ClassSpecificReflectionNodeRenderer(Log.Entry::class)
 
         val values = renderer.render(SimpleNode.leaf(Log.Entry::class,entry))
 
@@ -88,7 +89,7 @@ class ClassSpecificReflectionRendererTest {
     fun `stack trace values should match field values`() {
         val stack  = Throwable()
         val clazz = StackTraceElement::class
-        val renderer = ClassSpecificReflectionRenderer(clazz)
+        val renderer = ClassSpecificReflectionNodeRenderer(clazz)
 
         val values = renderer.render(SimpleNode.leaf(clazz,stack.getStackTrace()[0]))
 
@@ -100,7 +101,7 @@ class ClassSpecificReflectionRendererTest {
     @Test
     fun `render returns IllegalArgumentException when asked to render a different class`() {
         val kind = Log.Entry::class
-        val renderer = ClassSpecificReflectionRenderer(kind)
+        val renderer = ClassSpecificReflectionNodeRenderer(kind)
         val value = Infield("Buckner", "Sandberg", "Nettles")
         val rendered = renderer.render(SimpleNode.leaf(Infield::class,value))
         assertEquals("$value is not a $kind",rendered[0])

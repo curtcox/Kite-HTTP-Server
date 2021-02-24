@@ -6,7 +6,7 @@ import kotlin.reflect.*
 /**
  * Uses reflection to render objects of the given class.
  */
-data class ClassSpecificReflectionRenderer(val kind: KClass<*>) {
+data class ClassSpecificReflectionNodeRenderer(val kind: KClass<*>) {
 
     private fun props() = kind.members
         .filter { member -> Callable("",member).couldBeCalledWithRightValue()}

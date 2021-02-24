@@ -4,7 +4,7 @@ import mite.core.*
 import mite.http.HTTP.*
 
 /**
- * Skeletal implementation of HTTP.RequestHandler.
+ * Skeletal implementation of HTTP.BodyHandler.
  *
  * Implementors need to supply an implementation of handle that returns a Response
  * if the handler handles the request.
