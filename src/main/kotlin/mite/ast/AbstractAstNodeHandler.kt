@@ -1,7 +1,6 @@
 package mite.ast
 
 import mite.ast.Node.*
-import mite.bodies.AbstractBodyHandler
 import mite.http.HTTP.*
 import mite.renderers.HtmlRenderer
 
@@ -10,13 +9,15 @@ import mite.renderers.HtmlRenderer
  * The implementor must implement node.
  * This base class will handle node tree navigation.
  */
-abstract class AbstractAstNodeHandler(prefix: String, val renderer:Response.Body.Renderer) : AbstractBodyHandler(prefix) {
+abstract class AbstractAstNodeHandler(val prefix: String, val renderer:Response.Body.Renderer) : BodyHandler {
 
     constructor(prefix: String) : this(prefix,HtmlRenderer(ReflectionNodeRenderer))
 
     abstract fun root(request: Request): Node
 
-    final override fun handle(request: Request) = InternalResponse.node(node(request),renderer)
+    override fun handles(request: Request) = request.filename.startsWith(prefix)
+
+    override fun handle(request: Request) = InternalResponse.node(node(request),renderer)
 
     private fun node(request: Request): Node {
         val parts = request.filename.split("@")
