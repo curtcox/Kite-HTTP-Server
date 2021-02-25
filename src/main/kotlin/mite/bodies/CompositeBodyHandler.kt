@@ -15,7 +15,7 @@ class CompositeBodyHandler constructor(vararg handlers: BodyHandler) : BodyHandl
     @Throws(IOException::class)
     override fun handle(request: Request): InternalResponse? {
         if (debug.handles(request)) {
-            debug.handle(request)
+            return debug.handle(request)
         } else {
             for (handler in handlers) {
                 if (handler.handles(request)) {

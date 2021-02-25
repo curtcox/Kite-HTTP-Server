@@ -18,8 +18,9 @@ class DebugBodyHandler constructor(vararg handlers: BodyHandler) : AbstractAstNo
 
     private fun decisions(request: Request) : List<HandlerDecision> {
         val list = mutableListOf<HandlerDecision>()
+        val inner = request.withoutPrefix("/?")
         for (handler in handlers) {
-            val handles = handler.handles(request)
+            val handles = handler.handles(inner)
             list.add(HandlerDecision(handler,handles))
             if (handles) {
                 return list

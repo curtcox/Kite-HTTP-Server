@@ -135,6 +135,15 @@ interface HTTP {
         val contentType: ContentType,
         val httpVersion: Version
     ) {
+        fun withoutPrefix(prefix: String) = copy(filename = checkAndDropPrefix(filename))
+        private fun checkAndDropPrefix(prefix: String) : String {
+            if (filename.startsWith(prefix)) {
+                return filename.substring(prefix.length)
+            } else {
+                throw IllegalArgumentException("$filename must start with $prefix")
+            }
+        }
+
         data class Raw (val lines:Array<String>)
         interface Filter {
             /**
