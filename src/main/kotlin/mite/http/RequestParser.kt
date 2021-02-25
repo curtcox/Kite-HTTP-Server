@@ -1,38 +1,32 @@
 package mite.http
 
+import mite.core.Log
 import java.lang.Exception
 import java.util.*
+import mite.http.HTTP.*
+import mite.http.HTTP.Request.*
 
 object RequestParser {
 
-    private fun host(raw: HTTP.Request.Raw) = raw.lines
+    private fun host(raw: Raw) = raw.lines
         .filter { it.startsWith("Host:") }
         .map { x -> x.split(" ")[1] }
-        .first()
+        .firstOrNull() ?: "UNKNOWN"
 
-    fun parse(raw: HTTP.Request.Raw): HTTP.Request {
+    fun parse(raw: Raw): Request {
         return try {
             val first = raw.lines[0]
             val tokenizer = StringTokenizer(first)
             val method = when(tokenizer.nextToken()) {
-                "GET"  -> HTTP.Request.Method.GET
-                "POST" -> HTTP.Request.Method.POST
-                else   -> HTTP.Request.Method.UNKNOWN
+                "GET"  -> Method.GET
+                "POST" -> Method.POST
+                else   -> Method.UNKNOWN
             }
             val filename = tokenizer.nextToken()
-            HTTP.Request(raw,
-                method,
-                host(raw),
-                filename,
-                HTTP.ContentType.FORM_URLENCODED,
-                HTTP.Version.fromRequest(first))
+            Request(raw, method, host(raw), filename, ContentType.FORM_URLENCODED, Version.fromRequest(first))
         } catch (e: Exception) {
-            HTTP.Request(raw,
-                HTTP.Request.Method.UNKNOWN,
-                "",
-                "",
-                HTTP.ContentType.FORM_URLENCODED,
-                HTTP.Version.Unknown)
+            Log.log(Request::class,e)
+            Request(raw, Method.UNKNOWN, "", "", ContentType.FORM_URLENCODED, Version.Unknown)
         }
     }
 
