@@ -8,7 +8,7 @@ class ResponseTest {
 
     @Test
     fun `empty has expected values`() {
-        val empty = Response.empty
+        val empty = Response.Body.OK()
         assertEquals(0,empty.bytes.size)
         assertEquals("",empty.page)
         assertEquals(ContentType.TEXT,empty.contentType)
@@ -16,7 +16,7 @@ class ResponseTest {
 
     @Test
     fun `text has expected values`() {
-        val text = Response.OK("text",ContentType.TEXT)
+        val text = Response.Body.OK("text",ContentType.TEXT)
         assertEquals(4,text.bytes.size)
         assertEquals("text",text.page)
         assertEquals(ContentType.TEXT,text.contentType)
@@ -24,7 +24,7 @@ class ResponseTest {
 
     @Test
     fun `HTML has expected values`() {
-        val html = Response.OK("<html></html>")
+        val html = Response.Body.OK("<html></html>")
         assertEquals(13,html.bytes.size)
         assertEquals("<html></html>",html.page)
         assertEquals(ContentType.HTML,html.contentType)

@@ -15,7 +15,7 @@ class ContentTypeHeaderHandlerTest {
 
     val handler = ContentTypeHeaderHandler
     val request = request("/")
-    val response = Response.empty
+    val response = Response.Body.OK()
 
     fun request(filename:String) = TestObjects.requestForFilename(filename)
 

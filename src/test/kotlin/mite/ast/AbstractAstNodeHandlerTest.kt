@@ -11,17 +11,18 @@ class AbstractAstNodeHandlerTest {
 
     val kind = Node::class
     val value = "bar"
+    val number = 86
     val time = Instant.now()
     val logger = kind
     val record = "record"
     val stack = Throwable()
 
-    val entry = Log.Entry(time,logger,record,stack)
+    val entry = Log.Entry(number,time,logger,record,stack)
 
     fun request(filename:String) = TestObjects.requestForFilename(filename)
 
     class TestHandler(val root:Node) : AbstractAstNodeHandler("/root") {
-        override fun root() = root
+        override fun root(request: HTTP.Request) = root
         fun payload(filename:String) = (handle(TestObjects.requestForFilename(filename)).payload as Node).value!!
     }
 

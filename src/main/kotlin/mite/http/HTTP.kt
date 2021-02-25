@@ -135,7 +135,7 @@ interface HTTP {
         val contentType: ContentType,
         val httpVersion: Version
     ) {
-        fun withoutPrefix(prefix: String) = copy(filename = checkAndDropPrefix(filename))
+        fun withoutPrefix(prefix: String) = copy(filename = checkAndDropPrefix(prefix))
         private fun checkAndDropPrefix(prefix: String) : String {
             if (filename.startsWith(prefix)) {
                 return filename.substring(prefix.length)

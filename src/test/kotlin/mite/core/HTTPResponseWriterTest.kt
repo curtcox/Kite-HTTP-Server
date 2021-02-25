@@ -58,9 +58,9 @@ class HTTPResponseWriterTest {
 
     @Test
     fun `write small text to output stream contains text when HTTP version unknown`() {
-        val response = Response.OK(smallText)
+        val response = Response(Response.Body.OK(smallText), arrayOf())
         val bytes = ByteArrayOutputStream()
-        writer.write(unknown,response,headers,bytes)
+        writer.write(unknown,response,bytes)
         val out = bytes.toString()
 
         assertReasonableSmallBody(out)
@@ -68,9 +68,9 @@ class HTTPResponseWriterTest {
 
     @Test
     fun `write medium text to output stream contains text when HTTP version unknown`() {
-        val response = Response.OK(mediumText)
+        val response = Response(Response.Body.OK(mediumText), arrayOf())
         val bytes = ByteArrayOutputStream()
-        writer.write(unknown,response,headers,bytes)
+        writer.write(unknown,response,bytes)
         val out = bytes.toString()
 
         assertReasonableMediumBody(out)
@@ -78,9 +78,9 @@ class HTTPResponseWriterTest {
 
     @Test
     fun `write text to output stream contains text when HTTP version known`() {
-        val response = Response.OK(smallText)
+        val response = Response(Response.Body.OK(smallText), arrayOf())
         val bytes = ByteArrayOutputStream()
-        writer.write(_1_1,response,headers,bytes)
+        writer.write(_1_1,response,bytes)
         val out = bytes.toString()
 
         assertReasonableSmallBody(out)
@@ -89,9 +89,9 @@ class HTTPResponseWriterTest {
 
     @Test
     fun `write binary to output stream contains text when HTTP version unknown`() {
-        val response = Response.bytes(smallText.toByteArray(Charsets.UTF_8),ContentType.ICON)
+        val response = Response(Response.Body(smallText.toByteArray(Charsets.UTF_8),ContentType.ICON,StatusCode.OK), arrayOf())
         val bytes = ByteArrayOutputStream()
-        writer.write(unknown,response,headers,bytes)
+        writer.write(unknown,response,bytes)
         val out = bytes.toString()
 
         assertReasonableSmallBody(out)
@@ -100,9 +100,9 @@ class HTTPResponseWriterTest {
 
     @Test
     fun `write binary to output stream contains text when HTTP version known`() {
-        val response = Response.bytes(smallText.toByteArray(Charsets.UTF_8),ContentType.ICON)
+        val response = Response(Response.Body(smallText.toByteArray(Charsets.UTF_8),ContentType.ICON,StatusCode.OK), arrayOf())
         val bytes = ByteArrayOutputStream()
-        writer.write(_1_1,response,headers,bytes)
+        writer.write(_1_1,response,bytes)
         val out = bytes.toString()
 
         assertReasonableSmallBody(out)

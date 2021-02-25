@@ -36,9 +36,20 @@ class RequestTest {
     @Test
     fun `filename is set from request`() {
         assertEquals("/", parse("GET /").filename)
+        assertEquals("/?", parse("GET /?").filename)
         assertEquals("/whatever", parse("GET /whatever").filename)
         assertEquals("/foo", parse("GET /foo HTTP/1.0").filename)
+        assertEquals("/foo?bar", parse("GET /foo?bar HTTP/1.0").filename)
         assertEquals("/", parse("GET / HTTP/1.1").filename)
+        assertEquals("/bin?baz", parse("GET /bin?baz HTTP/1.1").filename)
+    }
+
+    @Test
+    fun `withoutPrefix will drop given prefix`() {
+        assertEquals("/log", parse("GET /?log").withoutPrefix("/?").filename)
+        assertEquals("/", parse("GET /?").withoutPrefix("/?").filename)
+        assertEquals("/ls", parse("GET /exec/ls HTTP/1.0").withoutPrefix("/exec").filename)
+        assertEquals("/in/the/course", parse("GET /when/in/the/course HTTP/1.1").withoutPrefix("/when").filename)
     }
 
     @Test
@@ -116,8 +127,6 @@ Accept:
     }
 
     companion object {
-        fun parse(request: String): Request {
-            return Request.parse(Request.Raw(arrayOf(request)))
-        }
+        fun parse(request: String) = Request.parse(Request.Raw(arrayOf(request)))
     }
 }
