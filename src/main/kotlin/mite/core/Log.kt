@@ -35,12 +35,26 @@ object Log : AbstractAstNodeHandler("/log") {
 
     fun log(logger:KClass<*>, record: Any) {
         record(Entry(info(),logger, record, Throwable()))
-        println(record)
+        printout(record)
     }
 
     fun log(logger:KClass<*>, record: Any,throwable: Throwable) {
         record(Entry(info(),logger, record, throwable))
-        println(record)
+        printout(record)
+    }
+
+    private fun printout(record:Any) {
+        println(limitedString(record))
+    }
+
+    private fun limitedString(v:Any) : String {
+        val max = 150
+        return if (v == null) {"null"
+        } else {
+            val s = v.toString()
+            if (s.length < max) { s }
+            else { s.substring(0,max) + "..." }
+        }
     }
 
     private fun info() = ExchangeTracker.info()
