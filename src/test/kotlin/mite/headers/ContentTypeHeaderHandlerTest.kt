@@ -17,7 +17,7 @@ class ContentTypeHeaderHandlerTest {
     val request = request("/")
     val response = Response.Body.OK()
 
-    fun request(filename:String) = TestObjects.requestForFilename(filename)
+    fun request(filename:String) = TestObjects.requestForFilename(filename, Version._1_1)
 
     @Test
     fun `contains expected headers`() {

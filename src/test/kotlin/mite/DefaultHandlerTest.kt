@@ -15,7 +15,6 @@ class DefaultHandlerTest {
         val request = forFilename("/favicon.ico")
         val response = handler.handle(request)
         val headers = handler.handleHeaders(request,response)
-        assertEquals(0,headers)
         assertEquals(0,headers.size)
     }
 

@@ -30,12 +30,12 @@ class DefaultInternalHandlerTest {
 
     @Test
     fun `pwd is text`() {
-        val request = forFilename("/pwd")
+        val request = forFilename("/exec/pwd")
         val response = handler.handle(request)!!
         assertEquals(ContentType.AST,response.contentType)
         assertEquals(StatusCode.OK,response.status)
         val node = response.payload as Node
-        assertEquals(Node.Arity.map,node.arity)
+        assertEquals(Node.Arity.list,node.arity)
         val page = response.payload.toString()
         assertTrue(page.contains("/Users"),page)
         assertTrue(page.contains("/Kite-HTTP-Server"),page)

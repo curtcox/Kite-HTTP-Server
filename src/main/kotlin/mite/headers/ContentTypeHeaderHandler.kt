@@ -6,14 +6,12 @@ import java.util.*
 
 object ContentTypeHeaderHandler : HeaderHandler {
 
-    override fun handleHeaders(httpRequest: Request, response: Response.Body): Array<Header> {
-        return arrayOf(
+    override fun handleHeaders(request: Request, response: Response.Body) =
+        if (request.httpVersion.mimeAware) arrayOf(
             Header("HTTP/1.0",         response.status),
             Header("Server:",          MiteHTTPServer.NAME),
             Header("Content-Type:",    response.contentType.streamName),
             Header("Date:",            Date()),
             Header("Content-Length:",  response.bytes.size),
-        )
-    }
-
+        ) else arrayOf()
 }

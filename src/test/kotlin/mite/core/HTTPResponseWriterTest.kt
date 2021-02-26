@@ -58,7 +58,7 @@ class HTTPResponseWriterTest {
 
     @Test
     fun `write small text to output stream contains text when HTTP version unknown`() {
-        val response = Response(Response.Body.OK(smallText), arrayOf())
+        val response = Response(Response.Body.OK(smallText), headers)
         val bytes = ByteArrayOutputStream()
         writer.write(unknown,response,bytes)
         val out = bytes.toString()
@@ -68,7 +68,7 @@ class HTTPResponseWriterTest {
 
     @Test
     fun `write medium text to output stream contains text when HTTP version unknown`() {
-        val response = Response(Response.Body.OK(mediumText), arrayOf())
+        val response = Response(Response.Body.OK(mediumText), headers)
         val bytes = ByteArrayOutputStream()
         writer.write(unknown,response,bytes)
         val out = bytes.toString()
@@ -78,7 +78,7 @@ class HTTPResponseWriterTest {
 
     @Test
     fun `write text to output stream contains text when HTTP version known`() {
-        val response = Response(Response.Body.OK(smallText), arrayOf())
+        val response = Response(Response.Body.OK(smallText), headers)
         val bytes = ByteArrayOutputStream()
         writer.write(_1_1,response,bytes)
         val out = bytes.toString()
@@ -89,7 +89,7 @@ class HTTPResponseWriterTest {
 
     @Test
     fun `write binary to output stream contains text when HTTP version unknown`() {
-        val response = Response(Response.Body(smallText.toByteArray(Charsets.UTF_8),ContentType.ICON,StatusCode.OK), arrayOf())
+        val response = Response(Response.Body(smallText.toByteArray(Charsets.UTF_8),ContentType.ICON,StatusCode.OK), headers)
         val bytes = ByteArrayOutputStream()
         writer.write(unknown,response,bytes)
         val out = bytes.toString()
@@ -100,7 +100,7 @@ class HTTPResponseWriterTest {
 
     @Test
     fun `write binary to output stream contains text when HTTP version known`() {
-        val response = Response(Response.Body(smallText.toByteArray(Charsets.UTF_8),ContentType.ICON,StatusCode.OK), arrayOf())
+        val response = Response(Response.Body(smallText.toByteArray(Charsets.UTF_8),ContentType.ICON,StatusCode.OK), headers)
         val bytes = ByteArrayOutputStream()
         writer.write(_1_1,response,bytes)
         val out = bytes.toString()
