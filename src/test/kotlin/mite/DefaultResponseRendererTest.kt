@@ -12,7 +12,7 @@ class DefaultResponseRendererTest {
     val renderer    = DefaultResponseRenderer
     val OK_message  = InternalResponse.message("OK",StatusCode.OK)
     val BAD_message = InternalResponse.message("BAD",StatusCode.UNAUTHORIZED)
-    val favicon     = InternalResponse.OK(File("favicon.ico").readBytes(),ContentType.ICON)
+    val favicon     = InternalResponse.OK(File("resources/favicon.ico").readBytes(),ContentType.ICON)
 
     fun forFilename(filename:String) = TestObjects.requestForFilename(filename)
 
@@ -39,7 +39,7 @@ class DefaultResponseRendererTest {
 
     @Test
     fun `pwd is text`() {
-        val request = forFilename("/pwd")
+        val request = forFilename("/exec/pwd")
         val response = renderer.render(request,ProcessRequestHandler.of().handle(request)!!)
         assertEquals(ContentType.TEXT,response.contentType)
         assertEquals(StatusCode.OK,response.status)

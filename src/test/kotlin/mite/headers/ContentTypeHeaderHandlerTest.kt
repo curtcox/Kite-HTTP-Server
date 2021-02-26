@@ -24,7 +24,7 @@ class ContentTypeHeaderHandlerTest {
         val headers = handler.handleHeaders(request,response)
         assertTrue(headers.contains(Header("HTTP/1.0",response.status)))
         assertTrue(headers.contains(Header("Server:", MiteHTTPServer.NAME)))
-        assertTrue(headers.contains(Header("Content-Type:",ContentType.TEXT.streamName)))
+        assertTrue(headers.contains(Header("Content-Type:",ContentType.HTML.streamName)))
         assertEquals(1,headers.count { x -> x.key == "Date:" })
         assertTrue(headers.contains(Header("Content-Length:",response.bytes.size)))
     }
