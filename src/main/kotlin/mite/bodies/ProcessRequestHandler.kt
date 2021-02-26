@@ -20,7 +20,7 @@ object ProcessRequestHandler {
     }
 
     private fun command(request: Request): List<String> {
-        val filename = request.filename
+        val filename = request.withoutPrefix("/exec").filename
         val strings = filename.substring(1).split("\\+").toTypedArray()
         return Arrays.asList(*strings)
     }

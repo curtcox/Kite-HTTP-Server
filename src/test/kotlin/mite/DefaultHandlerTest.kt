@@ -15,6 +15,7 @@ class DefaultHandlerTest {
         val request = forFilename("/favicon.ico")
         val response = handler.handle(request)
         val headers = handler.handleHeaders(request,response)
+        assertEquals(0,headers)
         assertEquals(0,headers.size)
     }
 
@@ -34,8 +35,8 @@ class DefaultHandlerTest {
     }
 
     @Test
-    fun `pwd is text`() {
-        val request = forFilename("/pwd")
+    fun `pwd is HTML`() {
+        val request = forFilename("/exec/pwd")
         val response = handler.handle(request)
         assertEquals(ContentType.TEXT,response.contentType)
         assertEquals(StatusCode.OK,response.status)

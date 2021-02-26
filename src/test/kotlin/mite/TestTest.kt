@@ -75,14 +75,4 @@ class TestTest {
         assertEquals(true,everythingMustBeTrueForThisToBeTrue())
     }
 
-    @Test
-    fun `true 1`() {
-        val x =
-            (8 * 8 * 8 == 512) &&
-                    ("When in the course of human events".contains("in")) &&
-                    (!"What you were concentrating on".toUpperCase().contains("WHAT"))
-
-        assertEquals(true,x)
-    }
-
 }

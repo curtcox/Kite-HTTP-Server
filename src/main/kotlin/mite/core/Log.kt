@@ -11,7 +11,7 @@ import kotlin.reflect.KClass
  */
 object Log : AbstractAstNodeHandler("/log") {
 
-    private val entries = ConcurrentLinkedQueue<Entry>()
+    val entries = ConcurrentLinkedQueue<Entry>()
 
     data class Entry constructor(val number:Int, val time: Instant, val logger:KClass<*>, val record:Any, val stack:Throwable) {
         constructor(info:ExchangeInfo, logger:KClass<*>, record:Any, stack:Throwable) : this(info.number,info.time,logger,record,stack)
@@ -24,14 +24,16 @@ object Log : AbstractAstNodeHandler("/log") {
     }
 
     fun log(logger:KClass<*>, t: Throwable) {
-        record(Entry(info(),logger,t.message!!,t))
+        record(Entry(info(),logger,message(t),t))
         t.printStackTrace()
     }
 
     fun debug(logger: KClass<*>, t: Throwable) {
-        record(Entry(info(),logger,t.message!!,t))
+        record(Entry(info(),logger,message(t),t))
         t.printStackTrace()
     }
+
+    fun message(t:Throwable) = t.message ?: ""
 
     fun log(logger:KClass<*>, record: Any) {
         record(Entry(info(),logger, record, Throwable()))

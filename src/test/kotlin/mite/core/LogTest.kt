@@ -57,12 +57,45 @@ class LogTest {
         val page = rendered.page
         assertTrue(page.startsWith("<HTML>"))
         assertTrue(page.endsWith("</HTML>"))
-        assertTrue(page.contains("<TABLE>"))
-        assertTrue(page.contains("</TABLE>"))
+        assertTrue(page.contains("<table"))
+        assertTrue(page.contains("</table>"))
         assertTrue(page.contains(time.toString()))
         assertTrue(page.contains(logger.toString()))
         assertTrue(page.contains(record))
         assertTrue(page.contains(at.toString()))
+    }
+
+    @Test
+    fun `entry uses empty string when no throwable message`() {
+        val logger = Request::class
+        val problem = Throwable()
+
+        ExchangeTracker.nextInfo()
+        Log.log(logger,problem)
+
+        val entry = Log.entries.find { e -> e.stack == problem }
+
+        assertNotNull(entry)
+        assertEquals(problem,entry.stack)
+        assertEquals(logger,entry.logger)
+        assertEquals("",entry.record)
+    }
+
+    @Test
+    fun `entry uses throwable message when it exists`() {
+        val logger = Request::class
+        val message = "In a bottle"
+        val problem = Throwable(message)
+
+        ExchangeTracker.nextInfo()
+        Log.log(logger,problem)
+
+        val entry = Log.entries.find { e -> e.stack == problem }
+
+        assertNotNull(entry)
+        assertEquals(problem,entry.stack)
+        assertEquals(logger,entry.logger)
+        assertEquals(message,entry.record)
     }
 
 }

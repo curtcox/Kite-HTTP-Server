@@ -35,7 +35,7 @@ class DefaultInternalHandlerTest {
         assertEquals(ContentType.AST,response.contentType)
         assertEquals(StatusCode.OK,response.status)
         val node = response.payload as Node
-        assertEquals(Node.Arity.list,node.arity)
+        assertEquals(Node.Arity.map,node.arity)
         val page = response.payload.toString()
         assertTrue(page.contains("/Users"),page)
         assertTrue(page.contains("/Kite-HTTP-Server"),page)

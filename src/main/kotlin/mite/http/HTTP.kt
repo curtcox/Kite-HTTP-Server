@@ -138,7 +138,8 @@ interface HTTP {
         fun withoutPrefix(prefix: String) = copy(filename = checkAndDropPrefix(prefix))
         private fun checkAndDropPrefix(prefix: String) : String {
             if (filename.startsWith(prefix)) {
-                return filename.substring(prefix.length)
+                val rest = filename.substring(prefix.length)
+                return if (rest.startsWith("/")) rest else "/${rest}"
             } else {
                 throw IllegalArgumentException("$filename must start with $prefix")
             }

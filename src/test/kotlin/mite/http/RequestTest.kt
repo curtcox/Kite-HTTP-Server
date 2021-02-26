@@ -1,5 +1,6 @@
 package mite.http
 
+import mite.core.ExchangeTracker
 import mite.http.HTTP.*
 import org.junit.Test
 import kotlin.test.*
@@ -40,6 +41,7 @@ class RequestTest {
         assertEquals("/whatever", parse("GET /whatever").filename)
         assertEquals("/foo", parse("GET /foo HTTP/1.0").filename)
         assertEquals("/foo?bar", parse("GET /foo?bar HTTP/1.0").filename)
+        assertEquals("/exec/ls", parse("GET /exec/ls HTTP/1.0").filename)
         assertEquals("/", parse("GET / HTTP/1.1").filename)
         assertEquals("/bin?baz", parse("GET /bin?baz HTTP/1.1").filename)
     }
@@ -127,6 +129,9 @@ Accept:
     }
 
     companion object {
-        fun parse(request: String) = Request.parse(Request.Raw(arrayOf(request)))
+        fun parse(request: String) : Request {
+            ExchangeTracker.nextInfo()
+            return Request.parse(Request.Raw(arrayOf(request)))
+        }
     }
 }

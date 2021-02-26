@@ -22,7 +22,7 @@ object ExchangeTracker {
     }
 
     fun info(): ExchangeInfo = synchronized(this) {
-        infos.first { i -> current(i) }
+        infos.firstOrNull { i -> current(i) } ?: throw badThread()
     }
 
     fun nextInfo() {
@@ -35,4 +35,6 @@ object ExchangeTracker {
     private fun current(info:ExchangeInfo) = info.thread == currentThread()
 
     private fun currentThread() = Thread.currentThread()
+
+    private fun badThread() = IllegalThreadStateException("${currentThread()} is not in ${infos}")
 }

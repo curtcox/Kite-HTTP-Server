@@ -33,7 +33,7 @@ class ReflectionNodeRendererTest {
     fun `log entry header should match field names`() {
         val header = renderer.header(listOf(entry))
 
-        assertEquals(4,header.size)
+        assertEquals(5,header.size)
 
         assertTrue(header.contains("time"))
         assertTrue(header.contains("logger"))
@@ -57,12 +57,13 @@ class ReflectionNodeRendererTest {
 
         val values = renderer.render(SimpleNode.leaf(Log.Entry::class,entry))
 
-        assertEquals(4,values.size)
+        assertEquals(5,values.size)
 
-        assertEquals(logger.toString(),  values[0])
-        assertEquals(record,             values[1])
-        assertEquals(stack.toString(),   values[2])
-        assertEquals(time.toString(),    values[3])
+        assertEquals(number,             values[0])
+        assertEquals(logger.toString(),  values[1])
+        assertEquals(record,             values[2])
+        assertEquals(stack.toString(),   values[3])
+        assertEquals(time.toString(),    values[4])
     }
 
 }

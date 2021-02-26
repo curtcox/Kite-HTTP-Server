@@ -11,7 +11,7 @@ class ResponseTest {
         val empty = Response.Body.OK()
         assertEquals(0,empty.bytes.size)
         assertEquals("",empty.page)
-        assertEquals(ContentType.TEXT,empty.contentType)
+        assertEquals(ContentType.HTML,empty.contentType)
     }
 
     @Test
