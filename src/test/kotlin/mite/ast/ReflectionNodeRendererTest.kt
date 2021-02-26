@@ -1,7 +1,6 @@
 package mite.ast
 
 import mite.core.Log
-import mite.http.HTTP
 import org.junit.Test
 import java.time.Instant
 import kotlin.test.*
@@ -59,11 +58,11 @@ class ReflectionNodeRendererTest {
 
         assertEquals(5,values.size)
 
-        assertEquals(number,             values[0])
-        assertEquals(logger.toString(),  values[1])
-        assertEquals(record,             values[2])
-        assertEquals(stack.toString(),   values[3])
-        assertEquals(time.toString(),    values[4])
+        assertEquals(Infield::class.toString(), values[0])
+        assertEquals(number.toString(),         values[1])
+        assertEquals(record,                    values[2])
+        assertEquals(stack.toString(),          values[3])
+        assertEquals(time.toString(),           values[4])
     }
 
 }

@@ -43,16 +43,16 @@ abstract class AbstractAstNodeHandler(val prefix: String, val renderer:Response.
         if (isIndexStep(node,step)) {
             return nodeAtIndex(node,step)
         }
-        if (isKeyStep(node,step)) {
+        if (isKeyStep(node)) {
             return nodeAtKey(node,step)
         }
-        throw IllegalArgumentException("$step not in $node")
+        throw IllegalArgumentException("$step not available for $node")
     }
 
     private fun isIndexStep(node: Node, part: String) = node.arity == Arity.list && part.toIntOrNull() != null
     private fun nodeAtIndex(node: Node, part: String) = node.list[part.toInt()]
 
-    private fun isKeyStep(node: Node, part: String) = node.arity == Arity.map && part != null
+    private fun isKeyStep(node: Node) = node.arity == Arity.map
     private fun nodeAtKey(node: Node, part: String) =
         if (node.map[part]==null) throw IllegalArgumentException("Missing $part")
         else node.map[part]!!

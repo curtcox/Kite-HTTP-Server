@@ -23,7 +23,7 @@ class AbstractAstNodeHandlerTest {
 
     class TestHandler(val root:Node) : AbstractAstNodeHandler("/root") {
         override fun root(request: HTTP.Request) = root
-        fun payload(filename:String) = (handle(TestObjects.requestForFilename(filename)).payload as Node).value!!
+        fun payload(filename:String) = (handle(TestObjects.requestForFilename(filename)).payload as Node).value
     }
 
     @Test
@@ -36,9 +36,9 @@ class AbstractAstNodeHandlerTest {
     }
 
     @Test
-    fun `list does not handle invalid index`() {
+    fun `list claims to handle invalid index`() {
         val handler = TestHandler(SimpleNode.list(kind,listOf(entry)))
-        assertFalse(handler.handles(request("/root@1")))
+        assertTrue(handler.handles(request("/root@1")))
     }
 
     @Test
@@ -67,10 +67,18 @@ class AbstractAstNodeHandlerTest {
     }
 
     @Test
-    fun `fields of item when root is list of entries`() {
+    fun `fields of item when root is list of simple entries`() {
         val handler = TestHandler(SimpleNode.list(kind,listOf(entry)))
 
         assertEquals(entry,   (handler.payload("/root") as List<Node>)[0].leaf)
+        assertEquals(entry,   handler.payload("/root@0"))
+    }
+
+    @Test
+    fun `fields of item when root is lreflective ist of entries`() {
+        val handler = TestHandler(ReflectiveNode(listOf(entry)))
+
+        assertEquals(entry,   (handler.payload("/root") as List<Log.Entry>)[0])
         assertEquals(entry,   handler.payload("/root@0"))
         assertEquals(time,    handler.payload("/root@0@time"))
         assertEquals(logger,  handler.payload("/root@0@logger"))
