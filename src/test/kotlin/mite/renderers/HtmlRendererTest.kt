@@ -1,6 +1,6 @@
 package mite.renderers
 
-import mite.TestObjects
+import mite.*
 import mite.ast.*
 import mite.http.HTTP.*
 import org.junit.Test
@@ -31,21 +31,21 @@ class HtmlRendererTest {
         val response = singletons(listOf(one))
         val rendered = renderer.render(request,response)
         assertEquals(ContentType.HTML,rendered.contentType)
-        val page = rendered.page
-        assertEquals("""
+        val page = PageAsserts(rendered.page)
+        page.startsWith("""
             <HTML>
             <BODY>
-            <table id="table_id" class="display">
-            <thead>
-            <TR><TH>Value</TH></TR>
-            </thead>
-            <tbody>
-            <TR><TD>stuff</TD></TR>
-            </tbody>
-            </table>
+        """.trimIndent())
+        page.endsWith("""
             </BODY>
             </HTML>
-        """.trimIndent(), page)
+        """.trimIndent())
+        page.contains("""<TR><TH>#</TH><TH>Value</TH></TR>""")
+        page.contains("""<tbody><TR><TD><a href="@0">0</a></TD><TD>stuff</TD></TR></tbody>""")
+        page.contains("""<thead>""")
+        page.contains("""</thead>""")
+        page.contains("""<tbody>""")
+        page.contains("""</tbody>""")
     }
 
     @Test
@@ -56,21 +56,21 @@ class HtmlRendererTest {
         val response = pairs(mapOf("one" to one))
         val rendered = renderer.render(request,response)
         assertEquals(ContentType.HTML,rendered.contentType)
-        val page = rendered.page
-        assertEquals("""
+        val page = PageAsserts(rendered.page)
+        page.startsWith("""
             <HTML>
             <BODY>
-            <table id="table_id" class="display">
-            <thead>
-            <TR><TH>Key</TH><TH>Value</TH></TR>
-            </thead>
-            <tbody>
-            <TR><TD>one</TD><TD>Singleton(value=thing)</TD></TR>
-            </tbody>
-            </table>
+        """.trimIndent())
+        page.endsWith("""
             </BODY>
             </HTML>
-        """.trimIndent(), page)
+        """.trimIndent())
+        page.contains("""<TR><TH>Key</TH><TH>Value</TH></TR>""")
+        page.contains("""<tbody><TR><TD><a href="@one">one</a></TD><TD>Singleton(value=thing)</TD></TR></tbody>""")
+        page.contains("""<thead>""")
+        page.contains("""</thead>""")
+        page.contains("""<tbody>""")
+        page.contains("""</tbody>""")
     }
 
     @Test
@@ -81,21 +81,21 @@ class HtmlRendererTest {
         val response = leaf(one)
         val rendered = renderer.render(request,response)
         assertEquals(ContentType.HTML,rendered.contentType)
-        val page = rendered.page
-        assertEquals("""
+        val page = PageAsserts(rendered.page)
+        page.startsWith("""
             <HTML>
             <BODY>
-            <table id="table_id" class="display">
-            <thead>
-            <TR><TH>Value</TH></TR>
-            </thead>
-            <tbody>
-            <TR><TD>stuff</TD></TR>
-            </tbody>
-            </table>
+        """.trimIndent())
+        page.endsWith("""
             </BODY>
             </HTML>
-        """.trimIndent(), page)
+        """.trimIndent())
+        page.contains("""<TR><TH>#</TH><TH>Value</TH></TR>""")
+        page.contains("""<tbody><TR><TD><a href="@0">0</a></TD><TD>stuff</TD></TR></tbody>""")
+        page.contains("""<thead>""")
+        page.contains("""</thead>""")
+        page.contains("""<tbody>""")
+        page.contains("""</tbody>""")
     }
 
 }

@@ -1,6 +1,6 @@
 package mite.core
 
-import mite.TestObjects
+import mite.*
 import mite.ast.*
 import mite.http.HTTP.*
 import org.junit.Test
@@ -8,7 +8,7 @@ import kotlin.test.*
 
 class ObjectsTest {
 
-    val renderer = Objects.renderer
+    private val renderer = Objects.renderer
 
     fun request(filename:String) = TestObjects.requestForFilename(filename)
 
@@ -37,9 +37,9 @@ class ObjectsTest {
         val response = objects(listOf())
         val rendered = renderer.render(request("/object"),response)
         assertEquals(ContentType.HTML,rendered.contentType)
-        val page = rendered.page
-        assertTrue(page.startsWith("<HTML>"))
-        assertTrue(page.endsWith("</HTML>"))
+        val page = PageAsserts(rendered.page)
+        page.startsWith("<HTML>")
+        page.endsWith("</HTML>")
     }
 
     @Test
@@ -48,17 +48,19 @@ class ObjectsTest {
         val response = objects(listOf(Objects.SingleObject(record)))
         val rendered = renderer.render(request("/object/${record.hashCode()}"),response)
         assertEquals(ContentType.HTML,rendered.contentType)
-        val page = rendered.page
-        assertEquals("""
+        val page = PageAsserts(rendered.page)
+        page.startsWith("""
             <HTML>
             <BODY>
-            <TABLE>
-            <TR><TH>Class</TH><TH>Id</TH><TH>String</TH></TR>
-            <TR><TD>String</TD><TD>${record.hashCode()}</TD><TD>stuff we want to record</TD></TR>
-            </TABLE>
+        """.trimIndent())
+        page.endsWith("""
+            </table>
             </BODY>
             </HTML>
-        """.trimIndent(),page)
+        """.trimIndent())
+        page.contains("""<table id="table_id" class="display responsive wrap" style="width:100%">""")
+        page.contains("""<TR><TH>#</TH><TH>Class</TH><TH>Id</TH><TH>String</TH></TR>""")
+        page.contains("""<TR><TD><a href="/object/-571983892@0">0</a></TD><TD>String</TD><TD>-571983892</TD><TD>stuff we want to record</TD></TR>""")
     }
 
 }
