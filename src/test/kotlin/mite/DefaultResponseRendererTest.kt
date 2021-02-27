@@ -6,6 +6,7 @@ import mite.http.HTTP.*
 import org.junit.Test
 import java.io.File
 import kotlin.test.*
+import mite.ihttp.InternalHttp.*
 
 class DefaultResponseRendererTest {
 

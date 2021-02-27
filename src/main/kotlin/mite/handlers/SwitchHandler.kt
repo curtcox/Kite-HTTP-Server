@@ -1,6 +1,7 @@
 package mite.handlers
 
 import mite.http.HTTP.*
+import mite.ihttp.InternalHttp.*
 
 /**
  * Uses either one handler or the other depending on an on/off switch.

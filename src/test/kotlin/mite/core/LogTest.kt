@@ -7,6 +7,7 @@ import mite.http.HTTP.*
 import org.junit.Test
 import java.time.Instant
 import kotlin.test.*
+import mite.ihttp.InternalHttp.*
 
 class LogTest {
 

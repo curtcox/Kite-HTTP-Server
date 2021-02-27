@@ -1,6 +1,7 @@
 package mite.handlers
 
 import mite.http.HTTP.*
+import mite.ihttp.InternalHttp.*
 
 class HandlerFromHeaderAndBody(val header: HeaderHandler, val body: BodyHandler) : InternalHandler {
 

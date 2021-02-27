@@ -14,7 +14,7 @@ class ReflectiveNodeTest {
         val node = ReflectiveNode(string)
 
         assertEquals(Arity.map,   node.arity)
-        assertEquals(11, node.map.size)
+        assertEquals(9,  node.map.size)
         assertEquals(string,      node.value)
 
         assertEquals(ReflectiveNode(string),            node.map["toString"])

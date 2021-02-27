@@ -5,6 +5,7 @@ import mite.core.*
 import mite.http.HTTP.*
 import mite.handlers.*
 import mite.headers.*
+import mite.ihttp.InternalHttp.*
 
 /**
  * Configure and start the server.

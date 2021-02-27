@@ -3,6 +3,7 @@ package mite.ast
 import mite.ast.Node.*
 import mite.http.HTTP.*
 import mite.renderers.HtmlRenderer
+import mite.ihttp.InternalHttp.*
 
 /**
  * Skeletal implementation of a handler that produces an AST node.

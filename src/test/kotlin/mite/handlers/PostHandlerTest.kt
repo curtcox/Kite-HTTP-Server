@@ -2,9 +2,9 @@ package mite.handlers
 
 import mite.TestObjects
 import mite.http.HTTP.*
-import mite.core.*
 import org.junit.Test
 import kotlin.test.*
+import mite.ihttp.InternalHttp.*
 
 class PostHandlerTest {
 

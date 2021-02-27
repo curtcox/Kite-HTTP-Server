@@ -2,6 +2,7 @@ package mite.bodies
 
 import java.io.IOException
 import mite.http.HTTP.*
+import mite.ihttp.InternalHttp.*
 
 /**
  * Handler that defers to other handlers.

@@ -2,6 +2,7 @@ package mite.handlers
 
 import mite.http.HTTP.*
 import java.io.File
+import mite.ihttp.InternalHttp.*
 
 object ResourceHandler : BodyHandler {
 

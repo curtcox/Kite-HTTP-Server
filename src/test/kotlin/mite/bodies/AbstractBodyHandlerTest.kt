@@ -4,6 +4,7 @@ import mite.TestObjects
 import mite.http.HTTP.*
 import org.junit.Test
 import kotlin.test.*
+import mite.ihttp.InternalHttp.*
 
 class AbstractBodyHandlerTest {
 

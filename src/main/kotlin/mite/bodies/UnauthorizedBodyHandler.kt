@@ -1,8 +1,7 @@
 package mite.bodies
 
 import mite.http.HTTP.*
-import mite.html.HTML
-
+import mite.ihttp.InternalHttp.*
 /**
  * To report to the client that the request is unauthorized.
  * Although the HTTP standard specifies "unauthorized", semantically this response means "unauthenticated".

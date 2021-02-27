@@ -3,6 +3,7 @@ package mite.renderers
 import mite.http.HTTP.*
 import mite.http.HTTP.Response.*
 import mite.http.HTTP.Response.Body.*
+import mite.ihttp.InternalHttp.*
 
 object BinaryRenderer : Renderer {
 

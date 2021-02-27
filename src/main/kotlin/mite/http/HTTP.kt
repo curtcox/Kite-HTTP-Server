@@ -1,6 +1,6 @@
 package mite.http
 
-import mite.ast.Node
+import mite.ihttp.InternalHttp.*
 import mite.html.HTML
 import java.io.*
 import java.util.*
@@ -35,37 +35,7 @@ interface HTTP {
         fun handle(request: Request): Response.Body
     }
 
-    /**
-     * A header writer that is also a body handler.
-     *
-     * This could obviously be one interface with optional methods rather than
-     * three different interfaces. This way seems more natural, since most things
-     * will either provide a header or a body. There are, however, occasionally
-     * things like authorization that will need to do both.
-     */
-    interface InternalHandler : BodyHandler, HeaderHandler
 
-    /**
-     * This interface is used to define what an HTTP Server does.
-     *
-     * The intent is to allow groups of handlers to be composed and treated as a single handler.
-     * See CompositeRequestHandler for a simple example of this concept.
-     * Note that the expectation is subtly different for the root HTTPRequestHandler and component
-     * HTTPHandlerS because the root has nothing to delegate to if it doesn't produce a response.
-     *
-     * Implementors may want to use AbstractRequestHandler, so that they only need implement handle.
-     */
-    interface BodyHandler : Request.Filter {
-        /**
-         * Handle this request and produce a response.
-         *
-         * Note that this method may well be called again from a different
-         * thread before it returns.  It is the responsibility of the implementer to
-         * ensure that that doesn't cause any problems.
-         */
-        @Throws(IOException::class)
-        fun handle(request: Request): InternalResponse?
-    }
 
     data class Header(val key:String, val value:Any)
 
@@ -160,30 +130,6 @@ interface HTTP {
 
     }
 
-    /**
-     * The response to a HTTP request.
-     */
-    data class InternalResponse constructor(
-        val payload: Any,
-        val contentType: ContentType,
-        val status: StatusCode,
-        val renderer : Response.Body.Renderer? = null
-    ) {
-        interface Filter {
-            /**
-             * Return true if this renderer renders this response.
-             */
-            fun handles(request: Request,response:InternalResponse): Boolean
-
-        }
-        companion object {
-            val noValidHandler = message("No valid handler",StatusCode.NOT_IMPLEMENTED)
-            fun OK(payload: Any,contentType: ContentType) = InternalResponse(payload, contentType, StatusCode.OK)
-            fun message(message: String, status: StatusCode) = InternalResponse(message, ContentType.TEXT, status)
-            fun node(payload: Node,render:Response.Body.Renderer=Response.Body.TO_STRING) =
-                InternalResponse(payload, ContentType.AST, StatusCode.OK, render)
-        }
-    }
 
     /**
      * The response to a HTTP request.

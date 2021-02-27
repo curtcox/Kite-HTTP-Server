@@ -4,6 +4,7 @@ import mite.ast.AbstractAstNodeHandler
 import mite.ast.Node
 import mite.ast.ReflectiveNode
 import mite.http.HTTP.*
+import mite.ihttp.InternalHttp.*
 
 /**
  * For debugging routing problems.

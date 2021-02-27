@@ -2,6 +2,7 @@ package mite.bodies
 
 import mite.core.*
 import mite.http.HTTP.*
+import mite.ihttp.InternalHttp.*
 
 /**
  * Skeletal implementation of HTTP.BodyHandler.

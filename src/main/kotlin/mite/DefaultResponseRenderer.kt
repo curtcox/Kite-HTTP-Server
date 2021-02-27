@@ -2,6 +2,7 @@ package mite
 
 import mite.http.HTTP.*
 import mite.renderers.*
+import mite.ihttp.InternalHttp.*
 
 object DefaultResponseRenderer : Response.Body.UnconditionalRenderer() {
 

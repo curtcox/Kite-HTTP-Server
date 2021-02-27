@@ -4,7 +4,7 @@ import mite.http.HTTP.*
 import mite.http.HTTP.Response.*
 import mite.http.HTTP.Response.Body.*
 import java.lang.IllegalArgumentException
-
+import mite.ihttp.InternalHttp.*
 /**
  * Renderer that defers to other renderers.
  * It uses the first renderer that says it can handle the given request.

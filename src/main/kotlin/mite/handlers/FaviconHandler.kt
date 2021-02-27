@@ -3,6 +3,7 @@ package mite.handlers
 import mite.bodies.AbstractBodyHandler
 import mite.http.HTTP.*
 import java.io.File
+import mite.ihttp.InternalHttp.*
 
 object FaviconHandler : AbstractBodyHandler("/favicon.ico") {
 

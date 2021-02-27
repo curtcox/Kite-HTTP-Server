@@ -4,6 +4,7 @@ import mite.ast.Node
 import mite.http.HTTP.*
 import mite.http.HTTP.Response.*
 import mite.http.HTTP.Response.Body.*
+import mite.ihttp.InternalHttp.*
 
 /**
  * A handler that uses a function to produce its responses.
