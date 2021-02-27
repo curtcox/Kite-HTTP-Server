@@ -13,11 +13,11 @@ class ReflectiveNodeTest {
         val string = "wah?"
         val node = ReflectiveNode(string)
 
-        assertEquals(Arity.map,  node.arity)
-        assertEquals(9, node.map.size)
-        assertEquals(string,     node.value)
+        assertEquals(Arity.map,   node.arity)
+        assertEquals(11, node.map.size)
+        assertEquals(string,      node.value)
 
-        assertEquals(ReflectiveNode(string.toString()), node.map["toString"])
+        assertEquals(ReflectiveNode(string),            node.map["toString"])
         assertEquals(ReflectiveNode(string.hashCode()), node.map["hashCode"])
         assertEquals(ReflectiveNode(string.length),     node.map["length"])
     }
