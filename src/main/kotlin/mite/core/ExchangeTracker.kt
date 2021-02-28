@@ -5,7 +5,7 @@ import java.time.Instant
 data class ExchangeInfo(val number:Int, val time: Instant, val thread: Thread)
 
 /**
- * Tracks request info.
+ * Tracks HTTP request/response exchange info.
  */
 object ExchangeTracker {
 

@@ -9,12 +9,6 @@ import java.io.IOException
  */
 interface  InternalHttp {
 
-//    interface InternalHeaderHandler {
-//        fun handleHeaders(httpRequest: InternalRequest, response: InternalResponse) : Array<Header>
-//    }
-
-//    interface InternalHandler : BodyHandler, InternalHeaderHandler
-
     interface BodyHandler : InternalRequest.Filter {
         @Throws(IOException::class)
         fun handle(request: InternalRequest): InternalResponse?
@@ -25,9 +19,8 @@ interface  InternalHttp {
         val method = request.method
         val host = request.host
         val httpVersion = request.httpVersion
-        fun withoutPrefix(prefix: String) : InternalRequest {
-            TODO()
-        }
+        fun withoutPrefix(prefix: String) = InternalRequest(request.withoutPrefix(prefix))
+
         interface Filter {
             fun handles(request: InternalRequest): Boolean
         }

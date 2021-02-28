@@ -2,7 +2,6 @@ package mite
 
 import mite.bodies.*
 import mite.core.*
-import mite.http.HTTP.*
 import mite.handlers.*
 import mite.headers.*
 import mite.ihttp.InternalHttp.*
@@ -33,9 +32,6 @@ object DefaultInternalHandler : BodyHandler {
     )
 
     private val switchHandler = SwitchHandler(loggedIn,needsToLogin,login.isLoggedIn())
-
-//    override fun handleHeaders(httpRequest: InternalRequest, response: Response.Body) =
-//        headers.handleHeaders(httpRequest,response)
 
     override fun handles(request: InternalRequest): Boolean = switchHandler.handles(request)
 

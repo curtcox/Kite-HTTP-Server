@@ -1,6 +1,5 @@
 package mite.handlers
 
-import mite.http.HTTP.*
 import mite.ihttp.InternalHttp.*
 
 /**
@@ -12,10 +11,6 @@ class SwitchHandler
         val falseHandler: BodyHandler,
         val test: (InternalRequest)->Boolean): BodyHandler
 {
-//    override fun handleHeaders(request: InternalRequest, response: Response.Body) =
-//        if (test(request)) trueHandler.handleHeaders(request,response)
-//        else              falseHandler.handleHeaders(request,response)
-
 
     override fun handles(request: InternalRequest) =
         if (test(request)) trueHandler.handles(request)

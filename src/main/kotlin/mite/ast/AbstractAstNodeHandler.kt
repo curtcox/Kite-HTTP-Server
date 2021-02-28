@@ -1,7 +1,6 @@
 package mite.ast
 
 import mite.ast.Node.*
-import mite.http.HTTP.*
 import mite.renderers.HtmlRenderer
 import mite.ihttp.InternalHttp.*
 

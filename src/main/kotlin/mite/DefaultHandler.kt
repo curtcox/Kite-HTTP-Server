@@ -13,7 +13,4 @@ object DefaultHandler : Handler {
         return responseRenderer.render(inner,internalHandler.handle(inner)!!)
     }
 
-//    override fun handleHeaders(httpRequest: InternalRequest, response: Response.Body) =
-//        internalHandler.handleHeaders(httpRequest,response)
-
 }

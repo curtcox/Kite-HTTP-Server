@@ -6,9 +6,6 @@ import mite.ihttp.InternalHttp.*
 
 class LoginHandler : BodyHandler {
 
-//    override fun handleHeaders(httpRequest: InternalRequest, response: Response.Body) =
-//        LoginCookie.handleHeaders(httpRequest,response)
-
     override fun handles(request: InternalRequest): Boolean = true
 
     override fun handle(request: InternalRequest): InternalResponse =

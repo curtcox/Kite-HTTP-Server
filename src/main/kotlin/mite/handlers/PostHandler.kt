@@ -1,6 +1,5 @@
 package mite.handlers
 
-import mite.http.HTTP.*
 import mite.ihttp.InternalHttp.*
 
 /**
@@ -11,9 +10,6 @@ import mite.ihttp.InternalHttp.*
 class PostHandler constructor(val handler: BodyHandler) : BodyHandler
 {
     private val POST = "/POST/"
-
-//    override fun handleHeaders(request: InternalRequest, response: Response.Body) =
-//        handler.handleHeaders(request,response)
 
     override fun handles(request: InternalRequest) = request.filename.startsWith(POST)
 

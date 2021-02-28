@@ -4,7 +4,6 @@ import mite.headers.ContentTypeHeaderHandler
 import java.io.*
 import java.net.Socket
 import mite.http.HTTP.*
-import mite.ihttp.InternalHttp.*
 
 /**
  * A bridge between sockets and HTTP handlers.

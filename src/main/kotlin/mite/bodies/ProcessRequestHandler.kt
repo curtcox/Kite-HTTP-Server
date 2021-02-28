@@ -1,7 +1,6 @@
 package mite.bodies
 
 import mite.ast.*
-import mite.http.HTTP.*
 import java.io.*
 import java.util.*
 import java.util.stream.Stream

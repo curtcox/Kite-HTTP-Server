@@ -21,16 +21,12 @@ abstract class AbstractBodyHandler(open val filter:Filter) : BodyHandler {
      */
      final override fun handles(request: InternalRequest): Boolean {
         return try {
-            println("/${filter.handles(request)}/${request.filename}/${this}")
+//            println("/${filter.handles(request)}/${request.filename}/${this}")
             filter.handles(request) && handle(request) != null
         } catch (t: Throwable) {
             Log.debug(AbstractBodyHandler::class,t)
             false
         }
     }
-
-//    final override fun handle(request: Request): InternalResponse? {
-//        TODO("Not yet implemented")
-//    }
 
 }

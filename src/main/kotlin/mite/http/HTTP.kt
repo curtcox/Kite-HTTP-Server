@@ -22,13 +22,6 @@ interface HTTP {
     data class Header(val key:String, val value:Any)
 
     /**
-     * For writing HTTP response headers.
-     */
-//    interface HeaderHandler {
-//        fun handleHeaders(httpRequest: InternalRequest, response: Response.Body) : Array<Header>
-//    }
-
-    /**
      * HTTP version.
      */
     data class Version private constructor(val version: String, val mimeAware: Boolean) {
@@ -94,9 +87,6 @@ interface HTTP {
         }
 
         data class Raw (val lines:Array<String>)
-//        interface Filter {
-//            fun handles(request: Request): Boolean
-//        }
         enum class Method { GET, POST, UNKNOWN }
         companion object {
             fun parse(raw: Raw) = RequestParser.parse(raw)
