@@ -7,6 +7,6 @@ import mite.ihttp.InternalHttp.*
 
 object FaviconHandler : AbstractBodyHandler("/favicon.ico") {
 
-    override fun handle(request: Request) =
+    override fun handle(request: InternalRequest) =
         InternalResponse.OK(File("resources/favicon.ico").readBytes(),ContentType.ICON)
 }

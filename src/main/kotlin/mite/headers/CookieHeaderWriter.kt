@@ -1,10 +1,11 @@
 package mite.headers
 
 import mite.http.HTTP.*
+import mite.ihttp.InternalHttp.*
 
-class CookieHeaderWriter : HeaderHandler {
+class CookieHeaderWriter {
 
-    override fun handleHeaders(httpRequest: Request, response: Response.Body) : Array<Header> {
+    fun handleHeaders(httpRequest: InternalRequest, response: Response.Body) : Array<Header> {
         TODO("Not yet implemented")
     }
 }

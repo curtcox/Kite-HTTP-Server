@@ -10,7 +10,7 @@ import mite.ihttp.InternalHttp.*
 /**
  * For rendering internal responses as HTML.
  */
-data class HtmlRenderer(val nodeRenderer:Renderer) : Body.UnconditionalRenderer() {
+data class HtmlRenderer(val nodeRenderer:Renderer) : InternalResponse.UnconditionalRenderer() {
 
     private val escaped = object : Renderer {
         override fun header(nodes: List<*>): List<String> = nodeRenderer.header(nodes).map { s -> escape(s) }
@@ -19,7 +19,7 @@ data class HtmlRenderer(val nodeRenderer:Renderer) : Body.UnconditionalRenderer(
 
     private fun escape(html:String) = Escaper.escape(html,500)
 
-    override fun render(request: Request, response: InternalResponse): Body {
+    override fun render(request: InternalRequest, response: InternalResponse): Body {
         if (response.contentType == ContentType.AST) {
             val inner = RequestSpecificHtmlRenderer(request,escaped)
             val page = Page(inner.node(response.payload as Node))

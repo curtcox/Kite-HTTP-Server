@@ -1,16 +1,19 @@
 package mite
 
 import mite.http.HTTP.*
+import mite.ihttp.InternalHttp.*
 
 object DefaultHandler : Handler {
 
     val internalHandler = DefaultInternalHandler
     val responseRenderer = DefaultResponseRenderer
 
-    override fun handle(request: Request) =
-        responseRenderer.render(request,internalHandler.handle(request)!!)
+    override fun handle(request: Request) :Response.Body {
+        val inner = InternalRequest(request)
+        return responseRenderer.render(inner,internalHandler.handle(inner)!!)
+    }
 
-    override fun handleHeaders(httpRequest: Request, response: Response.Body) =
-        internalHandler.handleHeaders(httpRequest,response)
+//    override fun handleHeaders(httpRequest: InternalRequest, response: Response.Body) =
+//        internalHandler.handleHeaders(httpRequest,response)
 
 }

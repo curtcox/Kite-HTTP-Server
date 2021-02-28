@@ -1,8 +1,7 @@
 package mite.bodies
 
 import mite.ast.*
-import mite.http.HTTP.*
-import mite.html.HTML
+import mite.ihttp.InternalHttp.*
 import mite.util.*
 
 /**
@@ -10,7 +9,7 @@ import mite.util.*
  */
 object PreferencesRequestHandler {
 
-    fun of() = FunctionBodyHandler("/prefs", { request: Request ->
+    fun of() = FunctionBodyHandler("/prefs", { request: InternalRequest ->
         SimpleNode.leaf(PersistentStorage::class,PersistentStorage)
     })
 

@@ -1,10 +1,10 @@
 package mite.renderers
 
-import mite.http.HTTP.*
 import mite.http.HTTP.Response.*
-import mite.http.HTTP.Response.Body.*
 import java.lang.IllegalArgumentException
 import mite.ihttp.InternalHttp.*
+import mite.ihttp.InternalHttp.InternalResponse.*
+
 /**
  * Renderer that defers to other renderers.
  * It uses the first renderer that says it can handle the given request.
@@ -12,7 +12,7 @@ import mite.ihttp.InternalHttp.*
 class CompositeResponseRenderer constructor(vararg renderers: Renderer) : Renderer {
 
     private val renderers = renderers as Array<Renderer>
-    override fun render(request: Request, response: InternalResponse): Body {
+    override fun render(request: InternalRequest, response: InternalResponse): Body {
         for (handler in renderers) {
             if (handler.handles(request,response)) {
                 return handler.render(request,response)
@@ -21,7 +21,7 @@ class CompositeResponseRenderer constructor(vararg renderers: Renderer) : Render
         throw IllegalArgumentException()
     }
 
-    override fun handles(request: Request, response: InternalResponse): Boolean {
+    override fun handles(request: InternalRequest, response: InternalResponse): Boolean {
         for (renderer in renderers) {
             if (renderer.handles(request,response)) {
                 return true

@@ -8,15 +8,15 @@ import mite.ihttp.InternalHttp.*
  * This allows posts to be passed around as URLs, but can obviously trash
  * GET semantic guarantees.
  */
-class PostHandler constructor(val handler: InternalHandler) : InternalHandler
+class PostHandler constructor(val handler: BodyHandler) : BodyHandler
 {
     private val POST = "/POST/"
 
-    override fun handleHeaders(request: Request, response: Response.Body) =
-        handler.handleHeaders(request,response)
+//    override fun handleHeaders(request: InternalRequest, response: Response.Body) =
+//        handler.handleHeaders(request,response)
 
-    override fun handles(request: Request) = request.filename.startsWith(POST)
+    override fun handles(request: InternalRequest) = request.filename.startsWith(POST)
 
-    override fun handle(request: Request) = handler.handle(request)
+    override fun handle(request: InternalRequest) = handler.handle(request)
 
 }

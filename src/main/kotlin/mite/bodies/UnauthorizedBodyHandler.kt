@@ -9,8 +9,8 @@ import mite.ihttp.InternalHttp.*
  */
 object UnauthorizedBodyHandler : BodyHandler {
 
-    override fun handle(request: Request) = InternalResponse.message("Unauthorized", StatusCode.UNAUTHORIZED)
+    override fun handle(request: InternalRequest) = InternalResponse.message("Unauthorized", StatusCode.UNAUTHORIZED)
 
-    override fun handles(request: Request) = true
+    override fun handles(request: InternalRequest) = true
 
 }

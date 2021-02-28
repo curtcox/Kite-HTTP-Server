@@ -14,7 +14,7 @@ class CompositeBodyHandler constructor(vararg handlers: BodyHandler) : BodyHandl
     private val debug = DebugBodyHandler(*handlers)
 
     @Throws(IOException::class)
-    override fun handle(request: Request): InternalResponse? {
+    override fun handle(request: InternalRequest): InternalResponse? {
         if (debug.handles(request)) {
             return debug.handle(request)
         } else {
@@ -27,7 +27,7 @@ class CompositeBodyHandler constructor(vararg handlers: BodyHandler) : BodyHandl
         return InternalResponse.noValidHandler
     }
 
-    override fun handles(request: Request): Boolean {
+    override fun handles(request: InternalRequest): Boolean {
         if (debug.handles(request)) {
             return true
         } else {

@@ -10,17 +10,17 @@ import mite.ihttp.InternalHttp.*
  * The implementor must implement node.
  * This base class will handle node tree navigation.
  */
-abstract class AbstractAstNodeHandler(val prefix: String, val renderer:Response.Body.Renderer) : BodyHandler {
+abstract class AbstractAstNodeHandler(val prefix: String, val renderer:InternalResponse.Renderer) : BodyHandler {
 
     constructor(prefix: String) : this(prefix,HtmlRenderer(ReflectionNodeRenderer))
 
-    abstract fun root(request: Request): Node
+    abstract fun root(request: InternalRequest): Node
 
-    override fun handles(request: Request) = request.filename.startsWith(prefix)
+    override fun handles(request: InternalRequest) = request.filename.startsWith(prefix)
 
-    override fun handle(request: Request) = InternalResponse.node(node(request),renderer)
+    override fun handle(request: InternalRequest) = InternalResponse.node(node(request),renderer)
 
-    private fun node(request: Request): Node {
+    private fun node(request: InternalRequest): Node {
         val parts = request.filename.split("@")
         if (parts.isEmpty()) {
             return root(request)

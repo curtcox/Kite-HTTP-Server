@@ -14,39 +14,19 @@ interface HTTP {
 
     data class Exchange(val request: Request, val response: Response)
 
-    /**
-     * A header writer that is also a body handler.
-     *
-     * This could obviously be one interface with optional methods rather than
-     * three different interfaces. This way seems more natural, since most things
-     * will either provide a header or a body. There are, however, occasionally
-     * things like authorization that will need to do both.
-     */
-    interface Handler : HeaderHandler {
-
-        /**
-         * Handle this request and produce a response.
-         *
-         * Note that this method may well be called again from a different
-         * thread before it returns.  It is the responsibility of the implementer to
-         * ensure that that doesn't cause any problems.
-         */
+    interface Handler {
         @Throws(IOException::class)
         fun handle(request: Request): Response.Body
     }
-
-
 
     data class Header(val key:String, val value:Any)
 
     /**
      * For writing HTTP response headers.
      */
-    interface HeaderHandler {
-
-        fun handleHeaders(httpRequest: Request, response: Response.Body) : Array<Header>
-
-    }
+//    interface HeaderHandler {
+//        fun handleHeaders(httpRequest: InternalRequest, response: Response.Body) : Array<Header>
+//    }
 
     /**
      * HTTP version.
@@ -69,9 +49,7 @@ interface HTTP {
             out.write(string + "\r\n")
         }
 
-        override fun toString(): String {
-            return version
-        }
+        override fun toString() = version
 
         companion object {
             private const val UNKNOWN = "Unknown"
@@ -116,20 +94,15 @@ interface HTTP {
         }
 
         data class Raw (val lines:Array<String>)
-        interface Filter {
-            /**
-             * Return true if this handler handles this request.
-             */
-            fun handles(request: Request): Boolean
-
-        }
+//        interface Filter {
+//            fun handles(request: Request): Boolean
+//        }
         enum class Method { GET, POST, UNKNOWN }
         companion object {
             fun parse(raw: Raw) = RequestParser.parse(raw)
         }
 
     }
-
 
     /**
      * The response to a HTTP request.
@@ -139,23 +112,13 @@ interface HTTP {
         {
             constructor(html: HTML, status: StatusCode) : this(html.toHtml().toByteArray(),ContentType.HTML,status)
 
-            interface Renderer : InternalResponse.Filter {
-                fun render(request: Request, internalResponse: InternalResponse) : Body
-            }
             val page: String = String(bytes)
-
-            /**
-             * Unconditional because it will render any response.
-             */
-            abstract class UnconditionalRenderer : Renderer {
-                override fun handles(request: Request, response: InternalResponse) = true
-            }
 
             override fun toString() = "Body($contentType $status $page)"
 
             companion object {
-                val TO_STRING = object : UnconditionalRenderer() {
-                    override fun render(request: Request,inner: InternalResponse) =
+                val TO_STRING = object : InternalResponse.UnconditionalRenderer() {
+                    override fun render(request: InternalRequest,inner: InternalResponse) =
                         Body(inner.toString().toByteArray(), ContentType.TEXT, inner.status)
                 }
 

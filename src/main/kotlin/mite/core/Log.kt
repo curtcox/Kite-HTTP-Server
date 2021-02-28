@@ -1,7 +1,7 @@
 package mite.core
 
 import mite.ast.*
-import mite.http.HTTP
+import mite.ihttp.InternalHttp.*
 import java.time.Instant
 import java.util.concurrent.*
 import kotlin.reflect.KClass
@@ -61,6 +61,6 @@ object Log : AbstractAstNodeHandler("/log") {
 
     private fun info() = ExchangeTracker.info()
 
-    override fun root(request: HTTP.Request) = ReflectiveNode(entries.toList())
+    override fun root(request: InternalRequest) = ReflectiveNode(entries.toList())
 
 }

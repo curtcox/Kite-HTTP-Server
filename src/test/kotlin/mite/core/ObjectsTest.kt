@@ -11,7 +11,7 @@ class ObjectsTest {
 
     private val renderer = Objects.renderer
 
-    fun request(filename:String) = TestObjects.requestForFilename(filename)
+    fun request(filename:String) = TestObjects.internalRequestForFilename(filename)
 
     fun objects(entries:List<Objects.SingleObject>) = InternalResponse.node(SimpleNode.list(Log::class, entries))
 

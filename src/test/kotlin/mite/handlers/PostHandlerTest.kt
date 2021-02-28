@@ -8,16 +8,16 @@ import mite.ihttp.InternalHttp.*
 
 class PostHandlerTest {
 
-    val inner = object : InternalHandler {
-        override fun handles(request: Request): Boolean {
+    val inner = object : BodyHandler {
+        override fun handles(request: InternalRequest): Boolean {
             TODO("Not yet implemented")
         }
 
-        override fun handleHeaders(httpRequest: Request, response: Response.Body): Array<Header> {
-            TODO("Not yet implemented")
-        }
+//        override fun handleHeaders(httpRequest: InternalRequest, response: Response.Body): Array<Header> {
+//            TODO("Not yet implemented")
+//        }
 
-        override fun handle(request: Request): InternalResponse? {
+        override fun handle(request: InternalRequest): InternalResponse? {
             TODO("Not yet implemented")
         }
 
@@ -25,7 +25,7 @@ class PostHandlerTest {
 
     val postHandler = PostHandler(inner)
 
-    fun filename(filename:String) = TestObjects.requestForFilename(filename)
+    fun filename(filename:String) = TestObjects.internalRequestForFilename(filename)
 
     @Test
     fun `Only handles POST requests`() {

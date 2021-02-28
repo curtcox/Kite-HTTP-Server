@@ -9,7 +9,7 @@ class DefaultInternalHandlerTest {
 
     val handler = DefaultInternalHandler
 
-    fun forFilename(filename:String) = TestObjects.requestForFilename(filename)
+    fun forFilename(filename:String) = TestObjects.internalRequestForFilename(filename)
 
     @Test
     fun `favicon is icon`() {

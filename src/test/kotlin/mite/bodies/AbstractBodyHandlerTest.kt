@@ -8,10 +8,10 @@ import mite.ihttp.InternalHttp.*
 
 class AbstractBodyHandlerTest {
 
-    fun request(filename:String) = TestObjects.requestForFilename(filename)
+    fun request(filename:String) = TestObjects.internalRequestForFilename(filename)
 
     val handler = object : AbstractBodyHandler("prefix") {
-        override fun handle(request: Request): InternalResponse {
+        override fun handle(request: InternalRequest): InternalResponse {
             return InternalResponse.message(request.filename,StatusCode.OK)
         }
     }

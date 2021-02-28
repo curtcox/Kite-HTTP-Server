@@ -4,9 +4,9 @@ import mite.core.*
 import mite.http.HTTP.*
 import java.util.*
 
-object ContentTypeHeaderHandler : HeaderHandler {
+object ContentTypeHeaderHandler {
 
-    override fun handleHeaders(request: Request, response: Response.Body) =
+    fun handleHeaders(request: Request, response: Response.Body) =
         if (request.httpVersion.mimeAware) arrayOf(
             Header("HTTP/1.0",         response.status),
             Header("Server:",          MiteHTTPServer.NAME),

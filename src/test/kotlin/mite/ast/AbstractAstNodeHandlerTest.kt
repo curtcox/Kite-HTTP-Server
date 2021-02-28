@@ -3,6 +3,7 @@ package mite.ast
 import mite.TestObjects
 import mite.core.Log
 import mite.http.HTTP
+import mite.ihttp.InternalHttp.*
 import org.junit.Test
 import java.time.Instant
 import kotlin.test.*
@@ -19,11 +20,11 @@ class AbstractAstNodeHandlerTest {
 
     val entry = Log.Entry(number,time,logger,record,stack)
 
-    fun request(filename:String) = TestObjects.requestForFilename(filename)
+    fun request(filename:String) = TestObjects.internalRequestForFilename(filename)
 
     class TestHandler(val root:Node) : AbstractAstNodeHandler("/root") {
-        override fun root(request: HTTP.Request) = root
-        fun payload(filename:String) = (handle(TestObjects.requestForFilename(filename)).payload as Node).value
+        override fun root(request: InternalRequest) = root
+        fun payload(filename:String) = (handle(TestObjects.internalRequestForFilename(filename)).payload as Node).value
     }
 
     @Test

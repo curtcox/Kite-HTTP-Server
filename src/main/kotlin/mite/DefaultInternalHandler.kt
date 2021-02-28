@@ -10,7 +10,7 @@ import mite.ihttp.InternalHttp.*
 /**
  * Configure and start the server.
  */
-object DefaultInternalHandler : InternalHandler {
+object DefaultInternalHandler : BodyHandler {
 
     private val headers = ContentTypeHeaderHandler
 
@@ -18,8 +18,7 @@ object DefaultInternalHandler : InternalHandler {
 
     private val favicon = ResourceHandler
 
-    private fun handler(vararg handlers: BodyHandler) =
-        HandlerFromHeaderAndBody(headers, CompositeBodyHandler(*handlers))
+    private fun handler(vararg handlers: BodyHandler) = CompositeBodyHandler(*handlers)
 
     private val needsToLogin = handler(favicon,login)
 
@@ -35,11 +34,11 @@ object DefaultInternalHandler : InternalHandler {
 
     private val switchHandler = SwitchHandler(loggedIn,needsToLogin,login.isLoggedIn())
 
-    override fun handleHeaders(httpRequest: Request, response: Response.Body) =
-        headers.handleHeaders(httpRequest,response)
+//    override fun handleHeaders(httpRequest: InternalRequest, response: Response.Body) =
+//        headers.handleHeaders(httpRequest,response)
 
-    override fun handles(request: Request): Boolean = switchHandler.handles(request)
+    override fun handles(request: InternalRequest): Boolean = switchHandler.handles(request)
 
-    override fun handle(request: Request): InternalResponse? = switchHandler.handle(request)
+    override fun handle(request: InternalRequest): InternalResponse? = switchHandler.handle(request)
 
 }

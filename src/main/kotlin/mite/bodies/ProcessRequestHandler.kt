@@ -14,12 +14,12 @@ object ProcessRequestHandler {
 
     @JvmOverloads
     fun of(
-        f: (Request) -> List<String> = { request -> command(request) }
+        f: (InternalRequest) -> List<String> = { request -> command(request) }
     ): BodyHandler {
         return FunctionBodyHandler("/exec",{ httpRequest -> SimpleNode.list(Process::class,run(f.invoke(httpRequest))) })
     }
 
-    private fun command(request: Request): List<String> {
+    private fun command(request: InternalRequest): List<String> {
         val filename = request.withoutPrefix("/exec").filename
         val strings = filename.substring(1).split("\\+").toTypedArray()
         return Arrays.asList(*strings)

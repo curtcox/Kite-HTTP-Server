@@ -1,14 +1,15 @@
 package mite.headers
 
 import mite.http.HTTP.*
+import mite.ihttp.InternalHttp.*
 
 object LoginCookie {
 
-    fun handleHeaders(httpRequest: Request, response: Response.Body): Array<Header> {
+    fun handleHeaders(httpRequest: InternalRequest, response: Response.Body): Array<Header> {
         return emptyArray()
     }
 
-    fun isLoggedIn(httpRequest: Request) : Boolean {
+    fun isLoggedIn(httpRequest: InternalRequest) : Boolean {
         return true
     }
 

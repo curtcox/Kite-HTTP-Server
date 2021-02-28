@@ -4,16 +4,16 @@ import mite.headers.LoginCookie
 import mite.http.HTTP.*
 import mite.ihttp.InternalHttp.*
 
-class LoginHandler : InternalHandler {
+class LoginHandler : BodyHandler {
 
-    override fun handleHeaders(httpRequest: Request, response: Response.Body) =
-        LoginCookie.handleHeaders(httpRequest,response)
+//    override fun handleHeaders(httpRequest: InternalRequest, response: Response.Body) =
+//        LoginCookie.handleHeaders(httpRequest,response)
 
-    override fun handles(request: Request): Boolean = true
+    override fun handles(request: InternalRequest): Boolean = true
 
-    override fun handle(request: Request): InternalResponse =
+    override fun handle(request: InternalRequest): InternalResponse =
         InternalResponse.message("Login Required",StatusCode.UNAUTHORIZED)
 
-    fun isLoggedIn() : (Request) -> Boolean = { it: Request -> LoginCookie.isLoggedIn(it) }
+    fun isLoggedIn() : (InternalRequest) -> Boolean = { it: InternalRequest -> LoginCookie.isLoggedIn(it) }
 
 }

@@ -13,11 +13,11 @@ class DebugBodyHandler constructor(vararg handlers: BodyHandler) : AbstractAstNo
 
     private val handlers = handlers as Array<BodyHandler>
 
-    override fun root(request: Request): Node = ReflectiveNode(decisions(request))
+    override fun root(request: InternalRequest): Node = ReflectiveNode(decisions(request))
 
     data class HandlerDecision(val handler:BodyHandler, val filename:String, val handles:Boolean)
 
-    private fun decisions(request: Request) : List<HandlerDecision> {
+    private fun decisions(request: InternalRequest) : List<HandlerDecision> {
         val list = mutableListOf<HandlerDecision>()
         val inner = request.withoutPrefix("/?")
         for (handler in handlers) {

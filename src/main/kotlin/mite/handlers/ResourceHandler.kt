@@ -6,13 +6,13 @@ import mite.ihttp.InternalHttp.*
 
 object ResourceHandler : BodyHandler {
 
-    override fun handle(request: Request) = InternalResponse.OK(File(path(request)).readBytes(), mimeType(request)!!)
+    override fun handle(request: InternalRequest) = InternalResponse.OK(File(path(request)).readBytes(), mimeType(request)!!)
 
-    override fun handles(request: Request) = mimeType(request) != null
+    override fun handles(request: InternalRequest) = mimeType(request) != null
 
-    private fun path(request: Request) = "resources" + request.filename
+    private fun path(request: InternalRequest) = "resources" + request.filename
 
-    private fun mimeType(request: Request) = when {
+    private fun mimeType(request: InternalRequest) = when {
         request.filename.endsWith(".ico") -> ContentType.ICON
         request.filename.endsWith(".js")  -> ContentType.JAVASCRIPT
         request.filename.endsWith(".css") -> ContentType.CSS

@@ -4,9 +4,9 @@ import mite.ast.Node
 import mite.html.Escaper
 import mite.html.Table
 import mite.html.Table.*
-import mite.http.HTTP
+import mite.ihttp.InternalHttp.*
 
-class RequestSpecificHtmlRenderer(val request: HTTP.Request, val nodeRenderer: Node.Renderer) {
+class RequestSpecificHtmlRenderer(val request: InternalRequest, val nodeRenderer: Node.Renderer) {
 
     fun node(node: Node): Table {
         return when (node.arity) {

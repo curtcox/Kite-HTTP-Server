@@ -1,8 +1,10 @@
 package mite.core
 
+import mite.headers.ContentTypeHeaderHandler
 import java.io.*
 import java.net.Socket
 import mite.http.HTTP.*
+import mite.ihttp.InternalHttp.*
 
 /**
  * A bridge between sockets and HTTP handlers.
@@ -21,9 +23,9 @@ class SocketRequestHandler constructor(handler: Handler) {
 
     @Throws(IOException::class)
     private fun write(rawRequest: Request.Raw, out: OutputStream) {
-        val request = Request.parse(rawRequest)
+        val     request = Request.parse(rawRequest)
         val        body = handler.handle(request)
-        val     headers = handler.handleHeaders(request,body)
+        val     headers = ContentTypeHeaderHandler.handleHeaders(request,body)
         val    response = Response(body,headers)
         log(Exchange(request,response))
         writer.write(request.httpVersion,response,out)
