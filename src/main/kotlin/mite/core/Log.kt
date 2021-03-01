@@ -13,6 +13,10 @@ object Log : AbstractAstNodeHandler("/log") {
 
     val entries = ConcurrentLinkedQueue<Entry>()
 
+    init {
+        MemoryGuard(entries)
+    }
+
     data class Entry constructor(val number:Int, val time: Instant, val logger:KClass<*>, val record:Any, val stack:Throwable) {
         constructor(info:ExchangeInfo, logger:KClass<*>, record:Any, stack:Throwable) : this(info.number,info.time,logger,record,stack)
     }

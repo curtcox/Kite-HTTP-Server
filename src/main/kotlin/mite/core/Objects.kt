@@ -15,6 +15,10 @@ object Objects : AbstractAstNodeHandler("/object",HtmlRenderer(object: Node.Rend
 
     private val objects = ConcurrentLinkedQueue<SingleObject>()
 
+    init {
+        MemoryGuard(objects)
+    }
+
     data class SingleObject(val o : Any?) {
         fun toHtml(): List<String> =
             if (o==null) listOf("","","")
