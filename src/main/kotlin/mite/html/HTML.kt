@@ -15,4 +15,8 @@ $text
 $close
 """.trim()
 
+    fun string(a:Any) = object : HTML {
+        override fun toHtml() = "$a"
+    }
+
 }

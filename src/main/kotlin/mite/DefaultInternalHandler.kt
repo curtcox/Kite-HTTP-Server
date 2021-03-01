@@ -3,15 +3,12 @@ package mite
 import mite.bodies.*
 import mite.core.*
 import mite.handlers.*
-import mite.headers.*
 import mite.ihttp.InternalHttp.*
 
 /**
  * Configure and start the server.
  */
 object DefaultInternalHandler : BodyHandler {
-
-    private val headers = ContentTypeHeaderHandler
 
     private val login = LoginHandler()
 
