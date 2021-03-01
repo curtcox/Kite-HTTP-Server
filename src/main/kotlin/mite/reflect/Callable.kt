@@ -27,8 +27,11 @@ data class Callable(val target:Any, val member: KCallable<*>) {
 
     private fun isStatic(method: Method?) = if (method==null) false else Modifier.isStatic(method.modifiers)
 
-    private fun valueTypeMatches(t : KType) =
+    private fun valueTypeMatches(t : KType) = try {
         declassify(t) == declassify(target::class) || declassify(t.javaType) == declassify(target::class)
+    } catch (t:Throwable) {
+        false
+    }
 
     private fun declassify(c: Any) = c.toString().replace("class ","")
 
