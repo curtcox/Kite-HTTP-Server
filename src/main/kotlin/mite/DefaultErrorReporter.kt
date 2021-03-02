@@ -14,7 +14,7 @@ object DefaultErrorReporter {
 
     private fun table(t:Throwable) = Table(head(),body(t))
 
-    private fun head() = Row(listOf(""),"TH")
+    private fun head() = Row(listOf("Class Name","File Name","line number"),"TH")
 
     private fun body(t:Throwable) = Body(t.stackTrace.map { e -> row(e) })
 

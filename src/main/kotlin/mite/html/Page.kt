@@ -9,7 +9,7 @@ class Page(vararg bodyText:HTML) : HTML {
     private fun combinedBody() : String {
         val out = StringBuilder()
         for (t in text) {
-            out.append(t)
+            out.append(t.toHtml())
         }
         return out.toString()
     }
