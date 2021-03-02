@@ -14,7 +14,7 @@ data class HtmlRenderer(val nodeRenderer:Renderer) : InternalResponse.Unconditio
 
     private val escaped = object : Renderer {
         override fun header(nodes: List<*>): List<String> = nodeRenderer.header(nodes).map { s -> escape(s) }
-        override fun render(node: Node): List<String> = nodeRenderer.render(node).map { s -> escape(s) }
+        override fun render(node: Node):     List<String> = nodeRenderer.render(node).map  { s -> escape(s) }
     }
 
     private fun escape(html:String) = Escaper.escape(html,500)

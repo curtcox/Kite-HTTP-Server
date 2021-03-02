@@ -1,5 +1,8 @@
 package mite.html
 
+import mite.html.HTML.Tags.script
+import mite.html.HTML.Tags.tag
+
 /**
  * An HTML table.
  */
