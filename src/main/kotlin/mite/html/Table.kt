@@ -6,7 +6,7 @@ import mite.html.HTML.Tags.tag
 /**
  * An HTML table.
  */
-data class Table(val head:Row,val body:Body) : HTML {
+data class Table(val head:Row,val body:Body,val tableId:String) : HTML {
 
     data class Row(val cells:List<String>,val type:String) : HTML {
         override fun toHtml(): String {
@@ -38,7 +38,7 @@ data class Table(val head:Row,val body:Body) : HTML {
     // See https://datatables.net/reference/option/paging
     val documentReady =
 """${'$'}(document).ready(function() {
-   ${'$'}('#table_id').DataTable({
+   ${'$'}('#$tableId').DataTable({
       "paging": false,
       dom: 'Bfrtip',
       buttons: [ 'colvis', 'copy', 'csv', 'excel', 'pdf', 'print'],
@@ -58,7 +58,7 @@ data class Table(val head:Row,val body:Body) : HTML {
                 ${thead(head.toHtml())}
                 ${body.toHtml()}""".trimIndent())
 
-    private fun table(text:String) = tag(text,"""<table id="table_id" class="display responsive wrap" style="width:100%">""","</table>")
+    private fun table(body:String) = tag(body,"""<table id="$tableId" class="display responsive wrap" style="width:100%">""","</table>")
     private fun thead(text:String) = tag(text,"<thead>","</thead>")
 
 }

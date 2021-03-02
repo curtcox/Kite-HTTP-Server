@@ -1,7 +1,5 @@
 package mite.html
 
-import mite.ihttp.InternalHttp
-
 import mite.ihttp.InternalHttp.*
 
 object InternalRequestHtmlRenderer : HTML.Renderer {
@@ -10,7 +8,7 @@ object InternalRequestHtmlRenderer : HTML.Renderer {
 
     override fun render(a: Any?): HTML = table(a as InternalRequest)
 
-    private fun table(t:InternalRequest) = Table(head(),body(t))
+    private fun table(t:InternalRequest) = Table(head(),body(t),"request_table")
 
     private fun head() = Table.Row(listOf("field", "value"), "TH")
 
