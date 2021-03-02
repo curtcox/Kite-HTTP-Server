@@ -8,7 +8,7 @@ object InternalRequestHtmlRenderer : HTML.Renderer {
 
     override fun render(a: Any?): HTML = table(a as InternalRequest)
 
-    private fun table(t:InternalRequest) = Table(head(),body(t),"request_table")
+    private fun table(t:InternalRequest) = Table(head(),body(t),"Request")
 
     private fun head() = Table.Row(listOf("field", "value"), "TH")
 

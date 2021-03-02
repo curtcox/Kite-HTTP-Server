@@ -6,7 +6,9 @@ import mite.html.HTML.Tags.tag
 /**
  * An HTML table.
  */
-data class Table(val head:Row,val body:Body,val tableId:String) : HTML {
+data class Table(val head:Row,val body:Body,val caption:String) : HTML {
+
+    val tableId = "${caption}_table"
 
     data class Row(val cells:List<String>,val type:String) : HTML {
         override fun toHtml(): String {
@@ -55,6 +57,7 @@ data class Table(val head:Row,val body:Body,val tableId:String) : HTML {
         script(documentReady) +
 
         table("""
+                ${tag(caption,"<cationn>","</caption>")}
                 ${thead(head.toHtml())}
                 ${body.toHtml()}""".trimIndent())
 
