@@ -28,7 +28,6 @@ class ObjectsTest {
     @Test
     fun `response is HTML`() {
         val response = Objects.handle(request("/object"))
-        assertEquals(ContentType.AST,response.contentType)
         assertEquals(StatusCode.OK,response.status)
         assertTrue(response.payload is Node)
     }

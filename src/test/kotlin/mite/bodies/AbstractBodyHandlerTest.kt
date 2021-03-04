@@ -33,7 +33,7 @@ class AbstractBodyHandlerTest {
     fun response_is_HTML() {
         val response = handler.handle(request("prefix"))!!
 
-        assertEquals(ContentType.TEXT,response.contentType)
+        assertTrue(response.payload is String)
         assertEquals("prefix",response.payload)
         assertEquals(StatusCode.OK,response.status)
     }

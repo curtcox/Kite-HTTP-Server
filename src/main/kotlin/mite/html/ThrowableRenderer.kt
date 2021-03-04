@@ -15,9 +15,17 @@ object ThrowableRenderer : HTML.Renderer {
     private fun row(element: StackTraceElement) = Table.Row(
         listOf(
             element.className,
-            element.fileName,
-            "${element.lineNumber}"
+            linkToFileName(element),
+            linkToLineNumber(element)
         ), "TD"
     )
+
+    private fun linkToFileName(element: StackTraceElement) = linkTo(element.fileName,linkTo(element))
+
+    private fun linkToLineNumber(element: StackTraceElement) = linkTo("${element.lineNumber}",linkTo(element))
+
+    private fun linkTo(label:String,target:String) = """<a href="$target">$label</a>"""
+
+    private fun linkTo(element: StackTraceElement) = "/source/${element.className}#${element.lineNumber}"
 
 }

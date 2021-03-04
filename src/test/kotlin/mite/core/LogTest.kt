@@ -30,7 +30,6 @@ class LogTest {
     @Test
     fun `response is HTML`() {
         val response = Log.handle(request("/log"))
-        assertEquals(ContentType.AST,response.contentType)
         assertEquals(StatusCode.OK,response.status)
         assertTrue(response.payload is Node)
     }

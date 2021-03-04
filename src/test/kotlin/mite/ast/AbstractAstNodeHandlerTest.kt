@@ -32,7 +32,7 @@ class AbstractAstNodeHandlerTest {
         val handler = TestHandler(SimpleNode.leaf(kind,entry))
         val root = handler.handle(request("/root"))
 
-        assertEquals(HTTP.ContentType.AST, root.contentType)
+        assertTrue(root.payload is Node)
         assertEquals(SimpleNode.leaf(kind,entry), root.payload)
     }
 

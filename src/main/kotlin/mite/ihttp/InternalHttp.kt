@@ -30,10 +30,9 @@ interface  InternalHttp {
      * The response to a HTTP request.
      */
     data class InternalResponse constructor(
-        val payload: Any,
-        val contentType: ContentType,
-        val status: StatusCode,
-        val renderer : Renderer? = null
+        val payload: Any,               // the thing the request returns
+        val status: StatusCode,         // how did the request go?
+        val renderer : Renderer? = null // default way of turning this response into what the client gets
     ) {
         interface Filter {
             fun handles(request: InternalRequest, response:InternalResponse): Boolean
@@ -48,12 +47,18 @@ interface  InternalHttp {
             override fun handles(request: InternalRequest, response: InternalResponse) = true
         }
 
+
         companion object {
             val noValidHandler = message("No valid handler", StatusCode.NOT_IMPLEMENTED)
-            fun OK(payload: Any,contentType: ContentType) = InternalResponse(payload, contentType, StatusCode.OK)
-            fun message(message: String, status: StatusCode) = InternalResponse(message, ContentType.TEXT, status)
+            private fun withContentType(contentType:ContentType) = object : UnconditionalRenderer() {
+                override fun render(request: InternalRequest, response: InternalResponse) =
+                    Response.Body(response.payload as ByteArray,contentType,response.status)
+            }
+            fun OK(payload: Any) = InternalResponse(payload, StatusCode.OK)
+            fun OK(payload: Any,contentType:ContentType) = InternalResponse(payload, StatusCode.OK,withContentType(contentType))
+            fun message(message: String, status: StatusCode) = InternalResponse(message, status)
             fun node(payload: Node, render: Renderer= Response.Body.TO_STRING) =
-                InternalResponse(payload, ContentType.AST, StatusCode.OK, render)
+                InternalResponse(payload, StatusCode.OK, render)
         }
     }
 

@@ -12,14 +12,15 @@ object DefaultInternalHandler : BodyHandler {
 
     private val login = LoginHandler()
 
-    private val favicon = ResourceHandler
+    private val resources = ResourceHandler
 
     private fun handler(vararg handlers: BodyHandler) = CompositeBodyHandler(*handlers)
 
-    private val needsToLogin = handler(favicon,login)
+    private val needsToLogin = handler(resources,login)
 
     private val loggedIn = handler(
-        favicon,
+        resources,
+        SourceHandler,
         PreferencesRequestHandler.of(),
         Log,
         Objects,

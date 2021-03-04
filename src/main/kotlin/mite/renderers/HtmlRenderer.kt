@@ -20,7 +20,7 @@ data class HtmlRenderer(val nodeRenderer:Renderer) : InternalResponse.Unconditio
     private fun escape(html:String) = Escaper.escape(html,500)
 
     override fun render(request: InternalRequest, response: InternalResponse): Body {
-        if (response.contentType == ContentType.AST) {
+        if (response.payload is Node) {
             val inner = RequestSpecificHtmlRenderer(request,escaped)
             val page = Page(inner.node(response.payload as Node))
             return Body(page,response.status)

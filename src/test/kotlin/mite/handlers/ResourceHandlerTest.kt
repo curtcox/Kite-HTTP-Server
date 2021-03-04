@@ -5,14 +5,14 @@ import mite.http.HTTP.*
 import org.junit.Test
 import kotlin.test.*
 
-class FaviconHandlerTest {
+class ResourceHandlerTest {
 
-    val favicon = FaviconHandler
+    val resources = ResourceHandler
     fun request(filename:String) = TestObjects.internalRequestForFilename(filename)
 
     @Test
     fun `returns icon`() {
-        val response = favicon.handle(request("/favicon.ico"))
+        val response = resources.handle(request("/favicon.ico"))
         assertEquals(StatusCode.OK,response.status)
         assertTrue(response.payload is ByteArray)
         assertEquals(1406,(response.payload as ByteArray).size)
