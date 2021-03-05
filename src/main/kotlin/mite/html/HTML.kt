@@ -11,7 +11,8 @@ interface HTML {
 
     object Tags {
         fun     h1(text:String) = tag(text,"<H1>","</H1>")
-        fun    pre(text:String) = tag(text,"<PRE>","</PRE>")
+        fun    pre(text:String) = tag(text,"<pre>","</pre>")
+        fun   code(text:String) = tag(text,"<code>","</code>")
         fun script(text:String) = tag(text,"<script>","</script>")
 
         fun tag(text:String,open:String,close:String) =

@@ -1,24 +1,23 @@
 package mite.renderers
 
-import mite.handlers.SourceHandler
+import mite.html.HTML.Tags
 import mite.html.Page
-import mite.http.HTTP.*
 import mite.http.HTTP.Response.*
 import mite.ihttp.InternalHttp.*
 import mite.ihttp.InternalHttp.InternalResponse.*
-import java.io.File
 
 object SourceRenderer : Renderer {
 
     override fun handles(request: InternalRequest, response: InternalResponse) = response.payload is List<*>
 
     override fun render(request: InternalRequest, response: InternalResponse) =
-        Body(Page(),response.status)
+        Body(Page(html(response.payload as List<String>)),response.status)
 
-//    private fun source(request: InternalRequest) = file(request).readLines().mapIndexed { index, s -> line(index,s) }
-//
-//    private fun line(index: Int, line: String) = "<a>$index</a>$line"
-//
-//    private fun file(request: InternalRequest) = File(SourceHandler.path(request))
+    private fun html(lines: List<String>) =
+        Tags.string(Tags.pre(Tags.code(source(lines).joinToString(separator = System.lineSeparator()))))
+
+    private fun source(lines: List<String>) = lines.mapIndexed { index, s -> line(index + 1,s) }
+
+    private fun line(index: Int, line: String) = "<a>$index</a>$line"
 
 }
