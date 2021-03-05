@@ -15,14 +15,14 @@ class DefaultInternalHandlerTest {
     fun `favicon is icon`() {
         val request = forFilename("/favicon.ico")
         val response = handler.handle(request)!!
-        assertEquals(ContentType.ICON,response.renderer!!.render(request,response))
+        assertEquals(ContentType.ICON,response.renderer!!.render(request,response).contentType)
     }
 
     @Test
     fun `log is AST list`() {
         val request = forFilename("/log")
         val response = handler.handle(request)!!
-        assertEquals(ContentType.AST,response.renderer!!.render(request,response))
+        assertEquals(ContentType.HTML,response.renderer!!.render(request,response).contentType)
         assertEquals(StatusCode.OK,response.status)
         val node = response.payload as Node
         assertEquals(Node.Arity.list,node.arity)
@@ -32,7 +32,6 @@ class DefaultInternalHandlerTest {
     fun `pwd is text`() {
         val request = forFilename("/exec/pwd")
         val response = handler.handle(request)!!
-        assertEquals(ContentType.AST,response.renderer!!.render(request,response))
         assertEquals(StatusCode.OK,response.status)
         val node = response.payload as Node
         assertEquals(Node.Arity.list,node.arity)

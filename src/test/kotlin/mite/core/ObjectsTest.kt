@@ -58,7 +58,7 @@ class ObjectsTest {
             </BODY>
             </HTML>
         """.trimIndent())
-        page.contains("""<table id="table_id" class="display responsive wrap" style="width:100%">""")
+        page.contains("""<table id="List_table" class="display responsive wrap" style="width:100%">""")
         page.contains("""<TR><TH>#</TH><TH>Class</TH><TH>Id</TH><TH>String</TH></TR>""")
         page.contains("""<TR><TD><a href="/object/-571983892@0">0</a></TD><TD>String</TD><TD>-571983892</TD><TD>stuff we want to record</TD></TR>""")
     }
