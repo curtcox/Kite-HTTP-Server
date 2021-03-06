@@ -12,20 +12,20 @@ object ThrowableRenderer : HTML.Renderer {
 
     private fun body(t:Throwable) = Table.Body(t.stackTrace.map { e -> row(e) })
 
-    private fun row(element: StackTraceElement) = Table.Row(
-        listOf(
-            element.className,
-            linkToFileName(element),
-            linkToLineNumber(element)
-        ), "TD"
-    )
+    private fun row(element: StackTraceElement) = Table.Row(cells(element), "TD")
 
-    private fun linkToFileName(element: StackTraceElement) = linkTo(element.fileName,linkTo(element))
+    private fun cells(element: StackTraceElement) =
+        if (element.fileName==null) listOf(element.className, "null", "null")
+        else                        listOf(element.className, linkToFileName(element), linkToLineNumber(element))
 
-    private fun linkToLineNumber(element: StackTraceElement) = linkTo("${element.lineNumber}",linkTo(element))
+    private fun linkToFileName(element: StackTraceElement) = linkTo(element.fileName,urlFor(element))
+
+    private fun linkToLineNumber(element: StackTraceElement) = linkTo("${element.lineNumber}",urlFor(element))
 
     private fun linkTo(label:String,target:String) = """<a href="$target">$label</a>"""
 
-    private fun linkTo(element: StackTraceElement) = "/source/${element.className}#${element.lineNumber}"
+    private fun urlFor(element: StackTraceElement) = "/source/${path(element)}#${element.lineNumber}"
+
+    private fun path(element: StackTraceElement) = element.className.replace(".","/") + ".kt"
 
 }

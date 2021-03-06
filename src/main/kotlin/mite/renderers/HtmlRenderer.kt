@@ -4,9 +4,9 @@ import mite.ast.Node
 import mite.ast.Node.*
 import mite.html.Escaper
 import mite.html.Page
-import mite.http.HTTP.*
 import mite.http.HTTP.Response.*
 import mite.ihttp.InternalHttp.*
+
 /**
  * For rendering internal responses as HTML.
  */
