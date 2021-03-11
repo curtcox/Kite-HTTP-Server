@@ -1,10 +1,66 @@
 package mite.core
 
 import org.junit.Test
-import java.io.ByteArrayInputStream
+import java.io.*
 import kotlin.test.*
 
 class RequestReaderTest {
+
+    fun lines(lines:Int,fail:Boolean,max:Int) = TestInputStream(lines,fail,max)
+
+    @Test
+    fun `0 line HTTP request with no exception`() {
+        val read = RequestReader.readRequest(lines(0,false,0))
+        assertEquals(0, read.lines.size)
+    }
+
+    @Test
+    fun `0 line HTTP request with exception`() {
+        val read = RequestReader.readRequest(lines(0,true,0))
+        assertEquals(0, read.lines.size)
+    }
+
+    @Test
+    fun `1 line is added to HTTP request with no exception`() {
+        val read = RequestReader.readRequest(lines(1,false,1))
+        assertEquals(1, read.lines.size)
+    }
+
+    @Test
+    fun `1 line is added to HTTP request with exception`() {
+        try {
+            RequestReader.readRequest(lines(1,true,1))
+            fail()
+        } catch (e : IOException) {}
+    }
+
+    @Test
+    fun `2 lines are added to HTTP request with no exception`() {
+        val read = RequestReader.readRequest(lines(2,false,2))
+        assertEquals(2, read.lines.size)
+    }
+
+    @Test
+    fun `2 lines are added to HTTP request with exception`() {
+        try {
+            RequestReader.readRequest(lines(2,true,2))
+            fail()
+        } catch (e : IOException) {}
+    }
+
+    @Test
+    fun `200 lines are added to HTTP request with no exception`() {
+        val read = RequestReader.readRequest(lines(200,false,200))
+        assertEquals(200, read.lines.size)
+    }
+
+    @Test
+    fun `200 lines are added to HTTP request with exception`() {
+        try {
+            RequestReader.readRequest(lines(200,true,200))
+            fail()
+        } catch (e : IOException) {}
+    }
 
     @Test
     fun `1 line HTTP 1_0 GET request`() {

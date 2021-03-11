@@ -12,9 +12,11 @@ internal object RequestReader {
     fun readRequest(input: InputStream): Raw {
         val reader = BufferedReader(input.reader())
         val lines = ArrayList<String>()
-        while (reader.ready() || lines.isEmpty()) { // <-- This line is vital. It needs a test
+        while (reader.ready() || lines.isEmpty()) {
             val line = reader.readLine()
-            if (line!=null) {
+            if (line==null) {
+                return Raw(lines.toTypedArray())
+            } else {
                 lines.add(line)
             }
         }
