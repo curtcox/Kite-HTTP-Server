@@ -6,7 +6,9 @@ object ThrowableRenderer : HTML.Renderer {
 
     override fun render(a: Any?): HTML = table(a as Throwable)
 
-    private fun table(t:Throwable) = Table(head(),body(t),"Throwable")
+    private fun table(t:Throwable) = Table(head(),body(t),caption(t))
+
+    private fun caption(t:Throwable) = "$t"
 
     private fun head() = Table.Row(listOf("Class Name", "File Name", "line number"), "TH")
 
