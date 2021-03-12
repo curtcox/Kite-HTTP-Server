@@ -5,13 +5,13 @@ import mite.html.Page
 import mite.http.HTTP.Response.*
 import mite.ihttp.InternalHttp.*
 import mite.ihttp.InternalHttp.InternalResponse.*
-
+//??? https://highlightjs.org/usage/
 object SourceRenderer : Renderer {
 
     override fun handles(request: InternalRequest, response: InternalResponse) = response.payload is List<*>
 
     override fun render(request: InternalRequest, response: InternalResponse) =
-        Body(Page(html(response.payload as List<String>)),response.status)
+        Body(Page("${response.payload}",html(response.payload as List<String>)),response.status)
 
     private fun html(lines: List<String>) =
         Tags.string(Tags.pre(Tags.code(source(lines).joinToString(separator = System.lineSeparator()))))

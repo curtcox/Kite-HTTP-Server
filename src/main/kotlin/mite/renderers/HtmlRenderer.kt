@@ -22,7 +22,8 @@ data class HtmlRenderer(val nodeRenderer:Renderer) : InternalResponse.Unconditio
     override fun render(request: InternalRequest, response: InternalResponse): Body {
         if (response.payload is Node) {
             val inner = RequestSpecificHtmlRenderer(request,escaped)
-            val page = Page(inner.node(response.payload as Node))
+            val payload = response.payload
+            val page = Page("$payload",inner.node(payload))
             return Body(page,response.status)
         }
         TODO("Not yet implemented")

@@ -10,12 +10,7 @@ object DefaultErrorReporter {
 
     fun render(request: InternalRequest, response: InternalResponse?, t:Throwable) =
         Response.Body(Page(
-            renderer.render(request), string(response), renderer.render(t)
+            "$t", renderer.render(request), renderer.render(response), renderer.render(t)
         ),StatusCode.NOT_IMPLEMENTED)
-
-
-    private fun string(a:Any?) = object : HTML {
-        override fun toHtml() = "$a"
-    }
 
 }
