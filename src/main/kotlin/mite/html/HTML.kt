@@ -14,7 +14,7 @@ interface HTML {
         fun   code(text:String) = tag(text,"<code>","</code>")
         fun script(text:String) = tag(text,"<script>","</script>")
         fun combine(vararg html:HTML) = object : HTML {
-            override fun toHtml() = html.joinToString(" ")
+            override fun toHtml() = html.map{ x -> x.toHtml() }  .joinToString(" ")
         }
         fun tag(text:String,open:String,close:String) =
 """
