@@ -23,7 +23,7 @@ data class HtmlRenderer(val nodeRenderer:Renderer) : InternalResponse.Unconditio
         if (response.payload is Node) {
             val inner = RequestSpecificHtmlRenderer(request,escaped)
             val payload = response.payload
-            val page = Page("$payload",inner.node(payload))
+            val page = Page(title = "$payload",bodyText = inner.node(payload))
             return Body(page,response.status)
         }
         TODO("Not yet implemented")

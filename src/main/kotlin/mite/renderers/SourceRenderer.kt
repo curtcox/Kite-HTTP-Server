@@ -17,7 +17,7 @@ object SourceRenderer : Renderer {
         render(response.payload as Source,response.status)
 
     private fun render(source: Source,status:HTTP.StatusCode) =
-        Body(Page("${source.file.absolutePath}",html(source.lines)),status)
+        Body(Page(title="${source.file.absolutePath}",bodyText = html(source.lines)),status)
 
     private fun html(lines: List<String>) =
         Tags.string(Tags.pre(Tags.code(source(lines).joinToString(separator = System.lineSeparator()))))

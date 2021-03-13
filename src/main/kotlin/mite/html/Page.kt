@@ -2,19 +2,18 @@ package mite.html
 
 import mite.html.HTML.Tags.tag
 
-class Page(val title:String,vararg bodyText:HTML) : HTML {
-
-    private val text = bodyText
+data class Page(val css:String="",val script:String="",val title:String,val bodyText:HTML) : HTML {
 
     override fun toHtml() = html(head(title(title)) + body(combinedBody()))
 
-    private fun combinedBody() : String {
-        val out = StringBuilder(h1(title))
-        for (t in text) {
-            out.append(t.toHtml())
-        }
-        return out.toString()
-    }
+    private fun combinedBody() =
+        """
+            $css
+            $script
+            ${h1(title)}
+            ${bodyText.toHtml()}
+        """.trimIndent()
+
 
     private fun html(text:String) = tag(text,"<HTML>","</HTML>")
     private fun body(text:String) = tag(text,"<BODY>","</BODY>")
