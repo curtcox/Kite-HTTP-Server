@@ -57,7 +57,7 @@ data class Table(val head:Row,val body:Body,val caption:String) : HTML {
         script(documentReady) +
 
         table("""
-                ${tag(caption,"<cationn>","</caption>")}
+                ${tag(caption,"<caption>","</caption>")}
                 ${thead(head.toHtml())}
                 ${body.toHtml()}""".trimIndent())
 

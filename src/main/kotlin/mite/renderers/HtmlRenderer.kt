@@ -17,16 +17,17 @@ data class HtmlRenderer(val nodeRenderer:Renderer) : InternalResponse.Unconditio
         override fun render(node: Node):     List<String> = nodeRenderer.render(node).map  { s -> escape(s) }
     }
 
-    private fun escape(html:String) = Escaper.escape(html,500)
+    private fun escape(html:String,max:Int=500) = Escaper.escape(html,max)
 
     override fun render(request: InternalRequest, response: InternalResponse): Body {
         if (response.payload is Node) {
             val inner = RequestSpecificHtmlRenderer(request,escaped)
             val payload = response.payload
-            val page = Page(title = "$payload",bodyText = inner.node(payload))
+            val page = Page(title = title(payload),bodyText = inner.node(payload))
             return Body(page,response.status)
         }
         TODO("Not yet implemented")
     }
 
+    private fun title(payload:Any) = escape("$payload",50)
 }
