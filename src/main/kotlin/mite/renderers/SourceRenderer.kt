@@ -8,9 +8,9 @@ import mite.ihttp.InternalHttp.*
 import mite.ihttp.InternalHttp.InternalResponse.*
 import mite.payloads.Source
 
-//??? https://highlightjs.org/usage/
 object SourceRenderer : Renderer {
 
+    // See https://highlightjs.org/usage/
     private val css = """<link rel="stylesheet" href="/github.css">"""
     private val script = """
         <script src="/highlight.pack.js"></script>
@@ -23,7 +23,7 @@ object SourceRenderer : Renderer {
         render(response.payload as Source,response.status)
 
     private fun render(source: Source,status:HTTP.StatusCode) =
-        Body(Page(css=css,script = script,title="${source.file.absolutePath}",bodyText = html(source.lines)),status)
+        Body(Page.of(css=css,script = script,title="${source.file.absolutePath}",bodyText = html(source.lines)),status)
 
     private fun html(lines: List<String>) =
         Tags.string(Tags.pre(Tags.code(source(lines).joinToString(separator = System.lineSeparator()))))

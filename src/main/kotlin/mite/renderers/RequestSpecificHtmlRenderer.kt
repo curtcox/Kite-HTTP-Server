@@ -6,7 +6,10 @@ import mite.html.Table
 import mite.html.Table.*
 import mite.ihttp.InternalHttp.*
 
-class RequestSpecificHtmlRenderer(val request: InternalRequest, val nodeRenderer: Node.Renderer) {
+/**
+ * For turning a specific Node into a Table.
+ */
+data class RequestSpecificHtmlRenderer(val request: InternalRequest, val nodeRenderer: Node.Renderer) {
 
     fun node(node: Node): Table {
         return when (node.arity) {
