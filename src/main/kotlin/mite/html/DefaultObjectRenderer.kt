@@ -1,11 +1,12 @@
 package mite.html
 
+/**
+ * Renderer for any object.
+ */
 object DefaultObjectRenderer : HTML.Renderer {
 
     val inner = CompositeHtmlRenderer(
-        InternalRequestHtmlRenderer,
-        InternalResponseHtmlRenderer,
-        ThrowableRenderer,
+        SpecificObjectRenderer,
         ArbitraryObjectHtmlRenderer
     )
 

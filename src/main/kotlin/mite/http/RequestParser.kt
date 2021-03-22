@@ -6,6 +6,9 @@ import java.util.*
 import mite.http.HTTP.*
 import mite.http.HTTP.Request.*
 
+/**
+ * Parses a raw request into a request.
+ */
 object RequestParser {
 
     private fun host(raw: Raw) = raw.lines

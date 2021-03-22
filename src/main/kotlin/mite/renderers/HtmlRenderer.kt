@@ -2,8 +2,7 @@ package mite.renderers
 
 import mite.ast.Node
 import mite.ast.Node.*
-import mite.html.Escaper
-import mite.html.Page
+import mite.html.*
 import mite.http.HTTP.Response.*
 import mite.ihttp.InternalHttp.*
 
@@ -21,13 +20,23 @@ data class HtmlRenderer(val nodeRenderer:Renderer) : InternalResponse.Unconditio
 
     override fun render(request: InternalRequest, response: InternalResponse): Body {
         if (response.payload is Node) {
-            val inner = RequestSpecificHtmlRenderer(request,escaped)
-            val payload = response.payload
-            val page = Page.of(title = title(payload),bodyText = inner.node(payload))
-            return Body(page,response.status)
+            return Body(page(request,response.payload),response.status)
         }
         TODO("Not yet implemented")
     }
 
-    private fun title(payload:Any) = escape("$payload",50)
+    private fun page(request: InternalRequest, payload: Node) =
+        Page.of(title = title(payload),bodyText = bodyText(request,payload))
+
+    private fun bodyText(request: InternalRequest, node: Node): HTML {
+        val specific = RequestSpecificHtmlRenderer(request,escaped).node(node)
+        val renderer = SpecificObjectRenderer
+        val value = node.value
+        if (renderer.renders(value)) {
+            println("value = ${value::class}")
+        }
+        return if (renderer.renders(value)) HTML.Tags.combine(renderer.render(value),specific) else specific
+    }
+
+    private fun title(payload:Any) = escape("$payload",70)
 }

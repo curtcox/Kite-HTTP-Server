@@ -8,10 +8,7 @@ import mite.renderers.HtmlRenderer
 /**
  * Object browser.
  */
-object Objects : AbstractAstNodeHandler("/object",HtmlRenderer(object: Node.Renderer {
-    override fun header(list:List<*>) : List<String> = listOf("Class","Id","String")
-    override fun render(node: Node) = (node.value as SingleObject).toHtml()
-})) {
+object Objects : AbstractAstNodeHandler("/object") {
 
     private val objects = ConcurrentLinkedQueue<SingleObject>()
 
@@ -29,7 +26,7 @@ object Objects : AbstractAstNodeHandler("/object",HtmlRenderer(object: Node.Rend
         objects.add(SingleObject(o))
     }
 
-    fun linkTo(o:Any) = "/object/${objects.indexOf(SingleObject(o))}"
+    fun linkTo(o:Any) = "/object@${objects.indexOf(SingleObject(o))}"
 
     override fun root(request: InternalRequest) = ReflectiveNode(objects.toList())
 

@@ -10,14 +10,6 @@ class DefaultHandlerTest {
 
     fun forFilename(filename:String) = TestObjects.requestForFilename(filename)
 
-//    @Test
-//    fun `no headers for unknown version`() {
-//        val request = forFilename("/favicon.ico")
-//        val response = handler.handle(request)
-//        val headers = handler.handleHeaders(request,response)
-//        assertEquals(0,headers.size)
-//    }
-
     @Test
     fun `favicon is icon`() {
         val request = forFilename("/favicon.ico")
