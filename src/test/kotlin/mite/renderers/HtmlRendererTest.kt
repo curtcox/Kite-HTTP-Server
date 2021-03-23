@@ -1,7 +1,9 @@
 package mite.renderers
 
+import com.sun.net.httpserver.HttpExchange
 import mite.*
 import mite.ast.*
+import mite.core.ExchangeTracker
 import mite.http.HTTP.*
 import org.junit.Test
 import kotlin.test.*
@@ -30,12 +32,16 @@ class HtmlRendererTest {
         val value = "stuff"
         val one = Singleton(value)
         val response = singletons(listOf(one))
+
+        ExchangeTracker.nextInfo()
         val rendered = renderer.render(request,response)
+
         assertEquals(ContentType.HTML,rendered.contentType)
         val page = PageAsserts(rendered.page)
         page.startsWith("""
             <HTML>
-            <BODY>
+            <head>
+            <title>
         """.trimIndent())
         page.endsWith("""
             </BODY>
@@ -55,12 +61,16 @@ class HtmlRendererTest {
         val value = "thing"
         val one = Singleton(value)
         val response = pairs(mapOf("one" to one))
+
+        ExchangeTracker.nextInfo()
         val rendered = renderer.render(request,response)
+
         assertEquals(ContentType.HTML,rendered.contentType)
         val page = PageAsserts(rendered.page)
         page.startsWith("""
             <HTML>
-            <BODY>
+            <head>
+            <title>
         """.trimIndent())
         page.endsWith("""
             </BODY>
@@ -80,12 +90,16 @@ class HtmlRendererTest {
         val value = "stuff"
         val one = Singleton(value)
         val response = leaf(one)
+
+        ExchangeTracker.nextInfo()
         val rendered = renderer.render(request,response)
+
         assertEquals(ContentType.HTML,rendered.contentType)
         val page = PageAsserts(rendered.page)
         page.startsWith("""
             <HTML>
-            <BODY>
+            <head>
+            <title>
         """.trimIndent())
         page.endsWith("""
             </BODY>

@@ -35,7 +35,10 @@ class ObjectsTest {
     @Test
     fun `no objects renders as HTML`() {
         val response = objects(listOf())
+
+        ExchangeTracker.nextInfo()
         val rendered = renderer.render(request("/object"),response)
+
         assertEquals(ContentType.HTML,rendered.contentType)
         val page = PageAsserts(rendered.page)
         page.startsWith("<HTML>")
@@ -46,12 +49,16 @@ class ObjectsTest {
     fun `one object entry renders as HTML table`() {
         val record = "stuff we want to record"
         val response = objects(listOf(Objects.SingleObject(record)))
+
+        ExchangeTracker.nextInfo()
         val rendered = renderer.render(request("/object/${record.hashCode()}"),response)
+
         assertEquals(ContentType.HTML,rendered.contentType)
         val page = PageAsserts(rendered.page)
         page.startsWith("""
             <HTML>
-            <BODY>
+            <head>
+            <title>
         """.trimIndent())
         page.endsWith("""
             </table>
@@ -59,8 +66,8 @@ class ObjectsTest {
             </HTML>
         """.trimIndent())
         page.contains("""<table id="List_table" class="display responsive wrap" style="width:100%">""")
-        page.contains("""<TR><TH>#</TH><TH>Class</TH><TH>Id</TH><TH>String</TH></TR>""")
-        page.contains("""<TR><TD><a href="/object/-571983892@0">0</a></TD><TD>String</TD><TD>-571983892</TD><TD>stuff we want to record</TD></TR>""")
+        page.contains("""<TR><TH>#</TH><TH>o</TH></TR>""")
+        page.contains("""<TR><TD><a href="/object/-571983892@0">0</a></TD><TD>stuff we want to record</TD></TR>""")
     }
 
 }

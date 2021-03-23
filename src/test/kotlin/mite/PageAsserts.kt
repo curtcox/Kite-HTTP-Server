@@ -13,7 +13,7 @@ data class PageAsserts(val page:String) {
     }
 
     fun contains(string:String) {
-        assertTrue(page.contains(string),"$string not found in $page")
+        assertTrue(page.contains(string),">>>$string<<< not found in >>>$page<<<")
     }
 
     fun dump() {

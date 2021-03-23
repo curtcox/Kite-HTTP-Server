@@ -1,9 +1,12 @@
 package mite.renderers
 
 import mite.PageAsserts
+import mite.core.ExchangeTracker
 import mite.http.HTTP.*
 import org.junit.Test
 import mite.ihttp.InternalHttp.*
+import mite.payloads.Source
+import java.io.File
 import kotlin.test.assertEquals
 
 class SourceRendererTest {
@@ -21,8 +24,9 @@ class SourceRendererTest {
     @Test
     fun `empty payload produces page with empty body`() {
         val  request = InternalRequest(Request(raw,method,host,filename,contentType,httpVersion))
-        val  payload = listOf<String>()
+        val  payload = Source(File("pathname"),listOf())
         val response = InternalResponse(payload,status)
+        ExchangeTracker.nextInfo()
 
         val body = renderer.render(request,response)
 
@@ -37,8 +41,9 @@ class SourceRendererTest {
     @Test
     fun `payload with one line produces page with one line`() {
         val  request = InternalRequest(Request(raw,method,host,filename,contentType,httpVersion))
-        val  payload = listOf("what the line says")
+        val  payload = Source(File("foo"),listOf("what the line says"))
         val response = InternalResponse(payload,status)
+        ExchangeTracker.nextInfo()
 
         val body = renderer.render(request,response)
 
@@ -47,7 +52,7 @@ class SourceRendererTest {
         val page = PageAsserts(body.page)
 
         page.startsWith("<HTML>")
-        page.contains("<a>1</a>what the line says")
+        page.contains("<a>01</a> what the line says")
         page.endsWith("</HTML>")
     }
 

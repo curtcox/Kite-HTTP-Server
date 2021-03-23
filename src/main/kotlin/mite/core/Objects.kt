@@ -17,9 +17,7 @@ object Objects : AbstractAstNodeHandler("/object") {
     }
 
     data class SingleObject(val o : Any?) {
-        fun toHtml(): List<String> =
-            if (o==null) listOf("","","")
-            else listOf(o.javaClass.simpleName,o.hashCode().toString(),o.toString())
+        override fun toString() = "$o"
     }
 
     fun record(o:Any) {

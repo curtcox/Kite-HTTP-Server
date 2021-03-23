@@ -2,6 +2,7 @@ package mite.handlers
 
 import mite.TestObjects
 import mite.http.HTTP.*
+import mite.payloads.Source
 import org.junit.Test
 import kotlin.test.*
 
@@ -19,8 +20,9 @@ class SourceHandlerTest {
     fun `returns source file`() {
         val response = sources.handle(request("/source/mite/Start.kt"))
         assertEquals(StatusCode.OK,response.status)
-        assertTrue(response.payload is List<*>)
+        assertTrue(response.payload is Source,"${response.payload}")
 
+        val source = response.payload as Source
         assertEquals(listOf(
             """package mite""",
             """""",
@@ -39,6 +41,6 @@ class SourceHandlerTest {
             """    }""",
             """}"""
 ),
-            response.payload)
+            source.lines)
     }
 }
