@@ -4,6 +4,9 @@ import mite.core.Log
 import mite.core.Objects
 import mite.html.HTML.Tags.tag
 
+/**
+ * An HTML page. Create with of.
+ */
 data class Page(
     val css:String,
     val script:String,
