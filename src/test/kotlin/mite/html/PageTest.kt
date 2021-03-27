@@ -60,4 +60,12 @@ class PageTest {
         assertTrue(stack.any{it.fileName=="PageTest.kt" && it.lineNumber==55 })
     }
 
+    @Test
+    fun `page throwable contains stack reflecting creation`() {
+        ExchangeTracker.nextInfo()
+        val page = Page.of("","","",HTML.Tags.string(""))
+        val stack = page.created.stackTrace
+        assertTrue(stack.any{it.fileName=="PageTest.kt" && it.lineNumber==66 })
+    }
+
 }

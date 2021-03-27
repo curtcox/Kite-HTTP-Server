@@ -1,6 +1,5 @@
 package mite.renderers
 
-import com.sun.net.httpserver.HttpExchange
 import mite.*
 import mite.ast.*
 import mite.core.ExchangeTracker
@@ -26,6 +25,27 @@ class HtmlRendererTest {
         }
     }
 
+    private fun assertPageWithHtmTable(page: PageAsserts) {
+        page.startsWith("""
+            <HTML>
+            <head>
+            <title>
+        """.trimIndent())
+        page.endsWith("""
+            </table>
+            </BODY>
+            </HTML>
+        """.trimIndent())
+        page.contains("<table")
+    }
+
+    private fun assertTableHeadAndBodyExist(page: PageAsserts) {
+        page.contains("""<thead>""")
+        page.contains("""</thead>""")
+        page.contains("""<tbody>""")
+        page.contains("""</tbody>""")
+    }
+
     @Test
     fun `a list of one singleton renders as HTML table`() {
         val renderer = HtmlRenderer(singletonRenderer)
@@ -38,21 +58,10 @@ class HtmlRendererTest {
 
         assertEquals(ContentType.HTML,rendered.contentType)
         val page = PageAsserts(rendered.page)
-        page.startsWith("""
-            <HTML>
-            <head>
-            <title>
-        """.trimIndent())
-        page.endsWith("""
-            </BODY>
-            </HTML>
-        """.trimIndent())
+        assertPageWithHtmTable(page)
+        assertTableHeadAndBodyExist(page)
         page.contains("""<TR><TH>#</TH><TH>Value</TH></TR>""")
         page.contains("""<tbody><TR><TD><a href="@0">0</a></TD><TD>stuff</TD></TR></tbody>""")
-        page.contains("""<thead>""")
-        page.contains("""</thead>""")
-        page.contains("""<tbody>""")
-        page.contains("""</tbody>""")
     }
 
     @Test
@@ -67,21 +76,10 @@ class HtmlRendererTest {
 
         assertEquals(ContentType.HTML,rendered.contentType)
         val page = PageAsserts(rendered.page)
-        page.startsWith("""
-            <HTML>
-            <head>
-            <title>
-        """.trimIndent())
-        page.endsWith("""
-            </BODY>
-            </HTML>
-        """.trimIndent())
+        assertPageWithHtmTable(page)
+        assertTableHeadAndBodyExist(page)
         page.contains("""<TR><TH>Key</TH><TH>Value</TH></TR>""")
         page.contains("""<tbody><TR><TD><a href="@one">one</a></TD><TD>Singleton(value=thing)</TD></TR></tbody>""")
-        page.contains("""<thead>""")
-        page.contains("""</thead>""")
-        page.contains("""<tbody>""")
-        page.contains("""</tbody>""")
     }
 
     @Test
@@ -96,21 +94,10 @@ class HtmlRendererTest {
 
         assertEquals(ContentType.HTML,rendered.contentType)
         val page = PageAsserts(rendered.page)
-        page.startsWith("""
-            <HTML>
-            <head>
-            <title>
-        """.trimIndent())
-        page.endsWith("""
-            </BODY>
-            </HTML>
-        """.trimIndent())
+        assertPageWithHtmTable(page)
+        assertTableHeadAndBodyExist(page)
         page.contains("""<TR><TH>#</TH><TH>Value</TH></TR>""")
         page.contains("""<tbody><TR><TD><a href="@0">0</a></TD><TD>stuff</TD></TR></tbody>""")
-        page.contains("""<thead>""")
-        page.contains("""</thead>""")
-        page.contains("""<tbody>""")
-        page.contains("""</tbody>""")
     }
 
 }

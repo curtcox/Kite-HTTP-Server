@@ -56,6 +56,7 @@ class ObjectsTest {
             </BODY>
             </HTML>
         """.trimIndent())
+        page.contains("<table")
     }
 
     @Test
