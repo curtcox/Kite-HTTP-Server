@@ -45,16 +45,7 @@ class ObjectsTest {
         page.endsWith("</HTML>")
     }
 
-    @Test
-    fun `one object entry renders as HTML table`() {
-        val record = "stuff we want to record"
-        val response = objects(listOf(Objects.SingleObject(record)))
-
-        ExchangeTracker.nextInfo()
-        val rendered = renderer.render(request("/object/${record.hashCode()}"),response)
-
-        assertEquals(ContentType.HTML,rendered.contentType)
-        val page = PageAsserts(rendered.page)
+    private fun assertPageWithHtmTable(page: PageAsserts) {
         page.startsWith("""
             <HTML>
             <head>
@@ -65,6 +56,19 @@ class ObjectsTest {
             </BODY>
             </HTML>
         """.trimIndent())
+    }
+
+    @Test
+    fun `one object entry renders as HTML table`() {
+        val record = "stuff we want to record"
+        val response = objects(listOf(Objects.SingleObject(record)))
+
+        ExchangeTracker.nextInfo()
+        val rendered = renderer.render(request("/object/${record.hashCode()}"),response)
+
+        assertEquals(ContentType.HTML,rendered.contentType)
+        val page = PageAsserts(rendered.page)
+        assertPageWithHtmTable(page)
         page.contains("""<table id="List_table" class="display responsive wrap" style="width:100%">""")
         page.contains("""<TR><TH>#</TH><TH>o</TH></TR>""")
         page.contains("""<TR><TD><a href="/object/-571983892@0">0</a></TD><TD>stuff we want to record</TD></TR>""")
@@ -82,16 +86,7 @@ class ObjectsTest {
 
         assertEquals(ContentType.HTML,rendered.contentType)
         val page = PageAsserts(rendered.page)
-        page.startsWith("""
-            <HTML>
-            <head>
-            <title>
-        """.trimIndent())
-        page.endsWith("""
-            </table>
-            </BODY>
-            </HTML>
-        """.trimIndent())
+        assertPageWithHtmTable(page)
         page.contains("""<table id="Map_table" class="display responsive wrap" style="width:100%">""")
         page.contains("""<TR><TH>Key</TH><TH>Value</TH></TR>""")
         page.contains("""<TR><TD><a href="${link}@o">o</a></TD><TD>object we want to link to</TD></TR>""")
@@ -109,16 +104,7 @@ class ObjectsTest {
 
         assertEquals(ContentType.HTML,rendered.contentType)
         val page = PageAsserts(rendered.page)
-        page.startsWith("""
-            <HTML>
-            <head>
-            <title>
-        """.trimIndent())
-        page.endsWith("""
-            </table>
-            </BODY>
-            </HTML>
-        """.trimIndent())
+        assertPageWithHtmTable(page)
         page.contains("""<table id="Map_table" class="display responsive wrap" style="width:100%">""")
         page.contains("""<TR><TH>Key</TH><TH>Value</TH></TR>""")
         page.contains("""<TR><TD><a href="${link}@o">o</a></TD><TD>java.lang.Throwable</TD></TR>""")
