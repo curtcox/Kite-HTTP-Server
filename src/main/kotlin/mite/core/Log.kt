@@ -11,6 +11,7 @@ import kotlin.reflect.KClass
  */
 object Log : AbstractAstNodeHandler("/log") {
 
+    // TODO look at code duplication with Objects
     val entries = ConcurrentLinkedQueue<Entry>()
 
     init {

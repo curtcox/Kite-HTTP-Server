@@ -70,4 +70,69 @@ class ObjectsTest {
         page.contains("""<TR><TD><a href="/object/-571983892@0">0</a></TD><TD>stuff we want to record</TD></TR>""")
     }
 
+    @Test
+    fun `linkTo object can be used to get object`() {
+        val record = "link to stuff we want to record"
+
+        ExchangeTracker.nextInfo()
+        val link = Objects.linkTo(record)
+        val request = request(link)
+        val response = Objects.handle(request)
+        val rendered = renderer.render(request,response)
+
+        assertEquals(ContentType.HTML,rendered.contentType)
+        val page = PageAsserts(rendered.page)
+        page.startsWith("""
+            <HTML>
+            <head>
+            <title>
+        """.trimIndent())
+        page.endsWith("""
+            </table>
+            </BODY>
+            </HTML>
+        """.trimIndent())
+        page.contains("""<table id="Map_table" class="display responsive wrap" style="width:100%">""")
+        page.contains("""<TR><TH>Key</TH><TH>Value</TH></TR>""")
+        page.contains("""<TR><TD><a href="/object@0@o">o</a></TD><TD>link to stuff we want to record</TD></TR>""")
+    }
+
+    @Test
+    fun `linkTo object returns response with single object as payload`() {
+        val record = "link to stuff we want to record"
+
+        ExchangeTracker.nextInfo()
+        val request = request(Objects.linkTo(record))
+        val response = Objects.handle(request)
+
+        val payload = response.payload
+        assertTrue(payload is ReflectiveNode)
+        val node = payload
+        assertTrue(node is ReflectiveNode)
+        val value = node.nodeValue
+        assertTrue(value is Objects.SingleObject)
+        val single = value
+        assertEquals(record,single.o)
+    }
+
+    @Test
+    fun `linkTo object returns response with default renderer`() {
+        ExchangeTracker.nextInfo()
+        val link = Objects.linkTo("???")
+
+        val response = Objects.handle(request(link))
+
+        assertEquals(Objects.renderer,response.renderer)
+    }
+
+    @Test
+    fun `linkTo object returns success`() {
+        ExchangeTracker.nextInfo()
+        val link = Objects.linkTo("???")
+
+        val response = Objects.handle(request(link))
+
+        assertEquals(StatusCode.OK,response.status)
+    }
+
 }

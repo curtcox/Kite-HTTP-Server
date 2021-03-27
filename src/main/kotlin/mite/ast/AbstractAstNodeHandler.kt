@@ -6,7 +6,7 @@ import mite.ihttp.InternalHttp.*
 
 /**
  * Skeletal implementation of a handler that produces an AST node.
- * The implementor must implement node.
+ * The implementor must override root which provides the root node for a request.
  * This base class will handle node tree navigation.
  */
 abstract class AbstractAstNodeHandler(val prefix: String, val renderer:InternalResponse.Renderer) : BodyHandler {

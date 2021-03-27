@@ -10,6 +10,7 @@ import mite.renderers.HtmlRenderer
  */
 object Objects : AbstractAstNodeHandler("/object") {
 
+    // TODO see Log
     private val objects = ConcurrentLinkedQueue<SingleObject>()
 
     init {
@@ -24,7 +25,15 @@ object Objects : AbstractAstNodeHandler("/object") {
         objects.add(SingleObject(o))
     }
 
-    fun linkTo(o:Any) = "/object@${objects.indexOf(SingleObject(o))}"
+    private fun indexOf(o:Any) : Int {
+       val wrapped = SingleObject(o)
+       if (!objects.contains(wrapped)) {
+           record(o)
+       }
+        return objects.indexOf(wrapped)
+    }
+
+    fun linkTo(o:Any) = "/object@${indexOf(o)}"
 
     override fun root(request: InternalRequest) = ReflectiveNode(objects.toList())
 
