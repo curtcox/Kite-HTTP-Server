@@ -71,8 +71,8 @@ class ObjectsTest {
     }
 
     @Test
-    fun `linkTo object can be used to get object`() {
-        val record = "link to stuff we want to record"
+    fun `linkTo object (string) is embedded in rendered page`() {
+        val record = "object we want to link to"
 
         ExchangeTracker.nextInfo()
         val link = Objects.linkTo(record)
@@ -94,12 +94,39 @@ class ObjectsTest {
         """.trimIndent())
         page.contains("""<table id="Map_table" class="display responsive wrap" style="width:100%">""")
         page.contains("""<TR><TH>Key</TH><TH>Value</TH></TR>""")
-        page.contains("""<TR><TD><a href="/object@0@o">o</a></TD><TD>link to stuff we want to record</TD></TR>""")
+        page.contains("""<TR><TD><a href="${link}@o">o</a></TD><TD>object we want to link to</TD></TR>""")
+    }
+
+    @Test
+    fun `linkTo object (throwable) is embedded in rendered page`() {
+        val record = Throwable()
+
+        ExchangeTracker.nextInfo()
+        val link = Objects.linkTo(record)
+        val request = request(link)
+        val response = Objects.handle(request)
+        val rendered = renderer.render(request,response)
+
+        assertEquals(ContentType.HTML,rendered.contentType)
+        val page = PageAsserts(rendered.page)
+        page.startsWith("""
+            <HTML>
+            <head>
+            <title>
+        """.trimIndent())
+        page.endsWith("""
+            </table>
+            </BODY>
+            </HTML>
+        """.trimIndent())
+        page.contains("""<table id="Map_table" class="display responsive wrap" style="width:100%">""")
+        page.contains("""<TR><TH>Key</TH><TH>Value</TH></TR>""")
+        page.contains("""<TR><TD><a href="${link}@o">o</a></TD><TD>java.lang.Throwable</TD></TR>""")
     }
 
     @Test
     fun `linkTo object returns response with single object as payload`() {
-        val record = "link to stuff we want to record"
+        val record = "object we want to link to"
 
         ExchangeTracker.nextInfo()
         val request = request(Objects.linkTo(record))
