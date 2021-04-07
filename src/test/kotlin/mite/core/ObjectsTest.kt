@@ -32,12 +32,16 @@ class ObjectsTest {
         assertTrue(response.payload is Node)
     }
 
+    fun render(request: InternalRequest, response: InternalResponse): Response.Body {
+        ExchangeTracker.nextInfo()
+        return renderer.render(request,response)
+    }
+
     @Test
     fun `no objects renders as HTML`() {
         val response = objects(listOf())
 
-        ExchangeTracker.nextInfo()
-        val rendered = renderer.render(request("/object"),response)
+        val rendered = render(request("/object"),response)
 
         assertEquals(ContentType.HTML,rendered.contentType)
         val page = PageAsserts(rendered.page)
@@ -64,8 +68,7 @@ class ObjectsTest {
         val record = "stuff we want to record"
         val response = objects(listOf(Objects.SingleObject(record)))
 
-        ExchangeTracker.nextInfo()
-        val rendered = renderer.render(request("/object/${record.hashCode()}"),response)
+        val rendered = render(request("/object/${record.hashCode()}"),response)
 
         assertEquals(ContentType.HTML,rendered.contentType)
         val page = PageAsserts(rendered.page)
@@ -75,15 +78,19 @@ class ObjectsTest {
         page.contains("""<TR><TD><a href="/object/-571983892@0">0</a></TD><TD>stuff we want to record</TD></TR>""")
     }
 
+    fun handle(request: InternalRequest): InternalResponse {
+        ExchangeTracker.nextInfo()
+        return Objects.handle(request)
+    }
+
     @Test
     fun `linkTo object (string) is embedded in rendered page`() {
         val record = "object we want to link to"
 
-        ExchangeTracker.nextInfo()
         val link = Objects.linkTo(record)
         val request = request(link)
-        val response = Objects.handle(request)
-        val rendered = renderer.render(request,response)
+        val response = handle(request)
+        val rendered = render(request,response)
 
         assertEquals(ContentType.HTML,rendered.contentType)
         val page = PageAsserts(rendered.page)
@@ -97,11 +104,10 @@ class ObjectsTest {
     fun `linkTo object (throwable) is embedded in rendered page`() {
         val record = Throwable()
 
-        ExchangeTracker.nextInfo()
         val link = Objects.linkTo(record)
         val request = request(link)
-        val response = Objects.handle(request)
-        val rendered = renderer.render(request,response)
+        val response = handle(request)
+        val rendered = render(request,response)
 
         assertEquals(ContentType.HTML,rendered.contentType)
         val page = PageAsserts(rendered.page)
@@ -115,9 +121,8 @@ class ObjectsTest {
     fun `linkTo object returns response with single object as payload`() {
         val record = "object we want to link to"
 
-        ExchangeTracker.nextInfo()
         val request = request(Objects.linkTo(record))
-        val response = Objects.handle(request)
+        val response = handle(request)
 
         val payload = response.payload
         assertTrue(payload is ReflectiveNode)
@@ -133,11 +138,10 @@ class ObjectsTest {
     fun `linkTo object returns response with page link`() {
         val record = "record"
 
-        ExchangeTracker.nextInfo()
         val link = Objects.linkTo(record)
         val request = request(link)
         val response = Objects.handle(request)
-        val rendered = renderer.render(request,response)
+        val rendered = render(request,response)
 
         assertEquals(ContentType.HTML,rendered.contentType)
         val page = PageAsserts(rendered.page)
@@ -149,20 +153,18 @@ class ObjectsTest {
 
     @Test
     fun `linkTo object returns response with default renderer`() {
-        ExchangeTracker.nextInfo()
         val link = Objects.linkTo("???")
 
-        val response = Objects.handle(request(link))
+        val response = handle(request(link))
 
         assertEquals(Objects.renderer,response.renderer)
     }
 
     @Test
     fun `linkTo object returns success`() {
-        ExchangeTracker.nextInfo()
         val link = Objects.linkTo("???")
 
-        val response = Objects.handle(request(link))
+        val response = handle(request(link))
 
         assertEquals(StatusCode.OK,response.status)
     }
