@@ -130,6 +130,24 @@ class ObjectsTest {
     }
 
     @Test
+    fun `linkTo object returns response with page link`() {
+        val record = "record"
+
+        ExchangeTracker.nextInfo()
+        val link = Objects.linkTo(record)
+        val request = request(link)
+        val response = Objects.handle(request)
+        val rendered = renderer.render(request,response)
+
+        assertEquals(ContentType.HTML,rendered.contentType)
+        val page = PageAsserts(rendered.page)
+        assertPageWithHtmTable(page)
+        page.contains("""<table id="Map_table" class="display responsive wrap" style="width:100%">""")
+        page.contains("""<TR><TH>Key</TH><TH>Value</TH></TR>""")
+        page.contains("""<TR><TD><a href="${link}@o">o</a></TD><TD>record</TD></TR>""")
+    }
+
+    @Test
     fun `linkTo object returns response with default renderer`() {
         ExchangeTracker.nextInfo()
         val link = Objects.linkTo("???")
